@@ -871,7 +871,208 @@
       ]
      }
     ]
-   }
+   },
+   "mini_dialogues": [
+    {
+     "id": "fika_m1",
+     "requires": [
+      "sv_kopp",
+      "sv_bulle"
+     ],
+     "scene": "Order at the café.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑‍🍳",
+       "line": "Hej! Vad vill du ha?",
+       "choices": [
+        {
+         "text": "En kopp kaffe, tack.",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "En bulle, tack.",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Ett bulle, tack.",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "Bulle is an en-word.",
+         "recast": "En bulle? Javisst."
+        }
+       ]
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑‍🍳",
+       "line": "Varsågod!",
+       "choices": [
+        {
+         "text": "Tack!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Tack så mycket!",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "☕🥐"
+      }
+     ]
+    },
+    {
+     "id": "fika_m2",
+     "requires": [
+      "sv_kaka",
+      "sv_bulle"
+     ],
+     "scene": "A friend offers you something sweet.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Vill du ha en kaka eller en bulle?",
+       "choices": [
+        {
+         "text": "En kaka, tack!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "En bulle, tack!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Ett kaka, tack!",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "Kaka is an en-word.",
+         "recast": "En kaka? Här!"
+        }
+       ],
+       "visual": "🍪🥐"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑",
+       "line": "Varsågod. Är den god?",
+       "choices": [
+        {
+         "text": "Ja, jättegod!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Mmm, ja!",
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "fika_m3",
+     "requires": [
+      "sv_smorgas",
+      "sv_glas"
+     ],
+     "scene": "Lunch at the café.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑‍🍳",
+       "line": "Något mer?",
+       "choices": [
+        {
+         "text": "En smörgås och ett glas mjölk, tack.",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Ett smörgås och en glas mjölk, tack.",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "Swap them: en smörgås, ett glas.",
+         "recast": "En smörgås och ett glas mjölk, absolut."
+        }
+       ],
+       "visual": "🥪🥛"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑‍🍳",
+       "line": "Det blir sextio kronor.",
+       "choices": [
+        {
+         "text": "Varsågod.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Kan jag betala med kort?",
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "fika_m4",
+     "requires": [
+      "sv_tarta"
+     ],
+     "scene": "It's your friend's birthday party.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧒",
+       "line": "Vill du ha tårta?",
+       "choices": [
+        {
+         "text": "Ja, gärna!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Nej tack, jag är mätt.",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "🍰"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧒",
+       "line": "En stor bit eller en liten bit?",
+       "choices": [
+        {
+         "text": "En stor bit, tack!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "En liten bit, tack.",
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "djur",
@@ -993,7 +1194,180 @@
       ]
      }
     ]
-   }
+   },
+   "mini_dialogues": [
+    {
+     "id": "djur_m1",
+     "requires": [
+      "sv_hund",
+      "sv_katt"
+     ],
+     "scene": "A child shows you their pets.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧒",
+       "line": "Är det en katt?",
+       "choices": [
+        {
+         "text": "Nej, det är en hund.",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Ja, det är en katt.",
+         "next": "n1",
+         "fit": "no",
+         "feedback": "Look again: it's a 🐕."
+        }
+       ],
+       "visual": "🐕"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧒",
+       "line": "Och den här?",
+       "choices": [
+        {
+         "text": "Det är en katt.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Det är ett katt.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Katt is an en-word.",
+         "recast": "En katt, ja!"
+        }
+       ],
+       "visual": "🐈"
+      }
+     ]
+    },
+    {
+     "id": "djur_m2",
+     "requires": [
+      "sv_hast"
+     ],
+     "scene": "You're at a riding school.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👧",
+       "line": "Vill du rida på hästen?",
+       "choices": [
+        {
+         "text": "Ja, gärna!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Nej, jag är rädd för hästar.",
+         "next": "n2",
+         "fit": "ok"
+        }
+       ],
+       "visual": "🐎"
+      },
+      {
+       "id": "n2",
+       "speaker": "👧",
+       "line": "Hästen heter Blixten.",
+       "choices": [
+        {
+         "text": "Vilket fint namn!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Hej, Blixten!",
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "djur_m3",
+     "requires": [
+      "sv_far",
+      "sv_ko"
+     ],
+     "scene": "A farmer shows you around.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👨‍🌾",
+       "line": "Vill du se fåren och korna?",
+       "choices": [
+        {
+         "text": "Ja, gärna!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Nej tack.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Polite, but you'd miss the farm!"
+        }
+       ],
+       "visual": "🐑🐄"
+      },
+      {
+       "id": "n2",
+       "speaker": "👨‍🌾",
+       "line": "Kon heter Rosa. Hon ger mjölk.",
+       "choices": [
+        {
+         "text": "Oj, vad fint!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Hej, Rosa!",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "👉🐄"
+      }
+     ]
+    },
+    {
+     "id": "djur_m4",
+     "requires": [
+      "sv_fagel"
+     ],
+     "scene": "A walk in the forest.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧒",
+       "line": "Hör du fågeln?",
+       "choices": [
+        {
+         "text": "Ja, den sjunger!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Nej, jag hör inget.",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "🐦"
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "hemma",
@@ -1078,7 +1452,132 @@
       ]
      }
     ]
-   }
+   },
+   "mini_dialogues": [
+    {
+     "id": "hemma_m1",
+     "requires": [
+      "sv_hus",
+      "sv_stol"
+     ],
+     "scene": "A friend shows you their home.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Det här är mitt hus.",
+       "choices": [
+        {
+         "text": "Vilket fint hus!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Vilket fin hus!",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "Hus is an ett-word, so: fint.",
+         "recast": "Tack! Ja, huset är fint."
+        }
+       ],
+       "visual": "🏠"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑",
+       "line": "Sätt dig på stolen.",
+       "choices": [
+        {
+         "text": "Tack!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Tack så mycket!",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "🪑"
+      }
+     ]
+    },
+    {
+     "id": "hemma_m2",
+     "requires": [
+      "sv_sang"
+     ],
+     "scene": "You're staying the night.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Här sover du. Är sängen bra?",
+       "choices": [
+        {
+         "text": "Ja, den är skön!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Ja, det är skön.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Säng is an en-word: den, not det.",
+         "recast": "Ja, den är skön, eller hur?"
+        }
+       ],
+       "visual": "🛏️"
+      }
+     ]
+    },
+    {
+     "id": "hemma_m3",
+     "requires": [
+      "sv_lampa",
+      "sv_fonster"
+     ],
+     "scene": "It's getting dark.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Det är mörkt här.",
+       "choices": [
+        {
+         "text": "Kan du tända lampan?",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Kan du öppna fönstret?",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "That lets in air, not light.",
+         "recast": "Fönstret? Nej, jag tänder lampan."
+        }
+       ],
+       "visual": "🌙"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑",
+       "line": "Så, nu är det ljust!",
+       "choices": [
+        {
+         "text": "Tack!",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "💡"
+      }
+     ]
+    }
+   ]
   },
   {
    "id": "familj",
@@ -1158,7 +1657,122 @@
       ]
      }
     ]
-   }
+   },
+   "mini_dialogues": [
+    {
+     "id": "familj_m1",
+     "requires": [
+      "sv_mamma",
+      "sv_pappa"
+     ],
+     "scene": "Your friend introduces their parents.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👧",
+       "line": "Det här är min mamma och min pappa.",
+       "choices": [
+        {
+         "text": "Hej! Trevligt att träffas.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Hej då!",
+         "next": "n1",
+         "fit": "no",
+         "feedback": "That's goodbye. You're just meeting them."
+        }
+       ],
+       "visual": "👩👨"
+      }
+     ]
+    },
+    {
+     "id": "familj_m2",
+     "requires": [
+      "sv_barn"
+     ],
+     "scene": "Chatting with a neighbour.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👵",
+       "line": "Har du barn?",
+       "choices": [
+        {
+         "text": "Ja, jag har två barn.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Nej, jag har inga barn.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Ja, jag har två barnen.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "No “the” after a number: två barn.",
+         "recast": "Två barn, vad roligt!"
+        }
+       ],
+       "visual": "🧒🧒"
+      }
+     ]
+    },
+    {
+     "id": "familj_m3",
+     "requires": [
+      "sv_bebis",
+      "sv_flicka",
+      "sv_pojke"
+     ],
+     "scene": "A friend shows you their new baby.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👩",
+       "line": "Titta, vår bebis!",
+       "choices": [
+        {
+         "text": "Åh, vad söt! Är det en flicka eller en pojke?",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Åh, vad söt!",
+         "next": "n2",
+         "fit": "ok"
+        }
+       ],
+       "visual": "👶"
+      },
+      {
+       "id": "n2",
+       "speaker": "👩",
+       "line": "Det är en flicka. Hon heter Ella.",
+       "choices": [
+        {
+         "text": "Vilket fint namn!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Grattis!",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "👧"
+      }
+     ]
+    }
+   ]
   }
  ]
 }

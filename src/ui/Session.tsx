@@ -1,7 +1,10 @@
 import { useMemo, useRef, useState } from 'react';
 import { buildSession, insertRetry, lexOf, mutateForRetry, SCORED, type Step } from '../engine/session';
 import { commitSession, ratingFromLatency, type ItemOutcome } from '../engine/scheduler';
-import { dayKey, saveProgress } from '../engine/store';
+import { dayKey, levelOf, saveProgress, XP } from '../engine/store';
+import { getVoiceSource } from '../audio/tts';
+import { sfx } from '../audio/sfx';
+import { Badge } from './common';
 import { useApp } from '../ctx';
 import { Article, Cloze, ListenPick, MinimalPair, Prime, Rule, Structured, Tiles, type Done } from './exercises';
 import { Speak } from './Speak';
@@ -9,14 +12,16 @@ import { Dialogue } from './Dialogue';
 
 export function Session({ unitId, onExit }: { unitId: string; onExit: () => void }) {
   const { pack, progress, setProgress } = useApp();
-  const initial = useMemo(() => buildSession(pack, unitId, progress), [pack, unitId]); // eslint-disable-line react-hooks/exhaustive-deps
+  const initial = useMemo(() => buildSession(pack, unitId, progress, { accentAudio: getVoiceSource() !== 'device' }), [pack, unitId]); // eslint-disable-line react-hooks/exhaustive-deps
   const [queue, setQueue] = useState<Step[]>(initial);
   const [i, setI] = useState(0);
-  const [summary, setSummary] = useState<{ words: number; retried: number; firstTry: number; scored: number } | null>(null);
+  const [summary, setSummary] = useState<{ words: number; retried: number; firstTry: number; scored: number; xp: number; xpBefore: number } | null>(null);
   const outcomes = useRef<Record<string, ItemOutcome>>({});
   const recent = useRef<boolean[]>([]);
   const shownAt = useRef(Date.now());
   const stats = useRef({ firstTry: 0, scored: 0 });
+  const xp = useRef(0);
+  const dialoguesDone = useRef<string[]>([]);
 
   const step = queue[i];
 
@@ -35,14 +40,20 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
       activeDays: [...new Set([...progress.activeDays, dayKey(now)])].slice(-120),
       recent: [...progress.recent, ...recent.current].slice(-30),
       sessions: { ...progress.sessions, [unitId]: (progress.sessions[unitId] ?? 0) + 1 },
+      dialogues: { ...progress.dialogues },
+      xp: progress.xp + xp.current + XP.session,
     };
+    for (const d of dialoguesDone.current) next.dialogues[d] = (next.dialogues[d] ?? 0) + 1;
     saveProgress(pack.pack_id, next);
     setProgress(next);
     setSummary({
       words: Object.keys(outcomes.current).length,
       retried: Object.values(outcomes.current).filter((o) => o.lapsed).length,
       ...stats.current,
+      xp: xp.current + XP.session,
+      xpBefore: progress.xp,
     });
+    sfx.done();
   };
 
   const onDone: Done = (correct) => {
@@ -56,12 +67,17 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
         if (correct) stats.current.firstTry++;
       }
       if (correct && !step.retry) o.ratings.push(ratingFromLatency(step.kind, Date.now() - shownAt.current));
+      if (correct) xp.current += step.retry ? XP.retry : XP.firstTry;
       if (!correct) {
         o.lapsed = true;
         // sticky buffer: comes back a few items later, in a different format
         q = insertRetry(queue, i, mutateForRetry(pack, step));
         setQueue(q);
       }
+    }
+    if (step.kind === 'dialogue') {
+      dialoguesDone.current.push(step.dialogueId ?? `${step.unitId}:capstone`);
+      xp.current += XP.dialogue;
     }
     if (i + 1 >= q.length) return finish(q);
     shownAt.current = Date.now();
@@ -85,6 +101,7 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
             </p>
           )}
           {pct !== null && pct > 95 && <p className="muted">That was easy. Next time the exercises get a bit harder.</p>}
+          <XpGain before={summary.xpBefore} gained={summary.xp} />
           <button type="button" className="primary" onClick={onExit}>
             Back
           </button>
@@ -105,9 +122,9 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
         <div className="bar" role="progressbar" aria-valuenow={progressPct} aria-valuemin={0} aria-valuemax={100}>
           <div style={{ width: `${progressPct}%` }} />
         </div>
-        {step.retry && <span className="retry-tag">again</span>}
       </header>
       <main key={step.key}>
+        <Badge kind={step.kind} retry={step.retry} />
         {step.kind === 'prime' && <Prime {...props} />}
         {step.kind === 'listen_pick' && <ListenPick {...props} />}
         {step.kind === 'structured' && <Structured {...props} />}
@@ -119,6 +136,22 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
         {step.kind === 'speak' && <Speak {...props} />}
         {step.kind === 'dialogue' && <Dialogue {...props} />}
       </main>
+    </div>
+  );
+}
+
+function XpGain({ before, gained }: { before: number; gained: number }) {
+  const after = levelOf(before + gained);
+  const leveledUp = after.level > levelOf(before).level;
+  return (
+    <div className="xp-gain">
+      <div className="xp-head">
+        <strong>+{gained} XP</strong>
+        <span className="muted">Level {after.level}{leveledUp ? ' 🎉 level up!' : ''}</span>
+      </div>
+      <div className="xp-bar" aria-hidden="true">
+        <div style={{ width: `${(after.into / after.per) * 100}%` }} />
+      </div>
     </div>
   );
 }

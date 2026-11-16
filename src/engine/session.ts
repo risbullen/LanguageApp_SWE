@@ -1,4 +1,4 @@
-import type { Pack, Lexeme } from '../content/schema';
+import type { Pack, Lexeme, Unit } from '../content/schema';
 import { lexMap } from '../content/index';
 import type { Progress } from './store';
 import { isDue } from './scheduler';
@@ -19,11 +19,11 @@ export type Exercise =
   | { kind: 'cloze'; lexId: string; tag: string; options: string[] } // options = suffixes
   | { kind: 'article'; lexId: string; options: string[] }
   | { kind: 'speak'; lexId: string; tag: string }
-  | { kind: 'dialogue'; unitId: string };
+  | { kind: 'dialogue'; unitId: string; dialogueId?: string }; // no id = the unit's capstone
 
 export type Step = Exercise & { key: string; retry?: boolean; unitId: string };
 
-export const SCORED = new Set(['listen_pick', 'structured', 'minimal_pair', 'tiles', 'cloze', 'article']);
+export const SCORED = new Set(['listen_pick', 'structured', 'minimal_pair', 'tiles', 'cloze', 'article', 'speak']);
 
 /** How far back a failed item is re-inserted: far enough that it leaves working memory. */
 export const STICKY_OFFSET = 4;
@@ -114,10 +114,23 @@ export interface BuildOptions {
   maxReview?: number;
   now?: Date;
   rng?: Rng;
+  /** false when only device voices are available — they can't render Swedish word accents */
+  accentAudio?: boolean;
+}
+
+/** Short conversations whose words the learner knows; ones using today's new words first. */
+export function eligibleMinis(unit: Unit, known: Set<string>, fresh: string[], done: Record<string, number> = {}) {
+  return (unit.mini_dialogues ?? [])
+    .filter((d) => d.requires.every((id) => known.has(id)))
+    .sort((a, b) => {
+      const fa = a.requires.some((id) => fresh.includes(id)) ? 0 : 1;
+      const fb = b.requires.some((id) => fresh.includes(id)) ? 0 : 1;
+      return fa - fb || (done[a.id] ?? 0) - (done[b.id] ?? 0);
+    });
 }
 
 export function buildSession(pack: Pack, unitId: string, progress: Progress, opts: BuildOptions = {}): Step[] {
-  const { maxNew = 6, maxReview = 8, now = new Date(), rng = Math.random } = opts;
+  const { maxNew = 3, maxReview = 5, now = new Date(), rng = Math.random, accentAudio = true } = opts;
   const unit = pack.units.find((u) => u.id === unitId)!;
   const lex = lexMap(pack);
   const introduced = new Set(progress.introduced);
@@ -129,7 +142,7 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
     .sort((a, b) => progress.cards[a].due.getTime() - progress.cards[b].due.getTime())
     .slice(0, maxReview);
   // nothing new or due → free practice on this unit (learner autonomy: always allowed)
-  if (!fresh.length && !due.length) due = sample(unit.lexicon_ids, Math.min(6, unit.lexicon_ids.length), rng);
+  if (!fresh.length && !due.length) due = sample(unit.lexicon_ids, Math.min(4, unit.lexicon_ids.length), rng);
 
   const ex: Exercise[] = [];
 
@@ -146,13 +159,15 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
       const l = lex.get(id)!;
       return (introduced.has(id) || fresh.includes(id)) && gf.contrast.every((t) => l.forms.some((f) => f.tag === t));
     });
-    for (const id of sample(cands, 4, rng))
+    for (const id of sample(cands, 2, rng))
       ex.push({ kind: 'structured', lexId: id, tags: gf.contrast, answer: rng() < 0.5 ? 0 : 1 });
     if (cands.length && !progress.rulesSeen.includes(unit.id)) ex.push({ kind: 'rule', unitId: unit.id });
   }
 
   // pitch accent / tone minimal pairs (perception before production)
-  unit.minimal_pairs?.forEach((_, i) => ex.push({ kind: 'minimal_pair', pair: i, answer: rng() < 0.5 ? 0 : 1 }));
+  // (one pair per session, and only with a voice that can actually produce the accent)
+  if (accentAudio && unit.minimal_pairs?.length)
+    ex.push({ kind: 'minimal_pair', pair: Math.floor(rng() * unit.minimal_pairs.length), answer: rng() < 0.5 ? 0 : 1 });
 
   // reviews, format chosen by memory stability + recent success
   for (const id of due) {
@@ -164,15 +179,25 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
   for (const id of shuffle(fresh, rng)) ex.push({ kind: 'tiles', lexId: id, tag: firstForm(lex.get(id)!).tag });
   for (const id of shuffle(fresh, rng)) {
     const c = (unit.article_cloze ? article(pack, id, rng) : null) ?? cloze(pack, id, rng);
-    if (c) ex.push(c);
+    if (c) {
+      ex.push(c);
+      break; // one cloze per session keeps it short
+    }
   }
+
+  // conversations: the capstone needs every word of the unit; otherwise a short one
+  const known = new Set([...introduced, ...fresh]);
+  const capstoneReady = !!unit.dialogue && unit.lexicon_ids.every((id) => known.has(id));
+  const minis = eligibleMinis(unit, known, fresh, progress.dialogues);
+  if (capstoneReady && minis.length) ex.push({ kind: 'dialogue', unitId: unit.id, dialogueId: minis[0].id });
 
   // 4 · speaking
   const speakPool = fresh.length ? fresh : due;
-  for (const id of sample(speakPool, 2, rng)) ex.push({ kind: 'speak', lexId: id, tag: firstForm(lex.get(id)!).tag });
+  for (const id of sample(speakPool, 1, rng)) ex.push({ kind: 'speak', lexId: id, tag: firstForm(lex.get(id)!).tag });
 
-  // 6 · capstone
-  if (unit.dialogue) ex.push({ kind: 'dialogue', unitId: unit.id });
+  // 6 · capstone (or a short conversation while the unit is still being learnt)
+  if (capstoneReady) ex.push({ kind: 'dialogue', unitId: unit.id });
+  else if (minis.length) ex.push({ kind: 'dialogue', unitId: unit.id, dialogueId: minis[0].id });
 
   return ex.map((e, i) => ({ ...e, key: `s${i}`, unitId }));
 }
@@ -193,6 +218,8 @@ export function mutateForRetry(pack: Pack, e: Exercise, rng: Rng = Math.random):
       return { kind: 'tiles', lexId: e.lexId, tag: e.kind === 'cloze' ? e.tag : firstForm(lexMap(pack).get(e.lexId)!).tag };
     case 'tiles':
       return listenPick(pack, e.lexId, rng);
+    case 'speak':
+      return { kind: 'tiles', lexId: e.lexId, tag: e.tag };
     case 'listen_pick': {
       const l = lexMap(pack).get(e.lexId)!;
       return { kind: 'tiles', lexId: e.lexId, tag: firstForm(l).tag };
@@ -212,8 +239,8 @@ export function mutateForRetry(pack: Pack, e: Exercise, rng: Rng = Math.random):
  */
 export function insertRetry(queue: Step[], index: number, retry: Exercise): Step[] {
   const q = [...queue];
-  const dialogueAt = q.findIndex((s, i) => i > index && s.kind === 'dialogue');
-  const limit = dialogueAt === -1 ? q.length : dialogueAt;
+  const last = q.length - 1;
+  const limit = q[last]?.kind === 'dialogue' && last > index ? last : q.length;
   const at = Math.min(index + 1 + STICKY_OFFSET, limit);
   q.splice(at, 0, { ...retry, key: `${queue[index].key}r${index}`, retry: true, unitId: queue[index].unitId });
   return q;

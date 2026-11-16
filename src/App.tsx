@@ -6,9 +6,10 @@ import { Ctx } from './ctx';
 import { Home } from './ui/Home';
 import { Session } from './ui/Session';
 import { SettingsScreen } from './ui/Settings';
-import { Recorder } from './ui/Recorder';
+import { onVoiceSource, unlockAudio, type VoiceSource } from './audio/tts';
+import { sfx } from './audio/sfx';
 
-type Tab = 'home' | 'record' | 'settings';
+type Tab = 'home' | 'settings';
 
 const DEFAULTS: Settings = { packId: PACKS[0].pack_id, mode: 'associative', script: 'Latin', rate: 0.9 };
 
@@ -19,7 +20,19 @@ export default function App() {
   const [tab, setTab] = useState<Tab>('home');
   const [unit, setUnit] = useState<string | null>(null);
 
+  const [voice, setVoice] = useState<VoiceSource | null>(null);
+
   useEffect(() => setProgress(loadProgress(pack.pack_id)), [pack.pack_id]);
+  useEffect(() => onVoiceSource(setVoice), []);
+  // phones only allow sound after a tap: unlock audio on the first one
+  useEffect(() => {
+    const unlock = () => {
+      unlockAudio();
+      sfx.unlock();
+    };
+    window.addEventListener('pointerdown', unlock, { once: true });
+    return () => window.removeEventListener('pointerdown', unlock);
+  }, []);
 
   const script = (pack.script_metadata.supported_scripts.includes(settings.script as ScriptId)
     ? settings.script
@@ -43,23 +56,21 @@ export default function App() {
   return (
     <Ctx.Provider value={ctx}>
       <div className="app">
+        {voice === 'none' && (
+          <p className="banner voice-warning" role="alert">
+            No {pack.name} voice available. The online voice didn’t load and this device has no {pack.tts_lang} voice. Check your internet connection.
+          </p>
+        )}
         {unit ? (
           <Session unitId={unit} onExit={() => setUnit(null)} />
         ) : (
           <>
-            <header className="top">
-              <h1>
-                <span aria-hidden="true">{pack.flag}</span> {pack.name}
-              </h1>
-            </header>
             {tab === 'home' && <Home onStart={setUnit} />}
-            {tab === 'record' && <Recorder />}
             {tab === 'settings' && <SettingsScreen />}
             <nav className="tabs">
               {(
                 [
                   ['home', '🏠', 'Learn'],
-                  ['record', '🎙️', 'Recordings'],
                   ['settings', '⚙️', 'Settings'],
                 ] as const
               ).map(([id, icon, label]) => (

@@ -3,6 +3,7 @@ import type { Lexeme } from '../content/schema';
 import { audioId, formVisual, graphemes, lexMap } from '../content/index';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
+import { sfx } from '../audio/sfx';
 import { Continue, Details, Inflected, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
 
 export type Done = (correct: boolean | null) => void;
@@ -20,6 +21,9 @@ function Reveal({ lex, tag, correct, onDone, extra }: { lex: Lexeme; tag: string
   const { pack, script } = useApp();
   const t = useText();
   const f = formOf(lex, tag);
+  useEffect(() => {
+    if (correct) sfx.correct();
+  }, [correct]);
   return (
     <>
       <div className={`reveal ${correct ? 'good' : 'fix'}`} role="status">

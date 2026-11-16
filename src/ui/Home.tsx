@@ -1,4 +1,4 @@
-import { habitDensity } from '../engine/store';
+import { habitDensity, levelOf } from '../engine/store';
 import { isDue, isMastered } from '../engine/scheduler';
 import { useApp } from '../ctx';
 
@@ -18,8 +18,27 @@ export function Home({ onStart }: { onStart: (unitId: string) => void }) {
         b.lexicon_ids.filter((id) => isDue(progress.cards[id], now)).length - a.lexicon_ids.filter((id) => isDue(progress.cards[id], now)).length,
     )[0].id;
 
+  const lvl = levelOf(progress.xp);
   return (
     <div className="screen home">
+      <section className="hero" aria-label="Level">
+        <div className="hero-top">
+          <span className="hero-flag" aria-hidden="true">{pack.flag}</span>
+          <div>
+            <div className="hero-title">{pack.name}</div>
+            <span className="level-pill">Level {lvl.level}</span>
+          </div>
+        </div>
+        <div className="xp-head">
+          <span>XP</span>
+          <span>
+            {lvl.into} / {lvl.per}
+          </span>
+        </div>
+        <div className="xp-bar" aria-hidden="true">
+          <div style={{ width: `${(lvl.into / lvl.per) * 100}%` }} />
+        </div>
+      </section>
       {!pack.verified_by_native && pack.target_language !== 'sv' && (
         <p className="banner">Demo content, not yet checked by a native speaker.</p>
       )}
@@ -40,7 +59,7 @@ export function Home({ onStart }: { onStart: (unitId: string) => void }) {
       <section className="habit" aria-label={`Active ${active} of the last 30 days`}>
         <div className="habit-head">
           <span>Last 30 days</span>
-          <span className="muted">{active} active days</span>
+          <span className="muted">{active} active {active === 1 ? 'day' : 'days'}</span>
         </div>
         <div className="habit-dots">
           {days.map((d, i) => (

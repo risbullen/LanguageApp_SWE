@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Form, Lexeme, ScriptId } from '../content/schema';
 import { inScript } from '../content/index';
-import { playItem } from '../audio/play';
+import { speak, stopSpeaking } from '../audio/tts';
+import { listen, recognitionSupported, type ListenResult } from '../audio/listen';
 import { useApp } from '../ctx';
 
 /** Text in a target-language script, with the right direction, font and line height. */
@@ -32,10 +33,11 @@ export function ScriptText({
 export function usePlayer() {
   const { pack, settings } = useApp();
   const [playing, setPlaying] = useState(false);
-  const play = async (audioId: string, text: string) => {
+  // audioId is kept as a stable key for future recorded audio packs
+  const play = async (_audioId: string, text: string) => {
     setPlaying(true);
     try {
-      await playItem(pack.pack_id, audioId, text, pack.tts_lang, settings.rate);
+      await speak(text, pack.tts_lang, { rate: settings.rate });
     } finally {
       setPlaying(false);
     }
@@ -125,5 +127,119 @@ export function Inflected({ text, stem, script }: { text: string; stem?: number;
       {chars.slice(0, stem).join('')}
       <mark>{chars.slice(stem).join('')}</mark>
     </ScriptText>
+  );
+}
+
+const BADGES: Record<string, [string, string]> = {
+  prime: ['Listen', 'blue'],
+  listen_pick: ['Listen & choose', 'yellow'],
+  structured: ['Listen to the ending', 'yellow'],
+  rule: ['Pattern', 'purple'],
+  minimal_pair: ['Word melody', 'purple'],
+  tiles: ['Build the word', 'blue'],
+  cloze: ['Finish the word', 'purple'],
+  article: ['En or ett?', 'purple'],
+  speak: ['Say it', 'green'],
+  dialogue: ['Conversation', 'green'],
+};
+export function Badge({ kind, retry }: { kind: string; retry?: boolean }) {
+  const [label, tone] = BADGES[kind] ?? [kind, 'blue'];
+  return (
+    <div className="badges">
+      <span className={`badge ${tone}`}>{label}</span>
+      {retry && <span className="badge amber">Again</span>}
+    </div>
+  );
+}
+
+/**
+ * Push-to-talk. Hold to speak and release to finish, or tap once to start (it stops by
+ * itself when you go quiet; tap again to stop early).
+ */
+export function PushToTalk({
+  onResult,
+  label = 'Hold to talk',
+  compact,
+}: {
+  onResult: (r: ListenResult) => void;
+  label?: string;
+  compact?: boolean;
+}) {
+  const { pack } = useApp();
+  const [state, setState] = useState<'idle' | 'listening' | 'thinking'>('idle');
+  const [partial, setPartial] = useState('');
+  const session = useRef<ReturnType<typeof listen> | null>(null);
+  const pressedAt = useRef(0);
+  const holdMode = useRef(false);
+
+  useEffect(() => () => session.current?.stop(), []);
+
+  if (!recognitionSupported()) return null;
+
+  const begin = () => {
+    stopSpeaking();
+    setPartial('');
+    setState('listening');
+    const s = listen(pack.tts_lang, setPartial);
+    session.current = s;
+    s.result.then((r) => {
+      if (session.current !== s) return;
+      session.current = null;
+      setState('idle');
+      onResult(r);
+    });
+  };
+  const end = () => {
+    if (!session.current) return;
+    setState('thinking');
+    session.current.stop();
+  };
+
+  const down = (e: React.PointerEvent) => {
+    e.preventDefault();
+    if (state === 'listening') {
+      // second tap in tap-mode
+      holdMode.current = false;
+      return end();
+    }
+    if (state !== 'idle') return;
+    pressedAt.current = Date.now();
+    holdMode.current = true;
+    begin();
+  };
+  const up = () => {
+    if (!holdMode.current) return;
+    holdMode.current = false;
+    // a long press = push-to-talk; a short tap keeps listening until silence
+    if (Date.now() - pressedAt.current > 400) end();
+  };
+
+  return (
+    <div className={`ptt ${compact ? 'compact' : ''}`}>
+      <button
+        type="button"
+        className={`ptt-btn ${state}`}
+        onPointerDown={down}
+        onPointerUp={up}
+        onPointerLeave={up}
+        onPointerCancel={up}
+        onContextMenu={(e) => e.preventDefault()}
+        onKeyDown={(e) => {
+          if ((e.key === ' ' || e.key === 'Enter') && state === 'idle') {
+            e.preventDefault();
+            begin();
+          }
+        }}
+        aria-label={state === 'listening' ? 'Listening. Release or tap to stop' : label}
+      >
+        <svg viewBox="0 0 24 24" width={compact ? 26 : 40} height={compact ? 26 : 40} aria-hidden="true">
+          <rect x="9" y="3" width="6" height="11" rx="3" fill="currentColor" />
+          <path d="M5.5 11a6.5 6.5 0 0 0 13 0M12 17.5V21" stroke="currentColor" strokeWidth="2" fill="none" strokeLinecap="round" />
+        </svg>
+      </button>
+      <span className="ptt-label" aria-live="polite">
+        {state === 'listening' ? partial || 'Listening…' : state === 'thinking' ? 'One moment…' : label}
+      </span>
+    </div>
   );
 }

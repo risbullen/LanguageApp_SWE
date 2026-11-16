@@ -8,6 +8,8 @@ export interface Progress {
   activeDays: string[]; // YYYY-MM-DD, for 30-day habit density (no streaks)
   recent: boolean[]; // last ~30 scored first attempts, to steer toward ~85% success
   sessions: Record<string, number>; // unit id → completed sessions
+  dialogues: Record<string, number>; // dialogue id → times completed
+  xp: number;
 }
 
 export interface Settings {
@@ -41,7 +43,13 @@ export const emptyProgress = (): Progress => ({
   activeDays: [],
   recent: [],
   sessions: {},
+  dialogues: {},
+  xp: 0,
 });
+
+/** Light progress points (no coins, no streaks). 200 XP per level. */
+export const XP = { firstTry: 10, retry: 5, dialogue: 15, session: 20 };
+export const levelOf = (xp: number) => ({ level: Math.floor(xp / 200) + 1, into: xp % 200, per: 200 });
 
 function reviveCard(c: Card): Card {
   return { ...c, due: new Date(c.due), last_review: c.last_review ? new Date(c.last_review) : undefined };

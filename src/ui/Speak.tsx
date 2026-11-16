@@ -1,46 +1,30 @@
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { audioId, formVisual, lexMap } from '../content/index';
-import { clipsFor, playBlob, startRecording } from '../audio/recordings';
-import { contourOf, dtw } from '../audio/pitch';
+import { playBlob, recognitionSupported, type ListenResult } from '../audio/listen';
+import { matchSpeech, passes, type MatchResult } from '../engine/match';
+import { sfx } from '../audio/sfx';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
-import { Continue, Details, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
+import { Continue, Details, PushToTalk, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
 import type { Done } from './exercises';
 
-/** Draws one or two pitch contours (semitones) as lines. */
-export function ContourChart({ learner, model }: { learner: number[]; model?: number[] }) {
-  const W = 300;
-  const H = 120;
-  const line = (c: number[]) => {
-    if (!c.length) return '';
-    let d = '';
-    let pen = false;
-    c.forEach((v, i) => {
-      if (Number.isNaN(v)) return void (pen = false);
-      const x = (i / Math.max(1, c.length - 1)) * W;
-      const y = H / 2 - (v / 8) * (H / 2);
-      d += `${pen ? 'L' : 'M'}${x.toFixed(1)},${Math.max(2, Math.min(H - 2, y)).toFixed(1)} `;
-      pen = true;
-    });
-    return d;
-  };
+/** What was heard, word by word: green = understood, amber = not caught. */
+export function HeardLine({ m }: { m: MatchResult }) {
   return (
-    <figure className="contour">
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label="Pitch melody of your recording">
-        <line x1="0" x2={W} y1={H / 2} y2={H / 2} className="axis" />
-        {model && <path d={line(model)} className="model" />}
-        <path d={line(learner)} className="learner" />
-      </svg>
-      <figcaption>
-        <span className="key learner">you</span>
-        {model && <span className="key model">native recording</span>}
-        <span className="muted">pitch melody, high ↑ low ↓</span>
-      </figcaption>
-    </figure>
+    <div className="heard">
+      <span className="heard-label">Heard:</span> “{m.heard || '…'}”
+      <div className="word-chips">
+        {m.words.map((w, i) => (
+          <span key={i} className={`chip ${w.ok ? 'ok' : 'miss'}`}>
+            {w.word}
+          </span>
+        ))}
+      </div>
+    </div>
   );
 }
 
-/* ───────────── 4–5 · Speak, then hear native vs. yourself (contrastive recast) ───────────── */
+/* ───────────── 4–5 · Say it (push-to-talk), then native vs. you ───────────── */
 export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>; onDone: Done }) {
   const { pack, script, settings } = useApp();
   const t = useText();
@@ -48,42 +32,32 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
   const f = l.forms.find((x) => x.tag === step.tag) ?? l.forms[0];
   const id = audioId(l.id, f.tag);
   const { play } = usePlayer();
-  const [state, setState] = useState<'idle' | 'rec' | 'compare' | 'error'>('idle');
-  const [mine, setMine] = useState<Blob | null>(null);
-  const [learnerC, setLearnerC] = useState<number[]>([]);
-  const [modelC, setModelC] = useState<number[] | undefined>();
-  const [match, setMatch] = useState<number | null>(null);
-  const rec = useRef<{ stop: () => Promise<Blob> } | null>(null);
-  const supported = typeof navigator !== 'undefined' && !!navigator.mediaDevices?.getUserMedia && typeof MediaRecorder !== 'undefined';
+  const [first, setFirst] = useState<boolean | null>(null); // first attempt decides the score
+  const [match, setMatch] = useState<MatchResult | null>(null);
+  const [mine, setMine] = useState<Blob | null>(null); // in memory only, gone after this screen
+  const [problem, setProblem] = useState<string | null>(null);
+  const [showWord, setShowWord] = useState(settings.mode === 'analytical');
+  const supported = recognitionSupported();
 
-  useEffect(() => () => void rec.current?.stop(), []);
-
-  const start = async () => {
-    try {
-      rec.current = await startRecording();
-      setState('rec');
-    } catch {
-      setState('error');
-    }
-  };
-  const stop = async () => {
-    const blob = await rec.current!.stop();
-    rec.current = null;
-    setMine(blob);
-    setState('compare');
-    // immediate contrast: native model first, then the learner's own voice
+  const onResult = async (r: ListenResult) => {
+    if (r.error === 'no-speech') return setProblem('Didn’t hear anything. Hold the button while you speak, or tap once and talk.');
+    if (r.error === 'not-allowed') return setProblem('The microphone is blocked. Allow it in the browser’s site settings.');
+    if (r.error === 'network') return setProblem('Speech recognition needs an internet connection.');
+    if (r.error) return setProblem('That didn’t work. Try again.');
+    setProblem(null);
+    const m = matchSpeech(f.text, r.transcripts);
+    const ok = passes(m);
+    setMatch(m);
+    setMine(r.recording);
+    setShowWord(true);
+    if (first === null) setFirst(ok);
+    if (ok) sfx.correct();
+    // contrast while it's fresh: native model, then the learner's own attempt
     await play(id, f.text);
-    await playBlob(blob);
-    const c = await contourOf(blob).catch(() => []);
-    setLearnerC(c);
-    const natives = await clipsFor(pack.pack_id, id);
-    if (natives.length) {
-      const m = await contourOf(natives[0].blob).catch(() => []);
-      setModelC(m);
-      const dist = dtw(c, m);
-      setMatch(Number.isFinite(dist) ? Math.max(0, Math.round(100 - dist * 25)) : null);
-    }
+    if (r.recording) await playBlob(r.recording);
   };
+
+  const ok = match ? passes(match) : null;
 
   return (
     <div className="exercise">
@@ -91,47 +65,52 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
       <div className="center">
         <Visual size="lg">{formVisual(pack, l, f.tag)}</Visual>
         <SpeakerButton audioId={id} text={f.text} auto />
-        {(settings.mode === 'analytical' || state === 'compare') && (
+        {showWord ? (
           <ScriptText script={script} big>
             {t(f)}
           </ScriptText>
+        ) : (
+          <button type="button" className="link" onClick={() => setShowWord(true)}>
+            Show the word
+          </button>
         )}
         <Details lex={l} form={f} />
       </div>
-      {!supported || state === 'error' ? (
+
+      {!supported ? (
         <>
-          <p className="hint">No microphone available. Say it aloud anyway, then compare with the model.</p>
-          <Continue onClick={() => onDone(null)} />
-        </>
-      ) : state === 'compare' ? (
-        <>
-          <div className="compare">
-            <button type="button" className="secondary" onClick={() => play(id, f.text)}>
-              ▶ Native
-            </button>
-            <button type="button" className="secondary" onClick={() => mine && playBlob(mine)}>
-              ▶ You
-            </button>
-            <button type="button" className="secondary" onClick={() => setState('idle')}>
-              ↻ Try again
-            </button>
-          </div>
-          {learnerC.length > 0 && <ContourChart learner={learnerC} model={modelC} />}
-          {match !== null && <p className="muted center-text">Melody match: {match}%</p>}
-          {!modelC && pack.script_metadata.has_pitch_or_tone && (
-            <p className="hint">Record a native speaker for this word under Recordings to compare melodies.</p>
-          )}
-          <Continue onClick={() => onDone(null)} />
+          <p className="hint">This browser can’t check speech (Chrome can). Say it aloud anyway and compare with the voice.</p>
+          <Continue onClick={() => onDone(null)} label="I said it" />
         </>
       ) : (
-        <div className="center">
-          <button type="button" className={`record ${state === 'rec' ? 'on' : ''}`} onClick={state === 'rec' ? stop : start}>
-            {state === 'rec' ? '■ Stop' : '● Record'}
-          </button>
-          <button type="button" className="link" onClick={() => onDone(null)}>
-            Skip speaking this time
-          </button>
-        </div>
+        <>
+          {ok === null && <PushToTalk onResult={onResult} />}
+          {problem && <p className="banner">{problem}</p>}
+          {match && (
+            <div className={`reveal ${ok ? 'good' : 'fix'}`} role="status">
+              <div className="reveal-head">{ok ? 'Yes, understood!' : 'Not quite. Listen and try again.'}</div>
+              <HeardLine m={match} />
+              <div className="compare">
+                <button type="button" className="secondary" onClick={() => play(id, f.text)}>
+                  ▶ Native
+                </button>
+                {mine && (
+                  <button type="button" className="secondary" onClick={() => playBlob(mine)}>
+                    ▶ You
+                  </button>
+                )}
+              </div>
+              {!ok && <PushToTalk onResult={onResult} label="Try again" compact />}
+            </div>
+          )}
+          {match ? (
+            <Continue onClick={() => onDone(first)} tone={ok ? 'good' : 'fix'} />
+          ) : (
+            <button type="button" className="link center-text" onClick={() => onDone(null)}>
+              Can’t talk right now
+            </button>
+          )}
+        </>
       )}
     </div>
   );

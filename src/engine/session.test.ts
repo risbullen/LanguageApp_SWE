@@ -82,3 +82,43 @@ describe('difficulty targeting (~85% success)', () => {
     expect(reviewLevel(3, Array(10).fill(false))).toBeLessThan(reviewLevel(3, []));
   });
 });
+
+describe('v2: shorter sessions and more conversations', () => {
+  it('a first session is about half the old length (≤ 15 steps)', () => {
+    for (const u of sv.units) {
+      const steps = buildSession(sv, u.id, emptyProgress(), { rng: seeded(3) });
+      expect(steps.length).toBeLessThanOrEqual(15);
+      expect(steps.filter((s) => s.kind === 'prime')[0]).toMatchObject({ lexIds: expect.any(Array) });
+    }
+  });
+
+  it('ends the first session with a short conversation that only uses known words', () => {
+    const steps = buildSession(sv, 'fika', emptyProgress(), { rng: seeded(3) });
+    const last = steps.at(-1)!;
+    expect(last.kind).toBe('dialogue');
+    const id = (last as { dialogueId?: string }).dialogueId;
+    expect(id).toBeDefined(); // not the capstone: not all words known yet
+    const known = new Set((steps[0] as { lexIds: string[] }).lexIds);
+    const mini = sv.units[0].mini_dialogues!.find((d) => d.id === id)!;
+    expect(mini.requires.every((r) => known.has(r))).toBe(true);
+  });
+
+  it('once all words are known: a short conversation mid-session and the capstone at the end', () => {
+    const p = { ...emptyProgress(), introduced: sv.units[0].lexicon_ids };
+    const steps = buildSession(sv, 'fika', p, { rng: seeded(3) });
+    const dialogues = steps.filter((s) => s.kind === 'dialogue') as { dialogueId?: string }[];
+    expect(dialogues.length).toBe(2);
+    expect(dialogues[0].dialogueId).toBeDefined();
+    expect(dialogues[1].dialogueId).toBeUndefined();
+  });
+
+  it('skips word-melody drills when only device voices are available', () => {
+    const steps = buildSession(sv, 'djur', emptyProgress(), { rng: seeded(3), accentAudio: false });
+    expect(steps.some((s) => s.kind === 'minimal_pair')).toBe(false);
+  });
+
+  it('a missed speaking drill comes back as an easier format', () => {
+    const r = mutateForRetry(sv, { kind: 'speak', lexId: 'sv_hund', tag: 'indef_sg' });
+    expect(r.kind).toBe('tiles');
+  });
+});

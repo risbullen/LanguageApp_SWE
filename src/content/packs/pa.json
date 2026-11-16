@@ -242,7 +242,49 @@
       "line": "ਮੈਂ ਠੀਕ ਹਾਂ। ਚਾਹ ਪੀਓਗੇ?"
      }
     ]
-   }
+   },
+   "mini_dialogues": [
+    {
+     "id": "pa_m1",
+     "requires": [
+      "pa_roti"
+     ],
+     "scene": "Your partner's grandmother offers you food.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👵",
+       "visual": "🫓",
+       "line": "ਰੋਟੀ ਖਾਓਗੇ?",
+       "alt": {
+        "Shahmukhi": "روٹی کھاؤ گے؟",
+        "Latin": "roṭī khāoge?"
+       },
+       "choices": [
+        {
+         "text": "ਹਾਂ ਜੀ, ਧੰਨਵਾਦ!",
+         "alt": {
+          "Shahmukhi": "ہاں جی، دھنواد!",
+          "Latin": "hāṅ jī, dhannvād!"
+         },
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "ਨਹੀਂ ਜੀ, ਧੰਨਵਾਦ।",
+         "alt": {
+          "Shahmukhi": "نہیں جی، دھنواد۔",
+          "Latin": "nahīṅ jī, dhannvād."
+         },
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ]
+    }
+   ]
   }
  ]
 }

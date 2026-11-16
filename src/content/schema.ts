@@ -67,6 +67,13 @@ const DialogueNode = z.object({
   choices: z.array(DialogueChoice).min(1),
 });
 
+const Dialogue = z.object({
+  scene: z.string(), // English goal for the task, e.g. "You're at a café"
+  start: z.string(),
+  nodes: z.array(DialogueNode).min(1),
+});
+export type Dialogue = z.infer<typeof Dialogue>;
+
 const Unit = z.object({
   id: z.string(),
   title: z.string(),
@@ -80,13 +87,10 @@ const Unit = z.object({
     .optional(),
   article_cloze: z.boolean().optional(), // drill the article (en/ett) as a cloze
   minimal_pairs: z.array(z.tuple([MinimalPairSide, MinimalPairSide])).optional(),
-  dialogue: z
-    .object({
-      scene: z.string(), // English goal for the task, e.g. "You're at a café"
-      start: z.string(),
-      nodes: z.array(DialogueNode).min(1),
-    })
-    .optional(),
+  /** Capstone: needs every word of the unit. */
+  dialogue: Dialogue.optional(),
+  /** Short conversations that only need a few words — used mid-session and early on. */
+  mini_dialogues: z.array(Dialogue.extend({ id: z.string(), requires: z.array(z.string()).min(1) })).optional(),
 });
 export type Unit = z.infer<typeof Unit>;
 
@@ -120,14 +124,16 @@ export const Pack = z
         for (const tag of u.grammar_focus.contrast)
           if (!pack.form_visuals[tag])
             ctx.addIssue({ code: 'custom', message: `unit ${u.id}: no form_visual for ${tag}` });
-      if (u.dialogue) {
-        const nodeIds = new Set(u.dialogue.nodes.map((n) => n.id));
-        if (!nodeIds.has(u.dialogue.start))
-          ctx.addIssue({ code: 'custom', message: `unit ${u.id}: dialogue start missing` });
-        for (const n of u.dialogue.nodes)
+      const dialogues = [...(u.dialogue ? [{ id: 'capstone', ...u.dialogue }] : []), ...(u.mini_dialogues ?? [])];
+      for (const d of dialogues) {
+        const nodeIds = new Set(d.nodes.map((n) => n.id));
+        if (!nodeIds.has(d.start)) ctx.addIssue({ code: 'custom', message: `unit ${u.id}/${d.id}: dialogue start missing` });
+        for (const n of d.nodes)
           for (const c of n.choices)
             if (c.next && !nodeIds.has(c.next))
-              ctx.addIssue({ code: 'custom', message: `unit ${u.id}: bad dialogue link ${c.next}` });
+              ctx.addIssue({ code: 'custom', message: `unit ${u.id}/${d.id}: bad dialogue link ${c.next}` });
+        for (const id of ('requires' in d ? (d.requires as string[]) : []))
+          if (!ids.has(id)) ctx.addIssue({ code: 'custom', message: `unit ${u.id}/${d.id}: unknown required word ${id}` });
       }
     }
     for (const l of pack.lexicon)

@@ -17,6 +17,7 @@ const LATENCY: Record<string, [number, number]> = {
   article: [1500, 5000],
   cloze: [2500, 8000],
   tiles: [4000, 12000],
+  speak: [3000, 10000],
 };
 
 /** Rating for one correct first attempt, from how quickly it came. No self-grading. */
