@@ -1,0 +1,248 @@
+{
+ "pack_id": "en-pa-0.1.0",
+ "name": "ਪੰਜਾਬੀ (demo)",
+ "flag": "🟠",
+ "source_language": "en",
+ "target_language": "pa",
+ "tts_lang": "pa-IN",
+ "verified_by_native": false,
+ "script_metadata": {
+  "primary_script": "Gurmukhi",
+  "supported_scripts": [
+   "Gurmukhi",
+   "Shahmukhi"
+  ],
+  "has_pitch_or_tone": true,
+  "tone_type": "contour_tone"
+ },
+ "form_visuals": {
+  "direct_sg": "{v}",
+  "direct_pl": "{v}{v}{v}"
+ },
+ "lexicon": [
+  {
+   "id": "pa_ghora",
+   "visual": "🐎",
+   "pos": "noun",
+   "gender": "masculine",
+   "prosodic_class": "low_rising",
+   "note": "Written ਘ (gh) but pronounced k with a low-rising tone: the old voiced aspirate became a tone.",
+   "forms": [
+    {
+     "tag": "direct_sg",
+     "text": "ਘੋੜਾ",
+     "alt": {
+      "Shahmukhi": "گھوڑا",
+      "Latin": "ghoṛā"
+     },
+     "ipa": "/kòːɽaː/"
+    },
+    {
+     "tag": "direct_pl",
+     "text": "ਘੋੜੇ",
+     "alt": {
+      "Shahmukhi": "گھوڑے",
+      "Latin": "ghoṛē"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pa_kora",
+   "visual": "🪢",
+   "pos": "noun",
+   "gender": "masculine",
+   "prosodic_class": "level",
+   "forms": [
+    {
+     "tag": "direct_sg",
+     "text": "ਕੋੜਾ",
+     "alt": {
+      "Shahmukhi": "کوڑا",
+      "Latin": "koṛā"
+     },
+     "ipa": "/koːɽaː/"
+    },
+    {
+     "tag": "direct_pl",
+     "text": "ਕੋੜੇ",
+     "alt": {
+      "Shahmukhi": "کوڑے",
+      "Latin": "koṛē"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pa_roti",
+   "visual": "🫓",
+   "pos": "noun",
+   "gender": "feminine",
+   "forms": [
+    {
+     "tag": "direct_sg",
+     "text": "ਰੋਟੀ",
+     "alt": {
+      "Shahmukhi": "روٹی",
+      "Latin": "roṭī"
+     },
+     "ipa": "/roːʈiː/"
+    },
+    {
+     "tag": "direct_pl",
+     "text": "ਰੋਟੀਆਂ",
+     "alt": {
+      "Shahmukhi": "روٹیاں",
+      "Latin": "roṭīāṅ"
+     }
+    }
+   ]
+  },
+  {
+   "id": "pa_pani",
+   "visual": "💧",
+   "pos": "noun",
+   "gender": "masculine",
+   "forms": [
+    {
+     "tag": "direct_sg",
+     "text": "ਪਾਣੀ",
+     "alt": {
+      "Shahmukhi": "پانی",
+      "Latin": "pāṇī"
+     },
+     "ipa": "/paːɳiː/"
+    }
+   ]
+  },
+  {
+   "id": "pa_chah",
+   "visual": "🍵",
+   "pos": "noun",
+   "gender": "feminine",
+   "prosodic_class": "high_falling",
+   "forms": [
+    {
+     "tag": "direct_sg",
+     "text": "ਚਾਹ",
+     "alt": {
+      "Shahmukhi": "چاہ",
+      "Latin": "chāh"
+     },
+     "ipa": "/t͡ʃâː/"
+    }
+   ]
+  }
+ ],
+ "units": [
+  {
+   "id": "pehle",
+   "title": "ਪਹਿਲੇ ਸ਼ਬਦ",
+   "visual": "🫓",
+   "lexicon_ids": [
+    "pa_ghora",
+    "pa_kora",
+    "pa_roti",
+    "pa_pani",
+    "pa_chah"
+   ],
+   "grammar_focus": {
+    "contrast": [
+     "direct_sg",
+     "direct_pl"
+    ],
+    "rule": "Plural: masculine -ā → -ē (ਘੋੜਾ → ਘੋੜੇ); feminine -ī → -īāṅ (ਰੋਟੀ → ਰੋਟੀਆਂ)."
+   },
+   "minimal_pairs": [
+    [
+     {
+      "id": "mp_ghora",
+      "visual": "🐎",
+      "label": "low-rising tone",
+      "text": "ਘੋੜਾ",
+      "alt": {
+       "Shahmukhi": "گھوڑا",
+       "Latin": "ghoṛā"
+      }
+     },
+     {
+      "id": "mp_kora",
+      "visual": "🪢",
+      "label": "level tone",
+      "text": "ਕੋੜਾ",
+      "alt": {
+       "Shahmukhi": "کوڑا",
+       "Latin": "koṛā"
+      }
+     }
+    ]
+   ],
+   "dialogue": {
+    "scene": "You're greeting your partner's grandfather.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "👴",
+      "alt": {
+       "Shahmukhi": "ست سری اکال پتر!",
+       "Latin": "sat srī akāl putt!"
+      },
+      "line": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ ਪੁੱਤ!",
+      "choices": [
+       {
+        "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ ਜੀ! ਤੁਸੀਂ ਕਿਵੇਂ ਹੋ?",
+        "alt": {
+         "Shahmukhi": "ست سری اکال جی! تسیں کیویں ہو؟",
+         "Latin": "sat srī akāl jī! tusīṅ kiveṅ ho?"
+        },
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਤੂੰ ਕਿਵੇਂ ਹੈਂ?",
+        "alt": {
+         "Shahmukhi": "ست سری اکال! توں کیویں ہیں؟",
+         "Latin": "sat srī akāl! tūṅ kiveṅ haiṅ?"
+        },
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "ਤੂੰ (tūṅ) is intimate. To an elder use ਤੁਸੀਂ (tusīṅ) and add ਜੀ (jī)."
+       }
+      ]
+     },
+     {
+      "id": "n2",
+      "speaker": "👴",
+      "visual": "🍵",
+      "alt": {
+       "Shahmukhi": "میں ٹھیک ہاں۔ چاہ پیو گے؟",
+       "Latin": "maiṅ ṭhīk hāṅ. chāh pīoge?"
+      },
+      "choices": [
+       {
+        "text": "ਹਾਂ ਜੀ, ਧੰਨਵਾਦ!",
+        "alt": {
+         "Shahmukhi": "ہاں جی، دھنواد!",
+         "Latin": "hāṅ jī, dhannvād!"
+        },
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "ਨਹੀਂ ਜੀ, ਪਾਣੀ ਠੀਕ ਹੈ।",
+        "alt": {
+         "Shahmukhi": "نہیں جی، پانی ٹھیک اے۔",
+         "Latin": "nahīṅ jī, pāṇī ṭhīk hai."
+        },
+        "next": null,
+        "fit": "ok"
+       }
+      ],
+      "line": "ਮੈਂ ਠੀਕ ਹਾਂ। ਚਾਹ ਪੀਓਗੇ?"
+     }
+    ]
+   }
+  }
+ ]
+}

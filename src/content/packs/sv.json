@@ -1,0 +1,1164 @@
+{
+ "pack_id": "en-sv-0.1.0",
+ "name": "Svenska",
+ "flag": "🇸🇪",
+ "source_language": "en",
+ "target_language": "sv",
+ "tts_lang": "sv-SE",
+ "verified_by_native": false,
+ "script_metadata": {
+  "primary_script": "Latin",
+  "supported_scripts": [
+   "Latin"
+  ],
+  "has_pitch_or_tone": true,
+  "tone_type": "lexical_pitch_accent"
+ },
+ "form_visuals": {
+  "indef_sg": "{v}",
+  "def_sg": "👉{v}",
+  "indef_pl": "{v}{v}{v}",
+  "def_pl": "👉{v}{v}{v}"
+ },
+ "lexicon": [
+  {
+   "id": "sv_kopp",
+   "visual": "☕",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "kopp",
+     "ipa": "/kɔp/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "koppen",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "koppar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "kopparna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_bulle",
+   "visual": "🥐",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "bulle",
+     "ipa": "/ˈbɵlɛ/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "bullen",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "bullar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "bullarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_kaka",
+   "visual": "🍪",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "kaka",
+     "ipa": "/ˈkɑːka/",
+     "stem": 3
+    },
+    {
+     "tag": "def_sg",
+     "text": "kakan",
+     "stem": 3
+    },
+    {
+     "tag": "indef_pl",
+     "text": "kakor",
+     "stem": 3
+    },
+    {
+     "tag": "def_pl",
+     "text": "kakorna",
+     "stem": 3
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_smorgas",
+   "visual": "🥪",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "smörgås",
+     "ipa": "/ˈsmœrɡoːs/",
+     "stem": 7
+    },
+    {
+     "tag": "def_sg",
+     "text": "smörgåsen",
+     "stem": 7
+    },
+    {
+     "tag": "indef_pl",
+     "text": "smörgåsar",
+     "stem": 7
+    },
+    {
+     "tag": "def_pl",
+     "text": "smörgåsarna",
+     "stem": 7
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_glas",
+   "visual": "🥛",
+   "pos": "noun",
+   "gender": "neutrum",
+   "article": "ett",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "glas",
+     "ipa": "/ɡlɑːs/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "glaset",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "glas",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "glasen",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_tarta",
+   "visual": "🍰",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "tårta",
+     "ipa": "/ˈtoːʈa/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "tårtan",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "tårtor",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "tårtorna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_hund",
+   "visual": "🐕",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "hund",
+     "ipa": "/hɵnd/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "hunden",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "hundar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "hundarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_katt",
+   "visual": "🐈",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "katt",
+     "ipa": "/kat/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "katten",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "katter",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "katterna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_hast",
+   "visual": "🐎",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "häst",
+     "ipa": "/hɛst/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "hästen",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "hästar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "hästarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_fagel",
+   "visual": "🐦",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "fågel",
+     "ipa": "/ˈfoːɡɛl/"
+    },
+    {
+     "tag": "def_sg",
+     "text": "fågeln"
+    },
+    {
+     "tag": "indef_pl",
+     "text": "fåglar"
+    },
+    {
+     "tag": "def_pl",
+     "text": "fåglarna"
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_far",
+   "visual": "🐑",
+   "pos": "noun",
+   "gender": "neutrum",
+   "article": "ett",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "får",
+     "ipa": "/foːr/",
+     "stem": 3
+    },
+    {
+     "tag": "def_sg",
+     "text": "fåret",
+     "stem": 3
+    },
+    {
+     "tag": "indef_pl",
+     "text": "får",
+     "stem": 3
+    },
+    {
+     "tag": "def_pl",
+     "text": "fåren",
+     "stem": 3
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_ko",
+   "visual": "🐄",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "ko",
+     "ipa": "/kuː/",
+     "stem": 2
+    },
+    {
+     "tag": "def_sg",
+     "text": "kon",
+     "stem": 2
+    },
+    {
+     "tag": "indef_pl",
+     "text": "kor",
+     "stem": 2
+    },
+    {
+     "tag": "def_pl",
+     "text": "korna",
+     "stem": 2
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_hus",
+   "visual": "🏠",
+   "pos": "noun",
+   "gender": "neutrum",
+   "article": "ett",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "hus",
+     "ipa": "/hʉːs/",
+     "stem": 3
+    },
+    {
+     "tag": "def_sg",
+     "text": "huset",
+     "stem": 3
+    },
+    {
+     "tag": "indef_pl",
+     "text": "hus",
+     "stem": 3
+    },
+    {
+     "tag": "def_pl",
+     "text": "husen",
+     "stem": 3
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_stol",
+   "visual": "🪑",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "stol",
+     "ipa": "/stuːl/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "stolen",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "stolar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "stolarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_sang",
+   "visual": "🛏️",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "säng",
+     "ipa": "/sɛŋ/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "sängen",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "sängar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "sängarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_dorr",
+   "visual": "🚪",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "dörr",
+     "ipa": "/dœr/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "dörren",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "dörrar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "dörrarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_fonster",
+   "visual": "🪟",
+   "pos": "noun",
+   "gender": "neutrum",
+   "article": "ett",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "fönster",
+     "ipa": "/ˈfœnstɛr/",
+     "stem": 5
+    },
+    {
+     "tag": "def_sg",
+     "text": "fönstret",
+     "stem": 5
+    },
+    {
+     "tag": "indef_pl",
+     "text": "fönster",
+     "stem": 5
+    },
+    {
+     "tag": "def_pl",
+     "text": "fönstren",
+     "stem": 5
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_lampa",
+   "visual": "💡",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "lampa",
+     "ipa": "/ˈlampa/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "lampan",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "lampor",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "lamporna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_mamma",
+   "visual": "👩",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "mamma",
+     "ipa": "/ˈmamːa/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "mamman",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "mammor",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "mammorna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_pappa",
+   "visual": "👨",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "pappa",
+     "ipa": "/ˈpapːa/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "pappan",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "pappor",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "papporna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_barn",
+   "visual": "🧒",
+   "pos": "noun",
+   "gender": "neutrum",
+   "article": "ett",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "barn",
+     "ipa": "/bɑːɳ/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "barnet",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "barn",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "barnen",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_flicka",
+   "visual": "👧",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "flicka",
+     "ipa": "/ˈflɪkːa/",
+     "stem": 5
+    },
+    {
+     "tag": "def_sg",
+     "text": "flickan",
+     "stem": 5
+    },
+    {
+     "tag": "indef_pl",
+     "text": "flickor",
+     "stem": 5
+    },
+    {
+     "tag": "def_pl",
+     "text": "flickorna",
+     "stem": 5
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_pojke",
+   "visual": "👦",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "pojke",
+     "ipa": "/ˈpɔjkɛ/",
+     "stem": 4
+    },
+    {
+     "tag": "def_sg",
+     "text": "pojken",
+     "stem": 4
+    },
+    {
+     "tag": "indef_pl",
+     "text": "pojkar",
+     "stem": 4
+    },
+    {
+     "tag": "def_pl",
+     "text": "pojkarna",
+     "stem": 4
+    }
+   ],
+   "prosodic_class": "accent_2"
+  },
+  {
+   "id": "sv_bebis",
+   "visual": "👶",
+   "pos": "noun",
+   "gender": "utrum",
+   "article": "en",
+   "forms": [
+    {
+     "tag": "indef_sg",
+     "text": "bebis",
+     "ipa": "/ˈbeːbɪs/",
+     "stem": 5
+    },
+    {
+     "tag": "def_sg",
+     "text": "bebisen",
+     "stem": 5
+    },
+    {
+     "tag": "indef_pl",
+     "text": "bebisar",
+     "stem": 5
+    },
+    {
+     "tag": "def_pl",
+     "text": "bebisarna",
+     "stem": 5
+    }
+   ],
+   "prosodic_class": "accent_1"
+  }
+ ],
+ "units": [
+  {
+   "id": "fika",
+   "title": "Fika",
+   "visual": "☕",
+   "lexicon_ids": [
+    "sv_kopp",
+    "sv_bulle",
+    "sv_kaka",
+    "sv_smorgas",
+    "sv_glas",
+    "sv_tarta"
+   ],
+   "grammar_focus": {
+    "contrast": [
+     "indef_sg",
+     "indef_pl"
+    ],
+    "rule": "More than one: en-words usually add -ar, -or or -er (kopp → koppar, kaka → kakor). Many ett-words stay the same (ett glas → två glas)."
+   },
+   "dialogue": {
+    "scene": "You're at a café counter in Stockholm. Order something.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑‍🍳",
+      "line": "Hej! Vad får det lov att vara?",
+      "choices": [
+       {
+        "text": "En kopp kaffe, tack.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Ett kopp kaffe, tack.",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Understood! But kopp is an en-word.",
+        "recast": "En kopp kaffe? Absolut."
+       },
+       {
+        "text": "Hej då!",
+        "next": "n1",
+        "fit": "no",
+        "feedback": "That says goodbye before you've ordered."
+       }
+      ]
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑‍🍳",
+      "visual": "🥐",
+      "line": "Vill du ha en kanelbulle till?",
+      "choices": [
+       {
+        "text": "Ja, gärna!",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Nej tack, bara kaffe.",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Jag är en bulle.",
+        "next": "n2",
+        "fit": "no",
+        "feedback": "You just said “I am a bun”."
+       }
+      ]
+     },
+     {
+      "id": "n3",
+      "speaker": "🧑‍🍳",
+      "line": "Det blir fyrtiofem kronor.",
+      "choices": [
+       {
+        "text": "Kan jag betala med kort?",
+        "next": "n4",
+        "fit": "ok"
+       },
+       {
+        "text": "Varsågod.",
+        "next": "n4",
+        "fit": "ok"
+       }
+      ]
+     },
+     {
+      "id": "n4",
+      "speaker": "🧑‍🍳",
+      "visual": "💳",
+      "line": "Javisst, blippa här. Ha en fin dag!",
+      "choices": [
+       {
+        "text": "Tack, detsamma!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Tack så mycket!",
+        "next": null,
+        "fit": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "djur",
+   "title": "Djur",
+   "visual": "🐕",
+   "lexicon_ids": [
+    "sv_hund",
+    "sv_katt",
+    "sv_hast",
+    "sv_fagel",
+    "sv_far",
+    "sv_ko"
+   ],
+   "grammar_focus": {
+    "contrast": [
+     "indef_sg",
+     "def_sg"
+    ],
+    "rule": "“The” is glued onto the end of the word: hund → hunden, får → fåret. en-words take -en / -n, ett-words take -et / -t."
+   },
+   "minimal_pairs": [
+    [
+     {
+      "id": "mp_anden_1",
+      "text": "anden",
+      "visual": "🦆",
+      "label": "Accent 1 (one peak)"
+     },
+     {
+      "id": "mp_anden_2",
+      "text": "anden",
+      "visual": "👻",
+      "label": "Accent 2 (two peaks)"
+     }
+    ],
+    [
+     {
+      "id": "mp_tanken_1",
+      "text": "tanken",
+      "visual": "⛽",
+      "label": "Accent 1 (one peak)"
+     },
+     {
+      "id": "mp_tanken_2",
+      "text": "tanken",
+      "visual": "💭",
+      "label": "Accent 2 (two peaks)"
+     }
+    ]
+   ],
+   "dialogue": {
+    "scene": "A child at the farm is pointing at the animals.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧒",
+      "visual": "🐎",
+      "line": "Titta! Vad är det där?",
+      "choices": [
+       {
+        "text": "Det är en häst.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Det är ett häst.",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Häst is an en-word.",
+        "recast": "En häst, ja!"
+       },
+       {
+        "text": "Det är en katt.",
+        "next": "n1",
+        "fit": "no",
+        "feedback": "Look again: it's a 🐎."
+       }
+      ]
+     },
+     {
+      "id": "n2",
+      "speaker": "🧒",
+      "visual": "🐕🐕🐕",
+      "line": "Hur många hundar ser du?",
+      "choices": [
+       {
+        "text": "Jag ser tre hundar.",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Jag ser tre hund.",
+        "next": "n3",
+        "fit": "meh",
+        "feedback": "More than one → hundar.",
+        "recast": "Tre hundar, ja!"
+       }
+      ]
+     },
+     {
+      "id": "n3",
+      "speaker": "🧒",
+      "visual": "👉🐄",
+      "line": "Vad säger kon?",
+      "choices": [
+       {
+        "text": "Kon säger mu!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Kon säger vov!",
+        "next": null,
+        "fit": "meh",
+        "feedback": "Close, but that's the dog 🐕.",
+        "recast": "Nej, hunden säger vov. Kon säger mu!"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "hemma",
+   "title": "Hemma",
+   "visual": "🏠",
+   "lexicon_ids": [
+    "sv_hus",
+    "sv_stol",
+    "sv_sang",
+    "sv_dorr",
+    "sv_fonster",
+    "sv_lampa"
+   ],
+   "article_cloze": true,
+   "grammar_focus": {
+    "contrast": [
+     "indef_pl",
+     "def_pl"
+    ],
+    "rule": "“The” in the plural: en-words add -na (stolar → stolarna), most ett-words add -en (hus → husen)."
+   },
+   "dialogue": {
+    "scene": "You're visiting a friend's new home.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑",
+      "visual": "🏠",
+      "line": "Välkommen! Kom in.",
+      "choices": [
+       {
+        "text": "Tack! Vilket fint hus!",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Tack! Vilket fin hus!",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Hus is an ett-word, so the adjective takes -t: fint.",
+        "recast": "Tack! Ja, vi trivs i huset."
+       }
+      ]
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑",
+      "visual": "🪑",
+      "line": "Vill du sätta dig? Där är en stol.",
+      "choices": [
+       {
+        "text": "Ja, tack.",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Var är stolen?",
+        "next": "n3",
+        "fit": "ok"
+       }
+      ]
+     },
+     {
+      "id": "n3",
+      "speaker": "🧑",
+      "visual": "🥛",
+      "line": "Vill du ha något att dricka?",
+      "choices": [
+       {
+        "text": "Ett glas vatten, tack.",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "En glas vatten, tack.",
+        "next": null,
+        "fit": "meh",
+        "feedback": "Glas is an ett-word.",
+        "recast": "Ett glas vatten, självklart!"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "familj",
+   "title": "Familj",
+   "visual": "👪",
+   "lexicon_ids": [
+    "sv_mamma",
+    "sv_pappa",
+    "sv_barn",
+    "sv_flicka",
+    "sv_pojke",
+    "sv_bebis"
+   ],
+   "grammar_focus": {
+    "contrast": [
+     "def_sg",
+     "def_pl"
+    ],
+    "rule": "One specific → -en / -n / -et (pojken). Several specific → -na / -en (pojkarna, barnen)."
+   },
+   "dialogue": {
+    "scene": "You're meeting your partner's parents for the first time.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "👵",
+      "line": "Hej och välkommen! Jag heter Birgitta.",
+      "choices": [
+       {
+        "text": "Hej! Trevligt att träffas.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Tjena!",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Understood, but a bit too casual for a first meeting."
+       }
+      ]
+     },
+     {
+      "id": "n2",
+      "speaker": "👵",
+      "visual": "👧👦",
+      "line": "Har du syskon?",
+      "choices": [
+       {
+        "text": "Ja, jag har en bror och en syster.",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Nej, jag är enda barnet.",
+        "next": "n3",
+        "fit": "ok"
+       }
+      ]
+     },
+     {
+      "id": "n3",
+      "speaker": "👵",
+      "line": "Och hur mår du?",
+      "choices": [
+       {
+        "text": "Bra, tack! Och du?",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Bra, tack! Och ni?",
+        "next": null,
+        "fit": "meh",
+        "feedback": "Correct, but “ni” to one person sounds old-fashioned. Since the 1970s du-reform, Swedes say “du” to almost everyone, elders included."
+       }
+      ]
+     }
+    ]
+   }
+  }
+ ]
+}
