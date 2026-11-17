@@ -333,3 +333,25 @@ function graphemesCount(v: string): number {
   const Seg = (Intl as unknown as { Segmenter?: typeof Intl.Segmenter }).Segmenter;
   return Seg ? [...new Seg(undefined, { granularity: 'grapheme' }).segment(v)].length : Array.from(v).length;
 }
+
+/**
+ * The Swedish word or sentence under a picture, faint: readable with a little effort,
+ * so the picture stays the main cue. Tap to see it clearly (and anything else revealed).
+ */
+export function FaintText({ text, onReveal }: { text: string; onReveal?: () => void }) {
+  const { script, settings } = useApp();
+  const [full, setFull] = useState(settings.mode === 'analytical');
+  return (
+    <button
+      type="button"
+      className={`faint ${full ? 'full' : ''}`}
+      onClick={() => {
+        setFull(true);
+        onReveal?.();
+      }}
+      title="Tap to see it clearly"
+    >
+      <ScriptText script={script}>{text}</ScriptText>
+    </button>
+  );
+}

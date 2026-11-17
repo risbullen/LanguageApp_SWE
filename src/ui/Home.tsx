@@ -1,26 +1,10 @@
-import type { Course, Unit } from '../content/schema';
-import { DAILY_GOAL, habitDensity, levelOf, todayXp, type Progress } from '../engine/store';
-import { isDue, isMastered } from '../engine/scheduler';
+import type { Course } from '../content/schema';
+import { DAILY_GOAL, levelOf, todayXp } from '../engine/store';
+import { courseProgress, unitProgress } from '../engine/progress';
 import { useApp } from '../ctx';
 import { versionLabel } from '../version';
 
 const LEVEL_LABEL: Record<Course['level'], string> = { basic: 'Basics', intermediate: 'Intermediate', hard: 'Hard', mini: 'Mini-course' };
-
-/** 0..1: how far into a unit the learner is (words met, or song sessions done). */
-function unitProgress(u: Unit, p: Progress): { seen: number; stable: number; due: number } {
-  if (!u.lexicon_ids.length) {
-    const done = (p.sessions[u.id] ?? 0) > 0 ? 1 : 0;
-    return { seen: done, stable: done, due: 0 };
-  }
-  const now = new Date();
-  const intro = new Set(p.introduced);
-  const n = u.lexicon_ids.length;
-  return {
-    seen: u.lexicon_ids.filter((id) => intro.has(id)).length / n,
-    stable: u.lexicon_ids.filter((id) => isMastered(p.cards[id])).length / n,
-    due: u.lexicon_ids.filter((id) => isDue(p.cards[id], now)).length,
-  };
-}
 
 function Ring({ value, size = 76, children }: { value: number; size?: number; children: React.ReactNode }) {
   const r = size / 2 - 5;
@@ -53,7 +37,6 @@ export function Home({
   const units = course.unit_ids.map((id) => pack.units.find((u) => u.id === id)!);
   const lvl = levelOf(progress.xp);
   const today = todayXp(progress);
-  const { active, days } = habitDensity(progress);
   const prog = units.map((u) => unitProgress(u, progress));
   const nextIdx = Math.max(
     0,
@@ -144,20 +127,55 @@ export function Home({
         })}
       </ol>
 
-      <section className="habit" aria-label={`Active ${active} of the last 30 days`}>
-        <div className="habit-head">
-          <span>Last 30 days</span>
-          <span className="muted">
-            {active} active {active === 1 ? 'day' : 'days'}
-          </span>
-        </div>
-        <div className="habit-dots">
-          {days.map((d, k) => (
-            <span key={k} className={d ? 'on' : ''} />
-          ))}
-        </div>
-      </section>
+      <Journey />
+
       <p className="version">{versionLabel()}</p>
     </div>
+  );
+}
+
+const STAGES = [
+  { id: 'basics', label: 'Beginner', emoji: '🌱' },
+  { id: 'intermediate', label: 'Intermediate', emoji: '⏪' },
+  { id: 'hard', label: 'Advanced', emoji: '🔥' },
+];
+
+/** One bar, three stages: how far through Beginner → Intermediate → Advanced you are. */
+function Journey() {
+  const { pack, progress } = useApp();
+  const stages = STAGES.filter((s) => pack.courses.some((c) => c.id === s.id)).map((s) => ({ ...s, p: courseProgress(pack, progress, s.id) }));
+  if (!stages.length) return null;
+  return (
+    <section className="journey" aria-label="Your journey">
+      <div className="journey-head">
+        <span>Your journey</span>
+      </div>
+      <div className="journey-bar">
+        {stages.map((s) => (
+          <div
+            key={s.id}
+            className="journey-seg"
+            role="progressbar"
+            aria-label={`${s.label}: ${s.p.wordsSeen} of ${s.p.words} words`}
+            aria-valuenow={Math.round(s.p.seen * 100)}
+            aria-valuemin={0}
+            aria-valuemax={100}
+          >
+            <span className="seen" style={{ width: `${s.p.seen * 100}%` }} />
+            <span className="stable" style={{ width: `${s.p.stable * 100}%` }} />
+          </div>
+        ))}
+      </div>
+      <div className="journey-labels">
+        {stages.map((s) => (
+          <span key={s.id}>
+            <span aria-hidden="true">{s.emoji}</span> {s.label}
+            <small>
+              {s.p.wordsSeen}/{s.p.words}
+            </small>
+          </span>
+        ))}
+      </div>
+    </section>
   );
 }

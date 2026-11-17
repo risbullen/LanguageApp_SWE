@@ -5,7 +5,7 @@ import { matchSpeech, passes, type MatchResult } from '../engine/match';
 import { sfx } from '../audio/sfx';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
-import { Continue, Details, English, PushToTalk, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
+import { Continue, Details, English, FaintText, PushToTalk, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
 import type { Done } from './exercises';
 
 /** What was heard, word by word: green = understood, amber = not caught. */
@@ -74,9 +74,7 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
             {t(f)}
           </ScriptText>
         ) : (
-          <button type="button" className="link" onClick={() => setShowWord(true)}>
-            Show the word
-          </button>
+          <FaintText text={t(f)} onReveal={() => setShowWord(true)} />
         )}
         <Details lex={l} form={f} />
       </div>

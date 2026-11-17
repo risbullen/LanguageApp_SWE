@@ -4,7 +4,7 @@ import { audioId, formVisual, graphemes, lexMap } from '../content/index';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
 import { sfx } from '../audio/sfx';
-import { Continue, Details, English, Inflected, PictureSentence, ScriptText, SpeakerButton, Visual, usePlayer, useText, visualClass } from './common';
+import { Continue, Details, English, FaintText, Inflected, PictureSentence, ScriptText, SpeakerButton, Visual, usePlayer, useText, visualClass } from './common';
 
 export type Done = (correct: boolean | null) => void;
 type P<K extends Step['kind']> = { step: Extract<Step, { kind: K }>; onDone: Done };
@@ -80,9 +80,7 @@ export function Prime({ step, onDone }: P<'prime'>) {
             <Details lex={l} form={f} />
           </>
         ) : (
-          <button type="button" className="link" onClick={() => setShowText(true)}>
-            Show the word
-          </button>
+          <FaintText text={t(f)} onReveal={() => setShowText(true)} />
         )}
       </div>
       <div className="dots" aria-label={`${i + 1} of ${step.lexIds.length}`}>
@@ -98,7 +96,8 @@ export function Prime({ step, onDone }: P<'prime'>) {
 /* ───────────── 2 · Referential: hear → pick the picture ───────────── */
 export function ListenPick({ step, onDone }: P<'listen_pick'>) {
   const lex = useLex();
-  const { pack } = useApp();
+  const { pack, settings, script } = useApp();
+  const t = useText();
   const target = lex.get(step.lexId)!;
   const f = formOf(target, step.tag);
   const [picked, setPicked] = useState<string | null>(null);
@@ -115,6 +114,9 @@ export function ListenPick({ step, onDone }: P<'listen_pick'>) {
           return (
             <button type="button" key={id} className={`option pic ${visualClass(formVisual(pack, l, l.forms[0].tag))} ${state || ''}`} disabled={!!picked} onClick={() => setPicked(id)}>
               {formVisual(pack, l, l.forms[0].tag)}
+              <span className={`faint ${settings.mode === 'analytical' ? 'full' : ''}`}>
+                <ScriptText script={script}>{t(l.forms[0])}</ScriptText>
+              </span>
             </button>
           );
         })}
