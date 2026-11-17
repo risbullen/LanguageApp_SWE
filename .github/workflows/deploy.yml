@@ -17,6 +17,9 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      GOOGLE_TTS_API_KEY: ${{ secrets.GOOGLE_TTS_API_KEY }}
+      TTS_ENGINE: ${{ secrets.GOOGLE_TTS_API_KEY != '' && 'google' || 'piper' }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -36,12 +39,19 @@ jobs:
           path: |
             public/audio
             voices
-          key: audio-v1-${{ hashFiles('audio-texts.json', 'scripts/gen_audio.py') }}
-          restore-keys: audio-v1-
+          key: audio-v2-${{ env.TTS_ENGINE }}-${{ hashFiles('audio-texts.json', 'scripts/gen_audio*.py') }}
+          restore-keys: audio-v2-${{ env.TTS_ENGINE }}-
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      # Google Cloud voices (Chirp 3 HD) when the GOOGLE_TTS_API_KEY secret exists
+      - name: Generate audio with Google Cloud voices
+        if: env.TTS_ENGINE == 'google'
+        continue-on-error: true
+        run: python scripts/gen_audio_google.py audio-texts.json public/audio && du -sh public/audio
+      # otherwise Piper (free, offline)
       - name: Generate audio with Piper
+        if: env.TTS_ENGINE == 'piper'
         continue-on-error: true
         run: |
           set -e

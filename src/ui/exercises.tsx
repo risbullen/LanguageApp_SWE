@@ -4,7 +4,7 @@ import { audioId, formVisual, graphemes, lexMap } from '../content/index';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
 import { sfx } from '../audio/sfx';
-import { Continue, Details, Inflected, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
+import { Continue, Details, English, Inflected, PictureSentence, ScriptText, SpeakerButton, Visual, usePlayer, useText, visualClass } from './common';
 
 export type Done = (correct: boolean | null) => void;
 type P<K extends Step['kind']> = { step: Extract<Step, { kind: K }>; onDone: Done };
@@ -28,13 +28,21 @@ function Reveal({ lex, tag, correct, onDone, extra }: { lex: Lexeme; tag: string
     <>
       <div className={`reveal ${correct ? 'good' : 'fix'}`} role="status">
         <div className="reveal-head">{correct ? 'Yes!' : 'This one:'}</div>
-        <div className="reveal-body">
-          <span className="reveal-visual" aria-hidden="true">
-            {formVisual(pack, lex, tag)}
-          </span>
-          <Inflected text={t(f)} stem={script === pack.script_metadata.primary_script && f !== lex.forms[0] ? f.stem : undefined} script={script} />
-          <SpeakerButton audioId={audioId(lex.id, tag)} text={f.text} auto />
-        </div>
+        {f.parts && script === pack.script_metadata.primary_script ? (
+          <div className="reveal-body">
+            <PictureSentence parts={f.parts} />
+            <SpeakerButton audioId={audioId(lex.id, tag)} text={f.text} auto />
+          </div>
+        ) : (
+          <div className="reveal-body">
+            <span className="reveal-visual" aria-hidden="true">
+              {formVisual(pack, lex, tag)}
+            </span>
+            <Inflected text={t(f)} stem={script === pack.script_metadata.primary_script && f !== lex.forms[0] ? f.stem : undefined} script={script} />
+            <SpeakerButton audioId={audioId(lex.id, tag)} text={f.text} auto />
+          </div>
+        )}
+        <English text={f.en} />
         <Details lex={lex} form={f} />
         {extra}
       </div>
@@ -61,9 +69,14 @@ export function Prime({ step, onDone }: P<'prime'>) {
         <SpeakerButton audioId={audioId(l.id, f.tag)} text={f.text} auto />
         {showText ? (
           <>
-            <ScriptText script={script} big>
-              {t(f)}
-            </ScriptText>
+            {f.parts && script === pack.script_metadata.primary_script ? (
+              <PictureSentence parts={f.parts} />
+            ) : (
+              <ScriptText script={script} big>
+                {t(f)}
+              </ScriptText>
+            )}
+            <English text={f.en} />
             <Details lex={l} form={f} />
           </>
         ) : (
@@ -100,7 +113,7 @@ export function ListenPick({ step, onDone }: P<'listen_pick'>) {
           const l = lex.get(id)!;
           const state = picked && (id === step.lexId ? 'right' : id === picked ? 'wrong' : 'dim');
           return (
-            <button type="button" key={id} className={`option pic ${state || ''}`} disabled={!!picked} onClick={() => setPicked(id)}>
+            <button type="button" key={id} className={`option pic ${visualClass(formVisual(pack, l, l.forms[0].tag))} ${state || ''}`} disabled={!!picked} onClick={() => setPicked(id)}>
               {formVisual(pack, l, l.forms[0].tag)}
             </button>
           );

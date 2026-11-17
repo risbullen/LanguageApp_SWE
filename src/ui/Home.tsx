@@ -2,6 +2,7 @@ import type { Course, Unit } from '../content/schema';
 import { DAILY_GOAL, habitDensity, levelOf, todayXp, type Progress } from '../engine/store';
 import { isDue, isMastered } from '../engine/scheduler';
 import { useApp } from '../ctx';
+import { versionLabel } from '../version';
 
 const LEVEL_LABEL: Record<Course['level'], string> = { basic: 'Basics', intermediate: 'Intermediate', hard: 'Hard', mini: 'Mini-course' };
 
@@ -156,6 +157,7 @@ export function Home({
           ))}
         </div>
       </section>
+      <p className="version">{versionLabel()}</p>
     </div>
   );
 }

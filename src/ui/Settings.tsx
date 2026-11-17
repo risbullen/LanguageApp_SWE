@@ -2,7 +2,9 @@ import { useEffect, useState } from 'react';
 import { PACKS } from '../content/index';
 import { emptyProgress, saveProgress } from '../engine/store';
 import { deviceVoicesFor, getVoiceSource, speak, type VoiceSource } from '../audio/tts';
-import { recognitionSupported } from '../audio/listen';
+import { canRecordAlongside, recognitionSupported, type ListenResult } from '../audio/listen';
+import { PushToTalk } from './common';
+import { versionLabel } from '../version';
 import { useApp } from '../ctx';
 
 const SAMPLE: Record<string, string> = { sv: 'Hej! Välkommen.', pa: 'ਸਤ ਸ੍ਰੀ ਅਕਾਲ' };
@@ -11,6 +13,7 @@ export function SettingsScreen() {
   const { pack, settings, setSettings, setProgress, script } = useApp();
   const [deviceVoices, setDeviceVoices] = useState<string[]>([]);
   const [tested, setTested] = useState<VoiceSource | null>(getVoiceSource());
+  const [mic, setMic] = useState<ListenResult | null>(null);
   useEffect(() => {
     deviceVoicesFor(pack.tts_lang).then((v) => setDeviceVoices(v.map((x) => x.name)));
   }, [pack.tts_lang]);
@@ -60,6 +63,18 @@ export function SettingsScreen() {
         </label>
       </fieldset>
 
+      <label className="radio">
+        <input
+          type="checkbox"
+          checked={settings.english !== false}
+          onChange={(e) => setSettings({ ...settings, english: e.target.checked })}
+        />
+        <span>
+          <strong>Show English after answering</strong>
+          <small>Confirms what a word or sentence meant, once you've answered. Never shown before.</small>
+        </span>
+      </label>
+
       {pack.script_metadata.supported_scripts.length > 1 && (
         <label className="field">
           <span>Script</span>
@@ -95,11 +110,29 @@ export function SettingsScreen() {
 
       <div className="field">
         <span>Speaking</span>
-        <p className="hint left">
-          {recognitionSupported()
-            ? 'Push-to-talk works in this browser. It checks whether you were understood, not your accent.'
-            : 'This browser can’t check speech. Use Chrome (Android or computer) for push-to-talk.'}
-        </p>
+        {recognitionSupported() ? (
+          <div className="mic-test">
+            <p className="hint left">Test the microphone: hold the button, wait for “Speak now…”, then say something in {pack.name}.</p>
+            <PushToTalk onResult={setMic} label="Test microphone" compact />
+            {mic && (
+              <p className="mic-result">
+                {mic.transcripts.length ? (
+                  <>
+                    ✅ Heard: “{mic.transcripts[0]}”
+                  </>
+                ) : (
+                  <>❌ Nothing recognised. Error code: {mic.rawError ?? mic.error}</>
+                )}
+                <br />
+                <span className="muted small">
+                  Your-voice playback: {canRecordAlongside() ? 'on' : 'off on this device (it would block the microphone)'}
+                </span>
+              </p>
+            )}
+          </div>
+        ) : (
+          <p className="hint left">This browser can’t check speech. Use Chrome (Android or computer) for push-to-talk.</p>
+        )}
       </div>
 
       <button
@@ -116,6 +149,7 @@ export function SettingsScreen() {
         Reset progress for {pack.name}
       </button>
       <p className="muted small">Pack {pack.pack_id}. Progress is stored on this device only.</p>
+      <p className="version">{versionLabel()}</p>
     </div>
   );
 }

@@ -12,7 +12,7 @@ import { sfx } from './audio/sfx';
 
 type Tab = 'home' | 'shop' | 'settings';
 
-const DEFAULTS: Settings = { packId: PACKS[0].pack_id, mode: 'associative', script: 'Latin', rate: 0.9 };
+const DEFAULTS: Settings = { packId: PACKS[0].pack_id, mode: 'associative', script: 'Latin', rate: 0.9, english: true };
 
 export default function App() {
   const [settings, setSettingsState] = useState<Settings>(() => loadSettings(DEFAULTS));

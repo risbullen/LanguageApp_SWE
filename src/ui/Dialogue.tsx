@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
-import { Continue, PushToTalk, ScriptText, SpeakerButton, TapWords, usePlayer, useText } from './common';
+import { Continue, English, PushToTalk, ScriptText, SpeakerButton, TapWords, usePlayer, useText } from './common';
 import type { Done } from './exercises';
 import { speak } from '../audio/tts';
 import { recognitionSupported, type ListenResult } from '../audio/listen';
@@ -18,6 +18,7 @@ interface Line {
   heard?: string;
   register?: string;
   fit?: 'ok' | 'meh' | 'no';
+  en?: string;
 }
 
 /* ───────────── 6 · Communicative capstone: a short branching conversation ───────────── */
@@ -34,6 +35,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
   const [revealed, setRevealed] = useState(settings.mode === 'analytical');
   const [turn, setTurn] = useState(0); // re-run the speaker's line even when a choice loops back
   const [miss, setMiss] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false); // while your reply and their answer are playing
   const canTalk = recognitionSupported();
   const node = nodeId ? nodes.get(nodeId) : undefined;
   const nodeAudio = (id: string) => `dlg.${dlgKey}.${id}`;
@@ -41,7 +43,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
   // interlocutor speaks when a node becomes active
   useEffect(() => {
     if (!node) return;
-    setLog((l) => [...l, { who: 'them', text: node.line, shown: t({ text: node.line, alt: node.alt }), audio: nodeAudio(node.id), visual: node.visual, speaker: node.speaker }]);
+    setLog((l) => [...l, { who: 'them', text: node.line, shown: t({ text: node.line, alt: node.alt }), audio: nodeAudio(node.id), visual: node.visual, speaker: node.speaker, en: node.en }]);
     setRevealed(settings.mode === 'analytical');
     const tm = setTimeout(() => play(nodeAudio(node.id), node.line), 300);
     return () => clearTimeout(tm);
@@ -49,15 +51,33 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
   }, [nodeId, turn]);
 
   const choose = async (i: number, heard?: string) => {
+    if (busy) return;
+    setBusy(true);
     const c = node!.choices[i];
     setMiss(null);
-    const me: Line = { who: 'me', text: c.text, shown: t(c), audio: `${nodeAudio(node!.id)}.${i}`, note: c.feedback, fit: c.fit, heard, register: c.register };
+    const me: Line = {
+      who: 'me',
+      text: c.text,
+      shown: t(c),
+      audio: `${nodeAudio(node!.id)}.${i}`,
+      note: c.feedback,
+      fit: c.fit,
+      heard,
+      register: c.register,
+      en: c.en,
+    };
     setLog((l) => [...l, me]);
+    // your reply is spoken aloud too, so every turn of the conversation is heard
+    await play(me.audio, c.text);
     if (c.recast) {
       // the interlocutor reformulates correctly, as a real person would (corrective recast)
-      setLog((l) => [...l, { who: 'them', text: c.recast!, shown: c.recast!, audio: `recast.${dlgKey}.${node!.id}.${i}`, speaker: node!.speaker }]);
+      setLog((l) => [
+        ...l,
+        { who: 'them', text: c.recast!, shown: c.recast!, audio: `recast.${dlgKey}.${node!.id}.${i}`, speaker: node!.speaker, en: c.recast_en },
+      ]);
       await speak(c.recast, pack.tts_lang, { rate: settings.rate });
     }
+    setBusy(false);
     setNodeId(c.next);
     setTurn((n) => n + 1);
   };
@@ -102,6 +122,8 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
                   </>
                 )}
                 {line.who === 'them' && <SpeakerButton audioId={line.audio} text={line.text} />}
+                {/* English once that turn is over, to confirm what was said */}
+                {!isCurrent && <English text={line.en} />}
                 {line.heard && <p className="bubble-note">🎤 “{line.heard}”</p>}
                 {line.register && <span className="register-tag">{line.register}</span>}
                 {line.note && <p className="bubble-note">{line.note}</p>}
@@ -110,8 +132,11 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
           );
         })}
       </div>
-      {node && (
+      {node && !busy && (
         <div className="choices">
+          {canTalk && <PushToTalk onResult={onSpoken} label="Hold and say your answer" />}
+          {miss && <p className="hint">{miss}</p>}
+          <p className="choices-label">{canTalk ? 'Say one of these, or tap it:' : 'Tap your answer:'}</p>
           {node.choices.map((c, i) => (
             <div key={i} className="choice-row">
               <button type="button" className="option choice" onClick={() => choose(i)}>
@@ -120,8 +145,6 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
               <SpeakerButton audioId={`${nodeAudio(node.id)}.${i}`} text={c.text} label="Hear this answer" />
             </div>
           ))}
-          {canTalk && <PushToTalk onResult={onSpoken} label="Hold and say your answer" />}
-          {miss && <p className="hint">{miss}</p>}
         </div>
       )}
       {finished && (

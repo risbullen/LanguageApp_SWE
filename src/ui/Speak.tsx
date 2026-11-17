@@ -5,7 +5,7 @@ import { matchSpeech, passes, type MatchResult } from '../engine/match';
 import { sfx } from '../audio/sfx';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
-import { Continue, Details, PushToTalk, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
+import { Continue, Details, English, PushToTalk, ScriptText, SpeakerButton, Visual, usePlayer, useText } from './common';
 import type { Done } from './exercises';
 
 /** What was heard, word by word: green = understood, amber = not caught. */
@@ -37,13 +37,17 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
   const [mine, setMine] = useState<Blob | null>(null); // in memory only, gone after this screen
   const [problem, setProblem] = useState<string | null>(null);
   const [showWord, setShowWord] = useState(settings.mode === 'analytical');
+  const [fails, setFails] = useState(0); // after 2 failed listens, offer "I said it"
+
   const supported = recognitionSupported();
 
   const onResult = async (r: ListenResult) => {
-    if (r.error === 'no-speech') return setProblem('Didn’t hear anything. Hold the button while you speak, or tap once and talk.');
-    if (r.error === 'not-allowed') return setProblem('The microphone is blocked. Allow it in the browser’s site settings.');
-    if (r.error === 'network') return setProblem('Speech recognition needs an internet connection.');
-    if (r.error) return setProblem('That didn’t work. Try again.');
+    const code = r.rawError ? ` (${r.rawError})` : '';
+    if (r.error) setFails((n) => n + 1);
+    if (r.error === 'no-speech') return setProblem(`Didn’t hear anything${code}. Wait for “Speak now…”, then talk.`);
+    if (r.error === 'not-allowed') return setProblem(`The microphone is blocked${code}. Allow it in the browser’s site settings.`);
+    if (r.error === 'network') return setProblem(`Speech recognition needs an internet connection${code}.`);
+    if (r.error) return setProblem(`That didn’t work${code}. Try again.`);
     setProblem(null);
     const m = matchSpeech(f.text, r.transcripts);
     const ok = passes(m);
@@ -90,6 +94,7 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
             <div className={`reveal ${ok ? 'good' : 'fix'}`} role="status">
               <div className="reveal-head">{ok ? 'Yes, understood!' : 'Not quite. Listen and try again.'}</div>
               <HeardLine m={match} />
+              <English text={f.en} />
               <div className="compare">
                 <button type="button" className="secondary" onClick={() => play(id, f.text)}>
                   ▶ Native
@@ -105,6 +110,8 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
           )}
           {match ? (
             <Continue onClick={() => onDone(first)} tone={ok ? 'good' : 'fix'} />
+          ) : fails >= 2 ? (
+            <Continue onClick={() => onDone(null)} label="I said it, continue" />
           ) : (
             <button type="button" className="link center-text" onClick={() => onDone(null)}>
               Can’t talk right now

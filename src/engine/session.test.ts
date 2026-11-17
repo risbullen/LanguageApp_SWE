@@ -180,3 +180,20 @@ describe('every lesson ends in a conversation', () => {
     }
   });
 });
+
+describe('v4: more talking, less tapping', () => {
+  it('every new word is spoken; at most one tile exercise', () => {
+    const steps = buildSession(sv, 'djur', emptyProgress(), { rng: seeded(4) });
+    const fresh = (steps[0] as { lexIds: string[] }).lexIds;
+    const spoken = steps.filter((s) => s.kind === 'speak').map((s) => (s as { lexId: string }).lexId);
+    expect(new Set(spoken)).toEqual(new Set(fresh));
+    expect(steps.filter((s) => s.kind === 'tiles').length).toBeLessThanOrEqual(1);
+  });
+
+  it('two different conversations when two are possible', () => {
+    const steps = buildSession(sv, 'fika', emptyProgress(), { rng: seeded(4) });
+    const ids = steps.filter((s) => s.kind === 'dialogue').map((s) => (s as { dialogueId?: string }).dialogueId ?? 'capstone');
+    expect(ids.length).toBe(2);
+    expect(new Set(ids).size).toBe(2);
+  });
+});

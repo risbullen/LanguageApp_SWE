@@ -1583,3 +1583,88 @@ mark {
 .tap-word:hover {
   color: var(--yellow);
 }
+
+/* ── v4 ── */
+.ptt-btn.starting {
+  background: var(--fix);
+  color: #1a1204;
+}
+.mic-test {
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  padding: 14px;
+}
+.mic-test .ptt {
+  margin: 6px 0;
+}
+.mic-result {
+  font-size: 0.9rem;
+  word-break: break-word;
+}
+.version {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin: 18px 0 0;
+}
+.english {
+  margin: 4px 0 0;
+  font-size: 0.9rem;
+  color: var(--muted);
+  font-style: italic;
+  width: 100%;
+}
+.bubble-row.me .english {
+  color: rgb(255 255 255 / 0.8);
+}
+.choices-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--muted);
+  margin: 6px 0 0;
+}
+.picture-sentence {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  justify-content: center;
+}
+.ps-part {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.ps-emoji {
+  font-size: 2rem;
+  line-height: 1.2;
+}
+.ps-word {
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.visual.v-3 {
+  font-size: 4rem;
+}
+.visual.v-4 {
+  font-size: 3.2rem;
+}
+.visual.v-5 {
+  font-size: 2.6rem;
+}
+.option.pic {
+  letter-spacing: -0.05em;
+}
+.karaoke-en {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--muted);
+  font-style: italic;
+}
+.option.pic.v-3 {
+  font-size: 2.4rem;
+}
+.option.pic.v-4,
+.option.pic.v-5 {
+  font-size: 1.9rem;
+}

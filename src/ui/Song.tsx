@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
 import { speak, stopSpeaking } from '../audio/tts';
-import { Continue, ScriptText, SpeakerButton, Visual } from './common';
+import { Continue, English, ScriptText, SpeakerButton, Visual } from './common';
 import type { Done } from './exercises';
 import { sfx } from '../audio/sfx';
 
@@ -53,6 +53,7 @@ export function SongLine({ step, onDone }: { step: Extract<Step, { kind: 'song_l
         <>
           <div className={`reveal ${right ? 'good' : 'fix'}`} role="status">
             <div className="reveal-head">{right ? 'Yes!' : `It's “${line.gap}”.`}</div>
+            <English text={line.en} />
             <SpeakerButton audioId={`song.${step.unitId}.${step.line}`} text={line.text} auto label="Hear the line again" />
           </div>
           <Continue onClick={() => onDone(right)} tone={right ? 'good' : 'fix'} />
@@ -95,6 +96,7 @@ export function SongFull({ step, onDone }: { step: Extract<Step, { kind: 'song_f
         {song.lines.map((l, i) => (
           <p key={i} className={`karaoke-line ${i === current ? 'on' : ''}`}>
             <span aria-hidden="true">{l.visual}</span> <ScriptText script={script}>{l.text}</ScriptText>
+            {l.en && settings.english !== false && <span className="karaoke-en">{l.en}</span>}
           </p>
         ))}
       </div>

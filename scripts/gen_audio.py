@@ -34,6 +34,13 @@ def main() -> None:
             continue
         lang_dir = out_dir / lang
         lang_dir.mkdir(exist_ok=True)
+        # different voices than last time (e.g. switching from Google)? start this language afresh
+        marker = lang_dir / "voices.json"
+        names = [m.stem for m in models]
+        if not marker.exists() or json.loads(marker.read_text()) != names:
+            for f in lang_dir.glob("*.mp3"):
+                f.unlink()
+            marker.write_text(json.dumps(names))
         made = 0
         for vi, model in enumerate(models):
             voice = PiperVoice.load(str(model))

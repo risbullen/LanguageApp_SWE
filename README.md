@@ -33,6 +33,7 @@ Every lesson ends with a short conversation using words you just learnt; recurri
 | **Script-aware typography** | Gurmukhi and Shahmukhi (RTL, Nastaliq) with their own line heights from the research |
 
 ## Voice and speech
+- **Google Cloud voices (optional, recommended):** add the GitHub secret `GOOGLE_TTS_API_KEY` and the deploy generates every line with 4 Google Chirp 3 HD voices (2 female, 2 male) instead of Piper. A full run is ~31k characters, inside Google's free monthly tier; cached, so only new lines are ever billed.
 - **Voice:** pre-generated audio files first (made with **Piper**, free and offline, several Swedish speakers, generated in the deploy workflow by `scripts/gen_audio.py`), then Google Translate's voice online, then a device voice *only* if it is really Swedish. An English voice never reads Swedish; if no voice is available a warning shows instead.
 - **Push-to-talk:** hold the mic button and speak (or tap once; it stops when you go quiet). Uses the browser's speech recognition, so it works best in Chrome. It checks that you were *understood*, not your accent: speech-to-text auto-corrects towards real words.
 
@@ -46,6 +47,9 @@ Full-stack Duolingo clones (Next.js + Postgres + auth + Stripe): too heavy for a
 
 ## Adding or changing content
 Everything language-specific lives in `src/content/packs/*.json`, validated by `src/content/schema.ts`. `npm run build` refuses to build a pack that doesn't match the schema. To make a Punjabi course, extend `pa.json` (have a native speaker check it; the demo is **not verified**).
+
+## Curriculum
+`docs/curriculum-prompt.md` is a ready prompt for Gemini Deep Research: a language-neutral, CEFR-anchored curriculum that each language pack fills in with its own words, grammar and culture.
 
 ## Development (optional)
 ```bash

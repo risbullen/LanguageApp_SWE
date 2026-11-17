@@ -2,7 +2,7 @@ import { useEffect, useRef, useState, type ReactNode } from 'react';
 import type { Form, Lexeme, ScriptId } from '../content/schema';
 import { inScript } from '../content/index';
 import { speak, stopSpeaking } from '../audio/tts';
-import { listen, recognitionSupported, type ListenResult } from '../audio/listen';
+import { listen, markRecorderConflict, recognitionSupported, type ListenResult } from '../audio/listen';
 import { useApp } from '../ctx';
 
 /** Text in a target-language script, with the right direction, font and line height. */
@@ -101,8 +101,9 @@ export function Details({ lex, form }: { lex?: Lexeme; form: { text: string; alt
 }
 
 export function Visual({ children, size = 'xl' }: { children: ReactNode; size?: 'xl' | 'lg' | 'md' }) {
+  const fit = typeof children === 'string' ? visualClass(children) : '';
   return (
-    <div className={`visual visual-${size}`} aria-hidden="true">
+    <div className={`visual visual-${size} ${fit}`} aria-hidden="true">
       {children}
     </div>
   );
@@ -170,8 +171,15 @@ export function PushToTalk({
   compact?: boolean;
 }) {
   const { pack } = useApp();
-  const [state, setState] = useState<'idle' | 'listening' | 'thinking'>('idle');
+  // starting = mic is warming up (Android takes ~½ s); listening = speak now
+  const [state, setStateRaw] = useState<'idle' | 'starting' | 'listening' | 'thinking'>('idle');
+  const stateRef = useRef(state);
+  const setState = (v: typeof state) => {
+    stateRef.current = v;
+    setStateRaw(v);
+  };
   const [partial, setPartial] = useState('');
+  const [retrying, setRetrying] = useState(false);
   const session = useRef<ReturnType<typeof listen> | null>(null);
   const pressedAt = useRef(0);
   const holdMode = useRef(false);
@@ -180,15 +188,26 @@ export function PushToTalk({
 
   if (!recognitionSupported()) return null;
 
-  const begin = () => {
+  const begin = (isRetry = false) => {
     stopSpeaking();
     setPartial('');
-    setState('listening');
-    const s = listen(pack.tts_lang, setPartial);
+    setState('starting');
+    const s = listen(pack.tts_lang, setPartial, () => {
+      if (stateRef.current === 'starting') setState('listening');
+    });
     session.current = s;
     s.result.then((r) => {
       if (session.current !== s) return;
       session.current = null;
+      // Heard nothing while also recording? The phone probably gave the mic to the
+      // recorder. Remember that and listen once more without it.
+      if (r.error === 'no-speech' && r.usedRecorder && !isRetry) {
+        markRecorderConflict();
+        setRetrying(true);
+        holdMode.current = false;
+        return begin(true);
+      }
+      setRetrying(false);
       setState('idle');
       onResult(r);
     });
@@ -201,12 +220,12 @@ export function PushToTalk({
 
   const down = (e: React.PointerEvent) => {
     e.preventDefault();
-    if (state === 'listening') {
+    if (stateRef.current === 'listening' || stateRef.current === 'starting') {
       // second tap in tap-mode
       holdMode.current = false;
       return end();
     }
-    if (state !== 'idle') return;
+    if (stateRef.current !== 'idle') return;
     pressedAt.current = Date.now();
     holdMode.current = true;
     begin();
@@ -214,8 +233,9 @@ export function PushToTalk({
   const up = () => {
     if (!holdMode.current) return;
     holdMode.current = false;
-    // a long press = push-to-talk; a short tap keeps listening until silence
-    if (Date.now() - pressedAt.current > 400) end();
+    // A long press = push-to-talk. A short tap, or a release before the mic was even
+    // ready, keeps listening until you go quiet (so early words are never cut off).
+    if (stateRef.current === 'listening' && Date.now() - pressedAt.current > 400) end();
   };
 
   return (
@@ -229,7 +249,7 @@ export function PushToTalk({
         onPointerCancel={up}
         onContextMenu={(e) => e.preventDefault()}
         onKeyDown={(e) => {
-          if ((e.key === ' ' || e.key === 'Enter') && state === 'idle') {
+          if ((e.key === ' ' || e.key === 'Enter') && stateRef.current === 'idle') {
             e.preventDefault();
             begin();
           }
@@ -242,7 +262,13 @@ export function PushToTalk({
         </svg>
       </button>
       <span className="ptt-label" aria-live="polite">
-        {state === 'listening' ? partial || 'Listening…' : state === 'thinking' ? 'One moment…' : label}
+        {state === 'starting'
+          ? 'Starting the mic…'
+          : state === 'listening'
+            ? partial || (retrying ? 'Once more, speak now…' : 'Speak now…')
+            : state === 'thinking'
+              ? 'One moment…'
+              : label}
       </span>
     </div>
   );
@@ -266,4 +292,44 @@ export function TapWords({ text }: { text: string }) {
       })}
     </ScriptText>
   );
+}
+
+/** English meaning, shown only after an answer (setting can turn it off). */
+export function English({ text }: { text?: string }) {
+  const { settings } = useApp();
+  if (!text || settings.english === false) return null;
+  return (
+    <p className="english" lang="en">
+      <span aria-hidden="true">🇬🇧</span> {text}
+    </p>
+  );
+}
+
+/** Each word under its emoji, so the picture-sentence can be read word by word. */
+export function PictureSentence({ parts }: { parts: [string, string][] }) {
+  const { script } = useApp();
+  return (
+    <div className="picture-sentence" dir={script === 'Shahmukhi' ? 'rtl' : 'ltr'}>
+      {parts.map(([word, emoji], i) => (
+        <span key={i} className="ps-part">
+          <span className="ps-emoji" aria-hidden="true">
+            {emoji}
+          </span>
+          <ScriptText script={script} className="ps-word">
+            {word}
+          </ScriptText>
+        </span>
+      ))}
+    </div>
+  );
+}
+
+/** Emoji strings get smaller as they get longer, so picture-sentences fit. */
+export function visualClass(v: string): string {
+  const n = graphemesCount(v);
+  return n <= 2 ? '' : n <= 3 ? 'v-3' : n <= 4 ? 'v-4' : 'v-5';
+}
+function graphemesCount(v: string): number {
+  const Seg = (Intl as unknown as { Segmenter?: typeof Intl.Segmenter }).Segmenter;
+  return Seg ? [...new Seg(undefined, { granularity: 'grapheme' }).segment(v)].length : Array.from(v).length;
 }

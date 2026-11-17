@@ -21,6 +21,7 @@ interface Rec {
   stop(): void;
   abort(): void;
   onresult: ((e: RecEvent) => void) | null;
+  onstart: (() => void) | null;
   onerror: ((e: { error: string }) => void) | null;
   onend: (() => void) | null;
 }
@@ -38,6 +39,8 @@ export interface ListenResult {
   transcripts: string[]; // best first
   recording: Blob | null;
   error?: 'no-speech' | 'not-allowed' | 'network' | 'other';
+  rawError?: string; // the browser's own error code, shown for diagnosis
+  usedRecorder: boolean;
 }
 
 export interface Listening {
@@ -56,9 +59,24 @@ const recorderConflicts = () => {
     return false;
   }
 };
+export function markRecorderConflict() {
+  try {
+    localStorage.setItem(CONFLICT_KEY, '1');
+  } catch {
+    /* ignore */
+  }
+}
+
+/**
+ * Can we record the attempt (for "▶ You") while recognising it? Not on Android: Chrome
+ * there gives the microphone to only one of them, and recognition then hears silence.
+ */
+export function canRecordAlongside(ua = typeof navigator !== 'undefined' ? navigator.userAgent : ''): boolean {
+  return !/Android/i.test(ua) && !recorderConflicts();
+}
 
 async function startRecorder(): Promise<{ stop: () => Promise<Blob | null> } | null> {
-  if (recorderConflicts() || typeof MediaRecorder === 'undefined' || !navigator.mediaDevices?.getUserMedia) return null;
+  if (!canRecordAlongside() || typeof MediaRecorder === 'undefined' || !navigator.mediaDevices?.getUserMedia) return null;
   try {
     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
     const rec = new MediaRecorder(stream);
@@ -82,11 +100,11 @@ async function startRecorder(): Promise<{ stop: () => Promise<Blob | null> } | n
   }
 }
 
-export function listen(lang: string, onPartial?: (t: string) => void): Listening {
+export function listen(lang: string, onPartial?: (t: string) => void, onStart?: () => void): Listening {
   const C = Ctor();
   let stopFn = () => {};
   const result = new Promise<ListenResult>((resolve) => {
-    if (!C) return resolve({ transcripts: [], recording: null, error: 'other' });
+    if (!C) return resolve({ transcripts: [], recording: null, error: 'other', rawError: 'unsupported', usedRecorder: false });
     const rec = new C();
     rec.lang = lang;
     rec.interimResults = true;
@@ -95,8 +113,10 @@ export function listen(lang: string, onPartial?: (t: string) => void): Listening
     const finals: string[] = [];
     let partial = '';
     let error: ListenResult['error'];
+    let rawError: string | undefined;
     const recorderP = startRecorder();
     let ended = false;
+    rec.onstart = () => onStart?.();
 
     rec.onresult = (e) => {
       partial = '';
@@ -108,15 +128,10 @@ export function listen(lang: string, onPartial?: (t: string) => void): Listening
       onPartial?.(partial || finals[0] || '');
     };
     rec.onerror = (e) => {
+      rawError = e.error;
       error = e.error === 'no-speech' ? 'no-speech' : e.error === 'not-allowed' ? 'not-allowed' : e.error === 'network' ? 'network' : 'other';
       // Some phones can't share the mic between recognition and a recorder.
-      if (e.error === 'audio-capture') {
-        try {
-          localStorage.setItem(CONFLICT_KEY, '1');
-        } catch {
-          /* ignore */
-        }
-      }
+      if (e.error === 'audio-capture') markRecorderConflict();
     };
     rec.onend = async () => {
       if (ended) return;
@@ -124,7 +139,13 @@ export function listen(lang: string, onPartial?: (t: string) => void): Listening
       const recorder = await recorderP;
       const recording = recorder ? await recorder.stop() : null;
       const transcripts = finals.length ? finals : partial ? [partial] : [];
-      resolve({ transcripts, recording, error: transcripts.length ? undefined : (error ?? 'no-speech') });
+      resolve({
+        transcripts,
+        recording,
+        error: transcripts.length ? undefined : (error ?? 'no-speech'),
+        rawError: transcripts.length ? undefined : (rawError ?? 'no-result'),
+        usedRecorder: !!recorder,
+      });
     };
     stopFn = () => {
       try {
@@ -137,7 +158,7 @@ export function listen(lang: string, onPartial?: (t: string) => void): Listening
       rec.start();
     } catch {
       ended = true;
-      resolve({ transcripts: [], recording: null, error: 'other' });
+      resolve({ transcripts: [], recording: null, error: 'other', rawError: 'start-failed', usedRecorder: false });
     }
   });
   return { stop: () => stopFn(), result };

@@ -193,9 +193,11 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
     ex.push(reviewExercise(pack, id, reviewLevel(card?.stability ?? 0, progress.recent), rng));
   }
 
-  // 3 · scaffolded retrieval for new words: tiles first, then cloze / article
-  for (const id of shuffle(fresh, rng)) ex.push({ kind: 'tiles', lexId: id, tag: firstForm(lex.get(id)!).tag });
-  for (const id of shuffle(fresh, rng)) {
+  // 3 · scaffolded retrieval: one word built from tiles, one ending/article cloze.
+  //     (Kept small on purpose: the learner wants more talking, less tapping.)
+  const shuffled = shuffle(fresh, rng);
+  if (shuffled.length) ex.push({ kind: 'tiles', lexId: shuffled[0], tag: firstForm(lex.get(shuffled[0])!).tag });
+  for (const id of shuffled) {
     const c = (unit.article_cloze ? article(pack, id, rng) : null) ?? cloze(pack, id, rng);
     if (c) {
       ex.push(c);
@@ -203,19 +205,25 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
     }
   }
 
-  // conversations: the capstone needs every word of the unit; otherwise a short one
+  // conversations: the capstone needs every word of the unit; otherwise a short one.
+  // Two per session whenever two different ones are possible.
   const known = new Set([...introduced, ...fresh]);
   const capstoneReady = !!unit.dialogue && unit.lexicon_ids.every((id) => known.has(id));
   const minis = eligibleMinis(unit, known, fresh, progress.dialogues);
-  if (capstoneReady && minis.length) ex.push({ kind: 'dialogue', unitId: unit.id, dialogueId: minis[0].id });
+  const endDialogue: Exercise | null = capstoneReady
+    ? { kind: 'dialogue', unitId: unit.id }
+    : minis.length
+      ? { kind: 'dialogue', unitId: unit.id, dialogueId: minis[0].id }
+      : null;
+  const midMini = capstoneReady ? minis[0] : minis[1];
+  if (midMini) ex.push({ kind: 'dialogue', unitId: unit.id, dialogueId: midMini.id });
 
-  // 4 · speaking
-  const speakPool = fresh.length ? fresh : due;
-  for (const id of sample(speakPool, 1, rng)) ex.push({ kind: 'speak', lexId: id, tag: firstForm(lex.get(id)!).tag });
+  // 4 · speaking: every new word is said out loud (or two review words)
+  const speakPool = fresh.length ? shuffle(fresh, rng) : sample(due, 2, rng);
+  for (const id of speakPool) ex.push({ kind: 'speak', lexId: id, tag: firstForm(lex.get(id)!).tag });
 
-  // 6 · capstone (or a short conversation while the unit is still being learnt)
-  if (capstoneReady) ex.push({ kind: 'dialogue', unitId: unit.id });
-  else if (minis.length) ex.push({ kind: 'dialogue', unitId: unit.id, dialogueId: minis[0].id });
+  // 6 · end with a conversation
+  if (endDialogue) ex.push(endDialogue);
 
   return ex.map((e, i) => ({ ...e, key: `s${i}`, unitId }));
 }

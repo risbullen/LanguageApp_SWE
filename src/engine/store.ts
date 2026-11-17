@@ -20,6 +20,7 @@ export interface Settings {
   mode: 'associative' | 'analytical';
   script: string; // ScriptId for current pack
   rate: number; // TTS speaking rate
+  english?: boolean; // show the English meaning after answering (default on)
 }
 
 const safe = {

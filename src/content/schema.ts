@@ -23,6 +23,10 @@ const Form = z.object({
   ipa: z.string().optional(),
   /** Length (in grapheme clusters) of the stem; the rest is the inflection ("bent form"). */
   stem: z.number().int().nonnegative().optional(),
+  /** English meaning: shown only AFTER answering, to confirm the guess (never as the prompt). */
+  en: z.string().optional(),
+  /** Picture-sentence: each word (or chunk) with its emoji, e.g. [["Jag","🙋"],["gillar","👍"],["fisk","🐟"]] */
+  parts: z.array(z.tuple([z.string(), z.string()])).optional(),
 });
 export type Form = z.infer<typeof Form>;
 
@@ -61,6 +65,8 @@ const DialogueChoice = z.object({
   fit: z.enum(['ok', 'meh', 'no']),
   feedback: z.string().optional(), // English UI explanation, shown after choice
   recast: z.string().optional(), // interlocutor's corrective recast in target language
+  en: z.string().optional(),
+  recast_en: z.string().optional(),
   /** social register of this reply, e.g. du vs ni, ਤੂੰ vs ਤੁਸੀਂ */
   register: z.enum(['intimate', 'informal', 'polite', 'formal']).optional(),
 });
@@ -71,6 +77,7 @@ const DialogueNode = z.object({
   visual: z.string().optional(), // what the speaker is pointing at / showing
   line: z.string(),
   alt: Form.shape.alt,
+  en: z.string().optional(),
   choices: z.array(DialogueChoice).min(1),
 });
 
@@ -92,7 +99,7 @@ const Unit = z.object({
   song: z
     .object({
       title: z.string(),
-      lines: z.array(z.object({ text: z.string(), gap: z.string(), visual: z.string() })).min(1),
+      lines: z.array(z.object({ text: z.string(), gap: z.string(), visual: z.string(), en: z.string().optional() })).min(1),
     })
     .optional(),
   grammar_focus: z

@@ -35,7 +35,8 @@
       "Shahmukhi": "گھوڑا",
       "Latin": "ghoṛā"
      },
-     "ipa": "/kòːɽaː/"
+     "ipa": "/kòːɽaː/",
+     "en": "horse"
     },
     {
      "tag": "direct_pl",
@@ -43,7 +44,8 @@
      "alt": {
       "Shahmukhi": "گھوڑے",
       "Latin": "ghoṛē"
-     }
+     },
+     "en": "horses"
     }
    ]
   },
@@ -61,7 +63,8 @@
       "Shahmukhi": "کوڑا",
       "Latin": "koṛā"
      },
-     "ipa": "/koːɽaː/"
+     "ipa": "/koːɽaː/",
+     "en": "whip"
     },
     {
      "tag": "direct_pl",
@@ -69,7 +72,8 @@
      "alt": {
       "Shahmukhi": "کوڑے",
       "Latin": "koṛē"
-     }
+     },
+     "en": "whips"
     }
    ]
   },
@@ -86,7 +90,8 @@
       "Shahmukhi": "روٹی",
       "Latin": "roṭī"
      },
-     "ipa": "/roːʈiː/"
+     "ipa": "/roːʈiː/",
+     "en": "flatbread"
     },
     {
      "tag": "direct_pl",
@@ -94,7 +99,8 @@
      "alt": {
       "Shahmukhi": "روٹیاں",
       "Latin": "roṭīāṅ"
-     }
+     },
+     "en": "flatbreads"
     }
    ]
   },
@@ -111,7 +117,8 @@
       "Shahmukhi": "پانی",
       "Latin": "pāṇī"
      },
-     "ipa": "/paːɳiː/"
+     "ipa": "/paːɳiː/",
+     "en": "water"
     }
    ]
   },
@@ -129,7 +136,8 @@
       "Shahmukhi": "چاہ",
       "Latin": "chāh"
      },
-     "ipa": "/t͡ʃâː/"
+     "ipa": "/t͡ʃâː/",
+     "en": "tea"
     }
    ]
   }
@@ -198,7 +206,8 @@
         },
         "next": "n2",
         "fit": "ok",
-        "register": "polite"
+        "register": "polite",
+        "en": "Hello (respectful)! How are you?"
        },
        {
         "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਤੂੰ ਕਿਵੇਂ ਹੈਂ?",
@@ -209,9 +218,11 @@
         "next": "n2",
         "fit": "meh",
         "feedback": "ਤੂੰ (tūṅ) is intimate. To an elder use ਤੁਸੀਂ (tusīṅ) and add ਜੀ (jī).",
-        "register": "intimate"
+        "register": "intimate",
+        "en": "Hello! How are you? (intimate, too casual for an elder)"
        }
-      ]
+      ],
+      "en": "Hello, child!"
      },
      {
       "id": "n2",
@@ -229,7 +240,8 @@
          "Latin": "hāṅ jī, dhannvād!"
         },
         "next": null,
-        "fit": "ok"
+        "fit": "ok",
+        "en": "Yes please, thank you!"
        },
        {
         "text": "ਨਹੀਂ ਜੀ, ਪਾਣੀ ਠੀਕ ਹੈ।",
@@ -238,10 +250,12 @@
          "Latin": "nahīṅ jī, pāṇī ṭhīk hai."
         },
         "next": null,
-        "fit": "ok"
+        "fit": "ok",
+        "en": "No thanks, water is fine."
        }
       ],
-      "line": "ਮੈਂ ਠੀਕ ਹਾਂ। ਚਾਹ ਪੀਓਗੇ?"
+      "line": "ਮੈਂ ਠੀਕ ਹਾਂ। ਚਾਹ ਪੀਓਗੇ?",
+      "en": "I'm fine. Will you have some tea?"
      }
     ]
    },
@@ -271,7 +285,8 @@
           "Latin": "hāṅ jī, dhannvād!"
          },
          "next": null,
-         "fit": "ok"
+         "fit": "ok",
+         "en": "Yes please, thank you!"
         },
         {
          "text": "ਨਹੀਂ ਜੀ, ਧੰਨਵਾਦ।",
@@ -280,9 +295,11 @@
           "Latin": "nahīṅ jī, dhannvād."
          },
          "next": null,
-         "fit": "ok"
+         "fit": "ok",
+         "en": "No, thank you."
         }
-       ]
+       ],
+       "en": "Will you eat some roti?"
       }
      ]
     }
