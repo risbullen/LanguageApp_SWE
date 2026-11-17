@@ -5,7 +5,23 @@
  *  2. A device voice that really is for this language.
  *  3. Nothing — never let an English voice read Swedish. The UI shows a warning instead.
  */
-export type VoiceSource = 'google' | 'device' | 'none';
+import { audioKey } from './key';
+
+export type VoiceSource = 'file' | 'google' | 'device' | 'none';
+
+/* ── pre-generated audio files (built by scripts/gen_audio.py with Piper) ── */
+type Manifest = Record<string, { voices: string[]; keys: string[] }>;
+let manifest: Promise<Map<string, { voices: number; keys: Set<string> }>> | null = null;
+function loadManifest() {
+  manifest ??= fetch('./audio/manifest.json')
+    .then((r) => (r.ok ? (r.json() as Promise<Manifest>) : {}))
+    .catch(() => ({}) as Manifest)
+    .then((m) => new Map(Object.entries(m).map(([lang, v]) => [lang, { voices: v.voices.length, keys: new Set(v.keys) }])));
+  return manifest;
+}
+if (typeof window !== 'undefined') loadManifest();
+const fileTurn: Record<string, number> = {};
+let fileFailures = 0;
 
 let lastSource: VoiceSource | null = null;
 let googleFailures = 0;
@@ -106,6 +122,46 @@ async function speakDevice(text: string, lang: string, rate: number): Promise<bo
   });
 }
 
+/** Play a pre-generated file, rotating between voices (different speakers = better ear). */
+async function speakFile(text: string, lang: string, rate: number): Promise<boolean> {
+  const base = lang.split('-')[0];
+  const entry = (await loadManifest()).get(base);
+  const key = audioKey(lang, text);
+  if (!entry || !entry.keys.has(key)) return false;
+  const turn = (fileTurn[key] = (fileTurn[key] ?? -1) + 1);
+  const url = `./audio/${base}/${key}.${turn % entry.voices}.mp3`;
+  const ok = await playUrl(url, rate, 3000);
+  if (!ok) fileFailures++;
+  return ok;
+}
+
+/** Shared player for any audio URL; resolves true when it played to the end. */
+function playUrl(url: string, rate: number, loadTimeout: number): Promise<boolean> {
+  return new Promise((resolve) => {
+    const p = getPlayer();
+    let settled = false;
+    const finish = (ok: boolean) => {
+      if (settled) return;
+      settled = true;
+      p.onended = p.onerror = null;
+      resolve(ok);
+    };
+    p.onended = () => finish(true);
+    p.onerror = () => finish(false);
+    cancelCurrent = () => {
+      p.pause();
+      finish(true);
+    };
+    p.src = url;
+    p.playbackRate = Math.max(0.5, Math.min(1.5, rate));
+    p.play().catch(() => finish(false));
+    setTimeout(() => {
+      if (!settled && (p.readyState < 2 || p.error)) finish(false);
+    }, loadTimeout);
+    setTimeout(() => finish(true), 20000);
+  });
+}
+
 /* ── Google Translate voice ── */
 function speakGoogle(text: string, lang: string, rate: number): Promise<boolean> {
   return new Promise((resolve) => {
@@ -140,6 +196,12 @@ function speakGoogle(text: string, lang: string, rate: number): Promise<boolean>
 export function speak(text: string, lang: string, opts: { rate?: number } = {}): Promise<VoiceSource> {
   const rate = opts.rate ?? 0.9;
   const run = async (): Promise<VoiceSource> => {
+    if (fileFailures < 3) {
+      if (await speakFile(text, lang, rate + 0.1)) {
+        report('file');
+        return 'file';
+      }
+    }
     if (googleFailures < 3 && (await speakGoogle(text, lang, rate))) {
       googleFailures = 0;
       report('google');

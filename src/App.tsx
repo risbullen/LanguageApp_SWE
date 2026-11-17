@@ -6,10 +6,11 @@ import { Ctx } from './ctx';
 import { Home } from './ui/Home';
 import { Session } from './ui/Session';
 import { SettingsScreen } from './ui/Settings';
+import { Shop } from './ui/Shop';
 import { onVoiceSource, unlockAudio, type VoiceSource } from './audio/tts';
 import { sfx } from './audio/sfx';
 
-type Tab = 'home' | 'settings';
+type Tab = 'home' | 'shop' | 'settings';
 
 const DEFAULTS: Settings = { packId: PACKS[0].pack_id, mode: 'associative', script: 'Latin', rate: 0.9 };
 
@@ -19,6 +20,21 @@ export default function App() {
   const [progress, setProgress] = useState<Progress>(() => loadProgress(pack.pack_id));
   const [tab, setTab] = useState<Tab>('home');
   const [unit, setUnit] = useState<string | null>(null);
+  const [courseId, setCourseIdState] = useState<string>(() => {
+    try {
+      return localStorage.getItem('lang:course') ?? '';
+    } catch {
+      return '';
+    }
+  });
+  const setCourseId = (id: string) => {
+    setCourseIdState(id);
+    try {
+      localStorage.setItem('lang:course', id);
+    } catch {
+      /* ignore */
+    }
+  };
 
   const [voice, setVoice] = useState<VoiceSource | null>(null);
 
@@ -65,12 +81,21 @@ export default function App() {
           <Session unitId={unit} onExit={() => setUnit(null)} />
         ) : (
           <>
-            {tab === 'home' && <Home onStart={setUnit} />}
+            {tab === 'home' && <Home courseId={courseId} onCourse={setCourseId} onStart={setUnit} onShop={() => setTab('shop')} />}
+            {tab === 'shop' && (
+              <Shop
+                onOpen={(id) => {
+                  setCourseId(id);
+                  setTab('home');
+                }}
+              />
+            )}
             {tab === 'settings' && <SettingsScreen />}
             <nav className="tabs">
               {(
                 [
                   ['home', '🏠', 'Learn'],
+                  ['shop', '🛍️', 'Shop'],
                   ['settings', '⚙️', 'Settings'],
                 ] as const
               ).map(([id, icon, label]) => (

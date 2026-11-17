@@ -19,7 +19,9 @@ export type Exercise =
   | { kind: 'cloze'; lexId: string; tag: string; options: string[] } // options = suffixes
   | { kind: 'article'; lexId: string; options: string[] }
   | { kind: 'speak'; lexId: string; tag: string }
-  | { kind: 'dialogue'; unitId: string; dialogueId?: string }; // no id = the unit's capstone
+  | { kind: 'dialogue'; unitId: string; dialogueId?: string } // no id = the unit's capstone
+  | { kind: 'song_line'; line: number; options: string[] } // hear a line, fill the missing word
+  | { kind: 'song_full' }; // whole song, karaoke-style
 
 export type Step = Exercise & { key: string; retry?: boolean; unitId: string };
 
@@ -135,6 +137,18 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
   const lex = lexMap(pack);
   const introduced = new Set(progress.introduced);
 
+  // songs: line by line, then the whole song
+  if (unit.song) {
+    const gaps = unit.song.lines.map((l) => l.gap);
+    const steps: Exercise[] = unit.song.lines.map((l, line) => ({
+      kind: 'song_line',
+      line,
+      options: shuffle([l.gap, ...sample(gaps.filter((g) => g !== l.gap), 2, rng)], rng),
+    }));
+    steps.push({ kind: 'song_full' });
+    return steps.map((e, i) => ({ ...e, key: `s${i}`, unitId }));
+  }
+
   const fresh = unit.lexicon_ids.filter((id) => !introduced.has(id)).slice(0, maxNew);
   let due = pack.lexicon
     .map((l) => l.id)
@@ -162,12 +176,16 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
     for (const id of sample(cands, 2, rng))
       ex.push({ kind: 'structured', lexId: id, tags: gf.contrast, answer: rng() < 0.5 ? 0 : 1 });
     if (cands.length && !progress.rulesSeen.includes(unit.id)) ex.push({ kind: 'rule', unitId: unit.id });
+  } else if (unit.tip && !progress.rulesSeen.includes(unit.id)) {
+    ex.push({ kind: 'rule', unitId: unit.id });
   }
 
   // pitch accent / tone minimal pairs (perception before production)
   // (one pair per session, and only with a voice that can actually produce the accent)
-  if (accentAudio && unit.minimal_pairs?.length)
-    ex.push({ kind: 'minimal_pair', pair: Math.floor(rng() * unit.minimal_pairs.length), answer: rng() < 0.5 ? 0 : 1 });
+  // Text-to-speech says both sides of a pair identically, so only pairs with real recordings.
+  const recorded = (unit.minimal_pairs ?? []).map((p, i) => [p, i] as const).filter(([p]) => p.every((side) => side.audio));
+  if (accentAudio && recorded.length)
+    ex.push({ kind: 'minimal_pair', pair: recorded[Math.floor(rng() * recorded.length)][1], answer: rng() < 0.5 ? 0 : 1 });
 
   // reviews, format chosen by memory stability + recent success
   for (const id of due) {

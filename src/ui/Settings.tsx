@@ -16,6 +16,7 @@ export function SettingsScreen() {
   }, [pack.tts_lang]);
 
   const voiceText: Record<VoiceSource, string> = {
+    file: 'Built-in voices (pre-recorded with Piper, several speakers). Works offline.',
     google: 'Online voice (Google). Works.',
     device: `This device's ${pack.tts_lang} voice. The online voice didn't load.`,
     none: `No ${pack.tts_lang} voice found. Check your internet connection.`,

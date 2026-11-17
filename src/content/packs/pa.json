@@ -197,7 +197,8 @@
          "Latin": "sat srī akāl jī! tusīṅ kiveṅ ho?"
         },
         "next": "n2",
-        "fit": "ok"
+        "fit": "ok",
+        "register": "polite"
        },
        {
         "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਤੂੰ ਕਿਵੇਂ ਹੈਂ?",
@@ -207,7 +208,8 @@
         },
         "next": "n2",
         "fit": "meh",
-        "feedback": "ਤੂੰ (tūṅ) is intimate. To an elder use ਤੁਸੀਂ (tusīṅ) and add ਜੀ (jī)."
+        "feedback": "ਤੂੰ (tūṅ) is intimate. To an elder use ਤੁਸੀਂ (tusīṅ) and add ਜੀ (jī).",
+        "register": "intimate"
        }
       ]
      },
@@ -286,5 +288,21 @@
     }
    ]
   }
- ]
+ ],
+ "courses": [
+  {
+   "id": "basics",
+   "title": "ਪਹਿਲੇ ਕਦਮ",
+   "emoji": "🌱",
+   "tagline": "Demo: five first words and greeting an elder.",
+   "level": "basic",
+   "unit_ids": [
+    "pehle"
+   ]
+  }
+ ],
+ "characters": {
+  "👴": "Dadaji",
+  "👵": "Dadiji"
+ }
 }

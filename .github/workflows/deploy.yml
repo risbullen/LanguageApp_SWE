@@ -25,10 +25,39 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm test
+
+      # ── Pre-generated speech (Piper, free + offline). Never blocks a deploy: if any of
+      #    this fails, the app falls back to the live voice. ──
+      - name: List texts to speak
+        run: npx tsx scripts/audio-texts.ts
+      - name: Restore generated audio
+        uses: actions/cache@v4
+        with:
+          path: |
+            public/audio
+            voices
+          key: audio-v1-${{ hashFiles('audio-texts.json', 'scripts/gen_audio.py') }}
+          restore-keys: audio-v1-
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Generate audio with Piper
+        continue-on-error: true
+        run: |
+          set -e
+          sudo apt-get install -y -qq ffmpeg >/dev/null || true
+          pip install -q piper-tts
+          mkdir -p voices
+          # every medium-quality Swedish voice (different speakers = more varied listening)
+          for v in $(python -m piper.download_voices | grep -E '^sv_SE-.*-medium$' | head -3); do
+            [ -f "voices/$v.onnx" ] || python -m piper.download_voices "$v" --data-dir voices
+          done
+          ls voices
+          python scripts/gen_audio.py audio-texts.json voices public/audio
+          du -sh public/audio
+
       - run: npm run build
       - uses: actions/configure-pages@v5
-        with:
-          enablement: true
       - uses: actions/upload-pages-artifact@v3
         with:
           path: dist

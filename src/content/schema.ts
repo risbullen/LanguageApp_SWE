@@ -46,6 +46,11 @@ const MinimalPairSide = z.object({
   alt: Form.shape.alt,
   visual: z.string(),
   label: z.string(), // e.g. "Accent 1", "low-rising tone"
+  /**
+   * Recorded audio file. Required for the drill to run: text-to-speech pronounces both
+   * sides of a pitch-accent pair identically, so a TTS-only drill would be misleading.
+   */
+  audio: z.string().optional(),
 });
 
 const DialogueChoice = z.object({
@@ -56,6 +61,8 @@ const DialogueChoice = z.object({
   fit: z.enum(['ok', 'meh', 'no']),
   feedback: z.string().optional(), // English UI explanation, shown after choice
   recast: z.string().optional(), // interlocutor's corrective recast in target language
+  /** social register of this reply, e.g. du vs ni, ਤੂੰ vs ਤੁਸੀਂ */
+  register: z.enum(['intimate', 'informal', 'polite', 'formal']).optional(),
 });
 
 const DialogueNode = z.object({
@@ -78,7 +85,16 @@ const Unit = z.object({
   id: z.string(),
   title: z.string(),
   visual: z.string(),
-  lexicon_ids: z.array(z.string()).min(1),
+  lexicon_ids: z.array(z.string()).default([]),
+  /** One-off tip shown once, for units without a two-form grammar contrast (e.g. word order). */
+  tip: z.string().optional(),
+  /** Song unit: learn a song line by line. */
+  song: z
+    .object({
+      title: z.string(),
+      lines: z.array(z.object({ text: z.string(), gap: z.string(), visual: z.string() })).min(1),
+    })
+    .optional(),
   grammar_focus: z
     .object({
       contrast: z.tuple([z.string(), z.string()]), // two form tags to contrast
@@ -93,6 +109,17 @@ const Unit = z.object({
   mini_dialogues: z.array(Dialogue.extend({ id: z.string(), requires: z.array(z.string()).min(1) })).optional(),
 });
 export type Unit = z.infer<typeof Unit>;
+
+const Course = z.object({
+  id: z.string(),
+  title: z.string(),
+  emoji: z.string(),
+  tagline: z.string(),
+  level: z.enum(['basic', 'intermediate', 'hard', 'mini']),
+  price: z.number().int().positive().optional(), // in coins; only mini-courses are bought
+  unit_ids: z.array(z.string()).min(1),
+});
+export type Course = z.infer<typeof Course>;
 
 export const Pack = z
   .object({
@@ -113,6 +140,9 @@ export const Pack = z
     form_visuals: z.record(z.string(), z.string()),
     lexicon: z.array(Lexeme).min(1),
     units: z.array(Unit).min(1),
+    courses: z.array(Course).min(1),
+    /** Recurring characters: speaker emoji → name, so the same people show up across lessons. */
+    characters: z.record(z.string(), z.string()).default({}),
   })
   .superRefine((pack, ctx) => {
     const ids = new Set(pack.lexicon.map((l) => l.id));
@@ -135,6 +165,17 @@ export const Pack = z
         for (const id of ('requires' in d ? (d.requires as string[]) : []))
           if (!ids.has(id)) ctx.addIssue({ code: 'custom', message: `unit ${u.id}/${d.id}: unknown required word ${id}` });
       }
+    }
+    const unitIds = new Set(pack.units.map((u) => u.id));
+    for (const c of pack.courses) {
+      for (const id of c.unit_ids) if (!unitIds.has(id)) ctx.addIssue({ code: 'custom', message: `course ${c.id}: unknown unit ${id}` });
+      if (c.level === 'mini' && !c.price) ctx.addIssue({ code: 'custom', message: `course ${c.id}: mini-courses need a price` });
+    }
+    for (const u of pack.units) {
+      if (!u.lexicon_ids.length && !u.song && !u.dialogue)
+        ctx.addIssue({ code: 'custom', message: `unit ${u.id}: needs words, a song or a dialogue` });
+      for (const line of u.song?.lines ?? [])
+        if (!line.text.includes(line.gap)) ctx.addIssue({ code: 'custom', message: `unit ${u.id}: song gap "${line.gap}" not in line` });
     }
     for (const l of pack.lexicon)
       for (const f of l.forms)

@@ -141,13 +141,17 @@ const BADGES: Record<string, [string, string]> = {
   article: ['En or ett?', 'purple'],
   speak: ['Say it', 'green'],
   dialogue: ['Conversation', 'green'],
+  sentence: ['Build the sentence', 'blue'],
+  song_line: ['Song', 'yellow'],
+  song_full: ['Sing along', 'yellow'],
 };
-export function Badge({ kind, retry }: { kind: string; retry?: boolean }) {
+export function Badge({ kind, retry, hard }: { kind: string; retry?: boolean; hard?: boolean }) {
   const [label, tone] = BADGES[kind] ?? [kind, 'blue'];
   return (
     <div className="badges">
       <span className={`badge ${tone}`}>{label}</span>
       {retry && <span className="badge amber">Again</span>}
+      {hard && <span className="badge red">Hard</span>}
     </div>
   );
 }
@@ -241,5 +245,25 @@ export function PushToTalk({
         {state === 'listening' ? partial || 'Listening…' : state === 'thinking' ? 'One moment…' : label}
       </span>
     </div>
+  );
+}
+
+/** Target-language text where every word can be tapped to hear it on its own. */
+export function TapWords({ text }: { text: string }) {
+  const { script } = useApp();
+  const { play } = usePlayer();
+  const words = text.split(/(\s+)/);
+  return (
+    <ScriptText script={script} className="tap-words">
+      {words.map((w, i) => {
+        const clean = w.replace(/[^\p{L}\p{M}\p{N}'-]/gu, '');
+        if (!clean) return <span key={i}>{w}</span>;
+        return (
+          <button type="button" key={i} className="tap-word" onClick={() => play(`word.${clean}`, clean)} title="Tap to hear">
+            {w}
+          </button>
+        );
+      })}
+    </ScriptText>
   );
 }

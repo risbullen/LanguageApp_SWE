@@ -18,7 +18,10 @@
   "indef_sg": "{v}",
   "def_sg": "👉{v}",
   "indef_pl": "{v}{v}{v}",
-  "def_pl": "👉{v}{v}{v}"
+  "def_pl": "👉{v}{v}{v}",
+  "phrase": "{v}",
+  "present": "▶️{v}",
+  "past": "⏪{v}"
  },
  "lexicon": [
   {
@@ -760,6 +763,620 @@
     }
    ],
    "prosodic_class": "accent_1"
+  },
+  {
+   "id": "sv_ata",
+   "visual": "🍽️",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "äter",
+     "ipa": "/ˈɛːtɛr/"
+    },
+    {
+     "tag": "past",
+     "text": "åt"
+    }
+   ]
+  },
+  {
+   "id": "sv_dricka",
+   "visual": "🥤",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "dricker",
+     "ipa": "/ˈdrɪkːɛr/"
+    },
+    {
+     "tag": "past",
+     "text": "drack"
+    }
+   ]
+  },
+  {
+   "id": "sv_sova",
+   "visual": "😴",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "sover",
+     "ipa": "/ˈsoːvɛr/"
+    },
+    {
+     "tag": "past",
+     "text": "sov"
+    }
+   ]
+  },
+  {
+   "id": "sv_dansa",
+   "visual": "💃",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "dansar",
+     "stem": 4,
+     "ipa": "/ˈdansar/"
+    },
+    {
+     "tag": "past",
+     "text": "dansade",
+     "stem": 4
+    }
+   ]
+  },
+  {
+   "id": "sv_springa",
+   "visual": "🏃",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "springer",
+     "ipa": "/ˈsprɪŋɛr/"
+    },
+    {
+     "tag": "past",
+     "text": "sprang"
+    }
+   ]
+  },
+  {
+   "id": "sv_lasa",
+   "visual": "📖",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "läser",
+     "stem": 3,
+     "ipa": "/ˈlɛːsɛr/"
+    },
+    {
+     "tag": "past",
+     "text": "läste",
+     "stem": 3
+    }
+   ]
+  },
+  {
+   "id": "sv_simma",
+   "visual": "🏊",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "simmar",
+     "stem": 4,
+     "ipa": "/ˈsɪmːar/"
+    },
+    {
+     "tag": "past",
+     "text": "simmade",
+     "stem": 4
+    }
+   ]
+  },
+  {
+   "id": "sv_sjunga",
+   "visual": "🎤",
+   "pos": "verb",
+   "forms": [
+    {
+     "tag": "present",
+     "text": "sjunger",
+     "ipa": "/ˈɧɵŋɛr/"
+    },
+    {
+     "tag": "past",
+     "text": "sjöng"
+    }
+   ]
+  },
+  {
+   "id": "sv_p_tyckerom",
+   "visual": "☕❤️",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag tycker om kaffe."
+    }
+   ]
+  },
+  {
+   "id": "sv_p_gillarinte",
+   "visual": "🌧️👎",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag gillar inte regn."
+    }
+   ]
+  },
+  {
+   "id": "sv_p_trott",
+   "visual": "🥱",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag är trött."
+    }
+   ]
+  },
+  {
+   "id": "sv_p_hungrig",
+   "visual": "🤤🍽️",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag är hungrig."
+    }
+   ]
+  },
+  {
+   "id": "sv_p_kul",
+   "visual": "🎉",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Det var kul!"
+    }
+   ]
+  },
+  {
+   "id": "sv_p_vadtycker",
+   "visual": "🤔❓",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Vad tycker du?"
+    }
+   ]
+  },
+  {
+   "id": "sv_v2_igar",
+   "visual": "⏪🐟",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Igår åt jag fisk."
+    }
+   ],
+   "note": "Verb second: after “Igår”, the verb comes before “jag”."
+  },
+  {
+   "id": "sv_v2_nu",
+   "visual": "▶️☕",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Nu dricker vi kaffe."
+    }
+   ]
+  },
+  {
+   "id": "sv_v2_imorgon",
+   "visual": "🌅🚆",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "I morgon reser hon till Malmö."
+    }
+   ]
+  },
+  {
+   "id": "sv_v2_lordag",
+   "visual": "📅⚽",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "På lördag spelar vi fotboll."
+    }
+   ]
+  },
+  {
+   "id": "sv_v2_ibland",
+   "visual": "🚿🎤",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Ibland sjunger han i duschen."
+    }
+   ]
+  },
+  {
+   "id": "sv_id_taket",
+   "visual": "👌🏠",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Ingen fara på taket!"
+    }
+   ],
+   "note": "“No danger on the roof”: no problem, don't worry."
+  },
+  {
+   "id": "sv_id_ko",
+   "visual": "🐄🧊👌",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Det är ingen ko på isen."
+    }
+   ],
+   "note": "“There's no cow on the ice”: no rush, it's fine."
+  },
+  {
+   "id": "sv_id_rakmacka",
+   "visual": "🦐🥪🛝",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Han gled in på en räkmacka."
+    }
+   ],
+   "note": "“Slid in on a shrimp sandwich”: got it easy, without effort."
+  },
+  {
+   "id": "sv_id_tystnad",
+   "visual": "🥈🤫🥇",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Tala är silver, tystnad är guld."
+    }
+   ],
+   "note": "Speech is silver, silence is gold."
+  },
+  {
+   "id": "sv_id_rabarber",
+   "visual": "🌿✋",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag lägger rabarber på den!"
+    }
+   ],
+   "note": "“Put rhubarb on it”: I call dibs."
+  },
+  {
+   "id": "sv_c_laget",
+   "visual": "👋😎",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Läget?"
+    }
+   ],
+   "note": "Very casual “how's it going?”"
+  },
+  {
+   "id": "sv_c_schysst",
+   "visual": "🤙",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Schysst!"
+    }
+   ],
+   "note": "Nice / cool / fair."
+  },
+  {
+   "id": "sv_c_loser",
+   "visual": "🧩✅",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Det löser sig."
+    }
+   ],
+   "note": "It'll work out."
+  },
+  {
+   "id": "sv_c_orka",
+   "visual": "😩",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Orka!"
+    }
+   ],
+   "note": "“Can't be bothered!”"
+  },
+  {
+   "id": "sv_c_lagom",
+   "visual": "⚖️",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Lagom är bäst."
+    }
+   ],
+   "note": "Not too much, not too little: very Swedish."
+  },
+  {
+   "id": "sv_sv_tack",
+   "visual": "🍽️🙏",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Tack för maten!"
+    }
+   ],
+   "note": "Always said after a meal at someone's home."
+  },
+  {
+   "id": "sv_sv_gott",
+   "visual": "😋",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Det var jättegott!"
+    }
+   ]
+  },
+  {
+   "id": "sv_sv_disken",
+   "visual": "🧽🍽️",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Kan jag hjälpa till med disken?"
+    }
+   ]
+  },
+  {
+   "id": "sv_sv_skorna",
+   "visual": "👟🚪",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Ska jag ta av mig skorna?"
+    }
+   ],
+   "note": "Shoes come off indoors in Sweden."
+  },
+  {
+   "id": "sv_sv_fint",
+   "visual": "🏡✨",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Vad fint ni har det!"
+    }
+   ]
+  },
+  {
+   "id": "sv_sv_bit",
+   "visual": "🍰➕",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Får jag ta en bit till?"
+    }
+   ]
+  },
+  {
+   "id": "sv_k_alskar",
+   "visual": "💖",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag älskar dig."
+    }
+   ]
+  },
+  {
+   "id": "sv_k_fin",
+   "visual": "😍",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Du är så fin."
+    }
+   ]
+  },
+  {
+   "id": "sv_k_saknar",
+   "visual": "🥺💭",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jag saknar dig."
+    }
+   ]
+  },
+  {
+   "id": "sv_k_godnatt",
+   "visual": "🌙😘",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "God natt, älskling."
+    }
+   ]
+  },
+  {
+   "id": "sv_k_dejt",
+   "visual": "🍷🕯️",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Ska vi gå på dejt?"
+    }
+   ]
+  },
+  {
+   "id": "sv_r_fart",
+   "visual": "🚓📸",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Fartkontroll!"
+    }
+   ],
+   "note": "“Fart” means speed."
+  },
+  {
+   "id": "sv_r_gift",
+   "visual": "💍☠️",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Gift"
+    }
+   ],
+   "note": "Means both “married” and “poison”."
+  },
+  {
+   "id": "sv_r_glass",
+   "visual": "🍦",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "En glass, tack!"
+    }
+   ],
+   "note": "“Glass” is ice cream; a drinking glass is “ett glas”."
+  },
+  {
+   "id": "sv_r_rolig",
+   "visual": "😂",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Vad roligt!"
+    }
+   ],
+   "note": "“Rolig” means fun, not rolling."
+  },
+  {
+   "id": "sv_r_slutspurt",
+   "visual": "🏃🏁",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Slutspurt!"
+    }
+   ],
+   "note": "“Slut” means end: the final sprint."
+  },
+  {
+   "id": "sv_m_glad",
+   "visual": "🌼",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Glad midsommar!"
+    }
+   ]
+  },
+  {
+   "id": "sv_m_grodorna",
+   "visual": "🐸💃",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Ska vi dansa små grodorna?"
+    }
+   ]
+  },
+  {
+   "id": "sv_m_jordgubbar",
+   "visual": "🍓🥛",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Jordgubbar med grädde."
+    }
+   ]
+  },
+  {
+   "id": "sv_m_sill",
+   "visual": "🐟🥔",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Sill och potatis."
+    }
+   ]
+  },
+  {
+   "id": "sv_m_blommor",
+   "visual": "💐",
+   "pos": "phrase",
+   "forms": [
+    {
+     "tag": "phrase",
+     "text": "Vi plockar blommor."
+    }
+   ]
   }
  ],
  "units": [
@@ -1646,13 +2263,15 @@
        {
         "text": "Bra, tack! Och du?",
         "next": null,
-        "fit": "ok"
+        "fit": "ok",
+        "register": "informal"
        },
        {
         "text": "Bra, tack! Och ni?",
         "next": null,
         "fit": "meh",
-        "feedback": "Correct, but “ni” to one person sounds old-fashioned. Since the 1970s du-reform, Swedes say “du” to almost everyone, elders included."
+        "feedback": "Correct, but “ni” to one person sounds old-fashioned. Since the 1970s du-reform, Swedes say “du” to almost everyone, elders included.",
+        "register": "formal"
        }
       ]
      }
@@ -1773,6 +2392,1391 @@
      ]
     }
    ]
+  },
+  {
+   "id": "verb1",
+   "title": "Igår & idag",
+   "visual": "⏪",
+   "lexicon_ids": [
+    "sv_ata",
+    "sv_dricka",
+    "sv_sova",
+    "sv_dansa"
+   ],
+   "grammar_focus": {
+    "contrast": [
+     "present",
+     "past"
+    ],
+    "rule": "Now ▶️ vs. already happened ⏪: dansar → dansade, äter → åt. Many common verbs change their vowel instead (dricker → drack, sover → sov)."
+   },
+   "mini_dialogues": [
+    {
+     "scene": "A friend asks about yesterday.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Vad gjorde du igår?",
+       "choices": [
+        {
+         "text": "Jag dansade hela kvällen!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Jag dansar hela kvällen!",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "That's now. For yesterday: dansade.",
+         "recast": "Du dansade? Vad kul!"
+        }
+       ],
+       "visual": "⏪💃"
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑",
+       "line": "Vad kul! Var du trött sen?",
+       "choices": [
+        {
+         "text": "Ja, jag sov länge idag.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Nej, inte alls!",
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ],
+     "id": "verb1_m1",
+     "requires": [
+      "sv_dansa",
+      "sv_sova"
+     ]
+    },
+    {
+     "scene": "Breakfast talk.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👩",
+       "line": "Åt du frukost idag?",
+       "choices": [
+        {
+         "text": "Ja, jag åt gröt.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Ja, jag äter gröt.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "That's now. Already happened: åt.",
+         "recast": "Du åt gröt? Gott!"
+        }
+       ],
+       "visual": "🥣"
+      }
+     ],
+     "id": "verb1_m2",
+     "requires": [
+      "sv_ata"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "Monday morning at work: your colleague asks about the weekend.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑‍💼",
+      "line": "Hej! Vad gjorde du i helgen?",
+      "choices": [
+       {
+        "text": "Jag sov länge och åt pannkakor.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Jag sover länge och äter pannkakor.",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Sounds like you're doing it right now. Weekend = past: sov, åt.",
+        "recast": "Du sov länge och åt pannkakor? Härligt!"
+       }
+      ],
+      "visual": "📅"
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑‍💼",
+      "line": "Drack du kaffe också?",
+      "choices": [
+       {
+        "text": "Ja, jag drack mycket kaffe!",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Ja, jag dricker kaffe.",
+        "next": "n3",
+        "fit": "meh",
+        "feedback": "Past: drack.",
+        "recast": "Du drack kaffe, ja!"
+       }
+      ],
+      "visual": "☕"
+     },
+     {
+      "id": "n3",
+      "speaker": "🧑‍💼",
+      "line": "Och på lördagskvällen?",
+      "choices": [
+       {
+        "text": "Då dansade vi!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Då dansar vi!",
+        "next": null,
+        "fit": "meh",
+        "feedback": "Past: dansade.",
+        "recast": "Ni dansade? Kul!"
+       }
+      ],
+      "visual": "🌙💃"
+     }
+    ]
+   }
+  },
+  {
+   "id": "verb2",
+   "title": "Helgen",
+   "visual": "🏖️",
+   "lexicon_ids": [
+    "sv_springa",
+    "sv_lasa",
+    "sv_simma",
+    "sv_sjunga"
+   ],
+   "grammar_focus": {
+    "contrast": [
+     "present",
+     "past"
+    ],
+    "rule": "Regular verbs add -de / -te in the past (simmar → simmade, läser → läste). Others change vowel: springer → sprang, sjunger → sjöng."
+   },
+   "mini_dialogues": [
+    {
+     "scene": "Book club.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👵",
+       "line": "Läste du boken?",
+       "choices": [
+        {
+         "text": "Ja, jag läste den igår.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Ja, jag läser den igår.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Igår → läste.",
+         "recast": "Du läste den igår? Bra!"
+        }
+       ],
+       "visual": "📖"
+      }
+     ],
+     "id": "verb2_m1",
+     "requires": [
+      "sv_lasa"
+     ]
+    },
+    {
+     "scene": "Back from holiday.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Vad gjorde du på semestern?",
+       "choices": [
+        {
+         "text": "Jag simmade och sprang varje dag.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Jag simmar och springer varje dag.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Holiday is over → simmade, sprang.",
+         "recast": "Du simmade och sprang? Vad duktig!"
+        }
+       ],
+       "visual": "🏖️"
+      }
+     ],
+     "id": "verb2_m2",
+     "requires": [
+      "sv_simma",
+      "sv_springa"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "The morning after a party.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "👧",
+      "line": "Sjöng du på festen igår?",
+      "choices": [
+       {
+        "text": "Ja, jag sjöng hela kvällen!",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Ja, jag sjunger hela kvällen!",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Igår → sjöng.",
+        "recast": "Du sjöng hela kvällen? Haha!"
+       }
+      ],
+      "visual": "🎤🎉"
+     },
+     {
+      "id": "n2",
+      "speaker": "👧",
+      "line": "Och sedan?",
+      "choices": [
+       {
+        "text": "Sedan sprang jag hem.",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Sedan läste jag en bok i sängen.",
+        "next": null,
+        "fit": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "asikter",
+   "title": "Åsikter",
+   "visual": "🤔",
+   "lexicon_ids": [
+    "sv_p_tyckerom",
+    "sv_p_gillarinte",
+    "sv_p_trott",
+    "sv_p_hungrig",
+    "sv_p_kul",
+    "sv_p_vadtycker"
+   ],
+   "mini_dialogues": [
+    {
+     "scene": "A friend wants to go out.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Ska vi gå ut ikväll?",
+       "choices": [
+        {
+         "text": "Nej tack, jag är trött.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Ja! Jag är hungrig.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Det var kul!",
+         "next": null,
+         "fit": "meh",
+         "feedback": "That's past: “it was fun”. Nothing has happened yet!"
+        }
+       ],
+       "visual": "🌃"
+      }
+     ],
+     "id": "asikter_m1",
+     "requires": [
+      "sv_p_trott",
+      "sv_p_hungrig"
+     ]
+    },
+    {
+     "scene": "Fika break.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑‍💼",
+       "line": "Vill du ha kaffe?",
+       "choices": [
+        {
+         "text": "Ja tack, jag tycker om kaffe.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Nej tack, jag gillar inte regn.",
+         "next": null,
+         "fit": "no",
+         "feedback": "Nothing to do with rain!"
+        }
+       ],
+       "visual": "☕"
+      }
+     ],
+     "id": "asikter_m2",
+     "requires": [
+      "sv_p_tyckerom",
+      "sv_p_gillarinte"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "A neighbour asks how you like Sweden.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "👵",
+      "line": "Vad tycker du om Sverige?",
+      "choices": [
+       {
+        "text": "Jag tycker om Sverige, men jag gillar inte regn!",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Jag är hungrig.",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Honest, but not an answer!"
+       }
+      ],
+      "visual": "🇸🇪"
+     },
+     {
+      "id": "n2",
+      "speaker": "👵",
+      "line": "Haha, ingen gillar regn. Var midsommar kul?",
+      "choices": [
+       {
+        "text": "Ja, det var kul!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Vad tycker du?",
+        "next": null,
+        "fit": "ok"
+       }
+      ],
+      "visual": "🌼"
+     }
+    ]
+   }
+  },
+  {
+   "id": "ordfoljd",
+   "title": "Ordföljd",
+   "visual": "🔀",
+   "lexicon_ids": [
+    "sv_v2_lordag",
+    "sv_v2_igar",
+    "sv_v2_nu",
+    "sv_v2_imorgon",
+    "sv_v2_ibland"
+   ],
+   "tip": "Swedish keeps the verb in 2nd place. Start with a time word and the subject jumps behind the verb: Jag åt fisk → Igår åt jag fisk.",
+   "mini_dialogues": [
+    {
+     "scene": "Planning the weekend.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Vad gör ni på lördag?",
+       "choices": [
+        {
+         "text": "På lördag spelar vi fotboll.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "På lördag vi spelar fotboll.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Verb second: På lördag spelar vi.",
+         "recast": "Ni spelar fotboll på lördag? Kul!"
+        }
+       ],
+       "visual": "📅⚽"
+      }
+     ],
+     "id": "ordfoljd_m1",
+     "requires": [
+      "sv_v2_lordag"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "Catching up with a friend.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑",
+      "line": "Vad åt du igår?",
+      "choices": [
+       {
+        "text": "Igår åt jag fisk.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Igår jag åt fisk.",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Verb second: Igår åt jag.",
+        "recast": "Du åt fisk igår? Gott!"
+       }
+      ],
+      "visual": "⏪🐟"
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑",
+      "line": "Och i morgon?",
+      "choices": [
+       {
+        "text": "I morgon reser jag till Malmö.",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "I morgon jag reser till Malmö.",
+        "next": null,
+        "fit": "meh",
+        "feedback": "Verb second: I morgon reser jag.",
+        "recast": "Du reser till Malmö i morgon? Trevlig resa!"
+       }
+      ],
+      "visual": "🌅🚆"
+     }
+    ]
+   }
+  },
+  {
+   "id": "idiom",
+   "title": "Idiom",
+   "visual": "🐄",
+   "lexicon_ids": [
+    "sv_id_ko",
+    "sv_id_rabarber",
+    "sv_id_taket",
+    "sv_id_tystnad",
+    "sv_id_rakmacka"
+   ],
+   "mini_dialogues": [
+    {
+     "scene": "A colleague panics.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑‍💼",
+       "line": "Oj, jag glömde mötet!",
+       "choices": [
+        {
+         "text": "Det är ingen ko på isen.",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Jag lägger rabarber på den!",
+         "next": null,
+         "fit": "no",
+         "feedback": "That means “I call dibs”. Not very helpful here!"
+        }
+       ],
+       "visual": "😱📅"
+      }
+     ],
+     "id": "idiom_m1",
+     "requires": [
+      "sv_id_ko",
+      "sv_id_rabarber"
+     ]
+    },
+    {
+     "scene": "Someone spilled coffee on your sofa.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Förlåt! Jag spillde kaffe!",
+       "choices": [
+        {
+         "text": "Ingen fara på taket!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Tala är silver, tystnad är guld.",
+         "next": null,
+         "fit": "meh",
+         "feedback": "That means “better to stay quiet”, a bit cold here."
+        }
+       ],
+       "visual": "☕🛋️"
+      }
+     ],
+     "id": "idiom_m2",
+     "requires": [
+      "sv_id_taket",
+      "sv_id_tystnad"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "Gossip at the office about a new boss.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑‍💼",
+      "line": "Den nya chefen fick jobbet utan intervju!",
+      "choices": [
+       {
+        "text": "Han gled in på en räkmacka.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Ingen fara på taket!",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Means “no problem”, but you're supposed to be gossiping!"
+       }
+      ],
+      "visual": "🧑‍💼🦐"
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑‍💼",
+      "line": "Och nu vill han ha hörnkontoret.",
+      "choices": [
+       {
+        "text": "Jag lägger rabarber på det först!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Tala är silver, tystnad är guld.",
+        "next": null,
+        "fit": "ok"
+       }
+      ],
+      "visual": "🏢"
+     }
+    ]
+   }
+  },
+  {
+   "id": "vardag",
+   "title": "Vardagssvenska",
+   "visual": "🤙",
+   "lexicon_ids": [
+    "sv_c_laget",
+    "sv_c_schysst",
+    "sv_c_loser",
+    "sv_c_orka",
+    "sv_c_lagom"
+   ],
+   "tip": "Real spoken Swedish is short and casual. These phrases are for friends, not job interviews.",
+   "mini_dialogues": [
+    {
+     "scene": "Running into a friend.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑",
+       "line": "Tjena! Läget?",
+       "choices": [
+        {
+         "text": "Schysst! Och du?",
+         "next": null,
+         "fit": "ok",
+         "register": "informal"
+        },
+        {
+         "text": "God dag, hur står det till?",
+         "next": null,
+         "fit": "meh",
+         "feedback": "Very formal for a friend, like a 1950s radio host.",
+         "register": "formal"
+        }
+       ],
+       "visual": "👋"
+      }
+     ],
+     "id": "vardag_m1",
+     "requires": [
+      "sv_c_laget",
+      "sv_c_schysst"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "Your flatmate on a Sunday.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑",
+      "line": "Ska vi städa idag?",
+      "choices": [
+       {
+        "text": "Orka!",
+        "next": "n2",
+        "fit": "ok",
+        "register": "informal"
+       },
+       {
+        "text": "Ja, gärna! Jag älskar att städa!",
+        "next": "n2",
+        "fit": "ok"
+       }
+      ],
+      "visual": "🧹"
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑",
+      "line": "Men vi har gäster i kväll…",
+      "choices": [
+       {
+        "text": "Det löser sig.",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Lagom är bäst.",
+        "next": "n3",
+        "fit": "meh",
+        "feedback": "Wise, but not an answer to the guests problem."
+       }
+      ],
+      "visual": "🍽️👥"
+     },
+     {
+      "id": "n3",
+      "speaker": "🧑",
+      "line": "Okej, vi städar lite. Lagom mycket.",
+      "choices": [
+       {
+        "text": "Schysst!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Lagom är bäst!",
+        "next": null,
+        "fit": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "svarmor",
+   "title": "Svärmor",
+   "visual": "👵",
+   "lexicon_ids": [
+    "sv_sv_skorna",
+    "sv_sv_fint",
+    "sv_sv_tack",
+    "sv_sv_gott",
+    "sv_sv_disken",
+    "sv_sv_bit"
+   ],
+   "mini_dialogues": [
+    {
+     "scene": "You arrive at your mother-in-law's door.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👵",
+       "line": "Välkommen! Kom in, kom in!",
+       "choices": [
+        {
+         "text": "Tack! Ska jag ta av mig skorna?",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Tack!",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "You walked in with your shoes on. In Sweden they come off indoors.",
+         "recast": "Skorna kan du ställa här, vännen."
+        }
+       ],
+       "visual": "🚪"
+      },
+      {
+       "id": "n2",
+       "speaker": "👵",
+       "line": "Här är tofflor till dig.",
+       "choices": [
+        {
+         "text": "Tack! Vad fint ni har det!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Tack så mycket!",
+         "next": null,
+         "fit": "ok"
+        }
+       ],
+       "visual": "🥿"
+      }
+     ],
+     "id": "svarmor_m1",
+     "requires": [
+      "sv_sv_skorna",
+      "sv_sv_fint"
+     ]
+    }
+   ],
+   "dialogue": {
+    "scene": "Sunday dinner at your mother-in-law's.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "👵",
+      "line": "Varsågoda, maten är klar!",
+      "choices": [
+       {
+        "text": "Tack! Det luktar jättegott.",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Äntligen!",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "A bit blunt for svärmor…"
+       }
+      ],
+      "visual": "🍲"
+     },
+     {
+      "id": "n2",
+      "speaker": "👵",
+      "line": "Har du ätit dig mätt?",
+      "choices": [
+       {
+        "text": "Ja tack, det var jättegott!",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Får jag ta en bit till?",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Nej.",
+        "next": "n3",
+        "fit": "meh",
+        "feedback": "Honest, but a little curt.",
+        "recast": "Nej? Då tar du lite till!"
+       }
+      ],
+      "visual": "🍽️"
+     },
+     {
+      "id": "n3",
+      "speaker": "👵",
+      "line": "Vill du ha kaffe och kaka?",
+      "choices": [
+       {
+        "text": "Gärna! Men först: kan jag hjälpa till med disken?",
+        "next": "n4",
+        "fit": "ok"
+       },
+       {
+        "text": "Ja!",
+        "next": "n4",
+        "fit": "ok"
+       }
+      ],
+      "visual": "☕🍰"
+     },
+     {
+      "id": "n4",
+      "speaker": "👵",
+      "line": "Åh, vad snäll du är!",
+      "choices": [
+       {
+        "text": "Tack för maten!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Det var så lite.",
+        "next": null,
+        "fit": "ok"
+       }
+      ]
+     }
+    ]
+   }
+  },
+  {
+   "id": "imse",
+   "title": "Imse vimse spindel",
+   "visual": "🕷️",
+   "song": {
+    "title": "Imse vimse spindel",
+    "lines": [
+     {
+      "text": "Imse vimse spindel klättrar upp för trån.",
+      "gap": "spindel",
+      "visual": "🕷️⬆️"
+     },
+     {
+      "text": "Ner faller regnet, spolar spindeln bort.",
+      "gap": "regnet",
+      "visual": "🌧️"
+     },
+     {
+      "text": "Upp stiger solen, torkar bort allt regn.",
+      "gap": "solen",
+      "visual": "☀️"
+     },
+     {
+      "text": "Imse vimse spindel klättrar upp igen.",
+      "gap": "igen",
+      "visual": "🕷️⬆️"
+     }
+    ]
+   }
+  },
+  {
+   "id": "baba",
+   "title": "Bä, bä, vita lamm",
+   "visual": "🐑",
+   "song": {
+    "title": "Bä, bä, vita lamm",
+    "lines": [
+     {
+      "text": "Bä, bä, vita lamm, har du någon ull?",
+      "gap": "lamm",
+      "visual": "🐑"
+     },
+     {
+      "text": "Ja, ja, kära barn, jag har säcken full.",
+      "gap": "full",
+      "visual": "🧺"
+     },
+     {
+      "text": "Helgdagsrock åt far och söndagskjol åt mor,",
+      "gap": "mor",
+      "visual": "🧥👗"
+     },
+     {
+      "text": "och två par strumpor åt lille, lille bror.",
+      "gap": "strumpor",
+      "visual": "🧦🧦"
+     }
+    ]
+   }
+  },
+  {
+   "id": "karlek",
+   "title": "Kärleksord",
+   "visual": "❤️",
+   "lexicon_ids": [
+    "sv_k_alskar",
+    "sv_k_saknar",
+    "sv_k_fin",
+    "sv_k_godnatt",
+    "sv_k_dejt"
+   ],
+   "dialogue": {
+    "scene": "Your partner comes home.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "💑",
+      "line": "Hej älskling! Jag är hemma!",
+      "choices": [
+       {
+        "text": "Hej! Jag saknar dig!",
+        "next": "n2",
+        "fit": "ok",
+        "register": "intimate"
+       },
+       {
+        "text": "Hej. Läget?",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "Pretty casual for a sweetheart…",
+        "register": "informal"
+       }
+      ],
+      "visual": "🏠"
+     },
+     {
+      "id": "n2",
+      "speaker": "💑",
+      "line": "Jag har saknat dig också. Ska vi gå på dejt ikväll?",
+      "choices": [
+       {
+        "text": "Ja! Du är så fin.",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Orka…",
+        "next": "n3",
+        "fit": "no",
+        "feedback": "Ouch. Maybe try again?"
+       }
+      ],
+      "visual": "🍷🕯️"
+     },
+     {
+      "id": "n3",
+      "speaker": "💑",
+      "line": "Och sen hem och sova…",
+      "choices": [
+       {
+        "text": "God natt, älskling.",
+        "next": null,
+        "fit": "ok",
+        "register": "intimate"
+       },
+       {
+        "text": "Jag älskar dig.",
+        "next": null,
+        "fit": "ok",
+        "register": "intimate"
+       }
+      ],
+      "visual": "🌙"
+     }
+    ]
+   },
+   "mini_dialogues": [
+    {
+     "id": "karlek_m1",
+     "requires": [
+      "sv_k_alskar",
+      "sv_k_saknar"
+     ],
+     "scene": "A phone call with your sweetheart who's away.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "💑",
+       "visual": "📱",
+       "line": "Hej! Jag är i Göteborg till fredag.",
+       "choices": [
+        {
+         "text": "Åh, jag saknar dig!",
+         "next": "n2",
+         "fit": "ok",
+         "register": "intimate"
+        },
+        {
+         "text": "Jag är hungrig.",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "Romantic it is not…"
+        }
+       ]
+      },
+      {
+       "id": "n2",
+       "speaker": "💑",
+       "visual": "💕",
+       "line": "Jag saknar dig också!",
+       "choices": [
+        {
+         "text": "Jag älskar dig.",
+         "next": null,
+         "fit": "ok",
+         "register": "intimate"
+        },
+        {
+         "text": "Hej då!",
+         "next": null,
+         "fit": "meh",
+         "feedback": "A bit abrupt after that!"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "roliga",
+   "title": "Roliga ord",
+   "visual": "🤡",
+   "lexicon_ids": [
+    "sv_r_glass",
+    "sv_r_rolig",
+    "sv_r_fart",
+    "sv_r_gift",
+    "sv_r_slutspurt"
+   ],
+   "dialogue": {
+    "scene": "A hot summer day with a friend.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "🧑",
+      "line": "Det är så varmt! Vill du ha en glass?",
+      "choices": [
+       {
+        "text": "Ja! En glass, tack!",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "Ett glas, tack!",
+        "next": "n2",
+        "fit": "meh",
+        "feedback": "That's a drinking glass. Ice cream is “en glass”.",
+        "recast": "Ett glas vatten? Okej… och en glass!"
+       }
+      ],
+      "visual": "☀️🍦"
+     },
+     {
+      "id": "n2",
+      "speaker": "🧑",
+      "line": "Titta, min kompis ska gifta sig! Hon blir gift i juni.",
+      "choices": [
+       {
+        "text": "Vad roligt!",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Fartkontroll!",
+        "next": null,
+        "fit": "no",
+        "feedback": "That's a speed camera warning. 🚓"
+       }
+      ],
+      "visual": "💍"
+     }
+    ]
+   },
+   "mini_dialogues": [
+    {
+     "id": "roliga_m1",
+     "requires": [
+      "sv_r_glass",
+      "sv_r_rolig"
+     ],
+     "scene": "At the ice-cream kiosk.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "🧑‍🍳",
+       "visual": "🍦",
+       "line": "Hej! Vad får det vara?",
+       "choices": [
+        {
+         "text": "En glass, tack!",
+         "next": "n2",
+         "fit": "ok"
+        },
+        {
+         "text": "Ett glas, tack!",
+         "next": "n2",
+         "fit": "meh",
+         "feedback": "That's a drinking glass. Ice cream is “en glass”.",
+         "recast": "Ett glas? Vi har bara glass här!"
+        }
+       ]
+      },
+      {
+       "id": "n2",
+       "speaker": "🧑‍🍳",
+       "line": "Varsågod! Den är gratis idag.",
+       "choices": [
+        {
+         "text": "Vad roligt!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "Tack så mycket!",
+         "next": null,
+         "fit": "ok"
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "midsommar",
+   "title": "Midsommar",
+   "visual": "🍓",
+   "lexicon_ids": [
+    "sv_m_glad",
+    "sv_m_jordgubbar",
+    "sv_m_grodorna",
+    "sv_m_sill",
+    "sv_m_blommor"
+   ],
+   "dialogue": {
+    "scene": "Midsummer party in the countryside.",
+    "start": "n1",
+    "nodes": [
+     {
+      "id": "n1",
+      "speaker": "👨‍🌾",
+      "line": "Glad midsommar! Välkommen!",
+      "choices": [
+       {
+        "text": "Glad midsommar!",
+        "next": "n2",
+        "fit": "ok"
+       },
+       {
+        "text": "God jul!",
+        "next": "n2",
+        "fit": "no",
+        "feedback": "Wrong holiday, that's Christmas! 🎄"
+       }
+      ],
+      "visual": "🌼"
+     },
+     {
+      "id": "n2",
+      "speaker": "👨‍🌾",
+      "line": "Vill du ha sill och potatis?",
+      "choices": [
+       {
+        "text": "Ja tack, gärna!",
+        "next": "n3",
+        "fit": "ok"
+       },
+       {
+        "text": "Nej tack, men jordgubbar med grädde, tack!",
+        "next": "n3",
+        "fit": "ok"
+       }
+      ],
+      "visual": "🐟🥔"
+     },
+     {
+      "id": "n3",
+      "speaker": "👨‍🌾",
+      "line": "Nu ska alla dansa runt stången!",
+      "choices": [
+       {
+        "text": "Ska vi dansa små grodorna?",
+        "next": null,
+        "fit": "ok"
+       },
+       {
+        "text": "Vi plockar blommor först!",
+        "next": null,
+        "fit": "ok"
+       }
+      ],
+      "visual": "🎋💃"
+     }
+    ]
+   },
+   "mini_dialogues": [
+    {
+     "id": "midsommar_m1",
+     "requires": [
+      "sv_m_glad",
+      "sv_m_jordgubbar"
+     ],
+     "scene": "Your neighbour waves over the fence on Midsummer Eve.",
+     "start": "n1",
+     "nodes": [
+      {
+       "id": "n1",
+       "speaker": "👩",
+       "visual": "🌼",
+       "line": "Glad midsommar! Vill du ha något gott?",
+       "choices": [
+        {
+         "text": "Glad midsommar! Jordgubbar med grädde, tack!",
+         "next": null,
+         "fit": "ok"
+        },
+        {
+         "text": "God jul!",
+         "next": null,
+         "fit": "no",
+         "feedback": "Wrong holiday, that's Christmas! 🎄"
+        }
+       ]
+      }
+     ]
+    }
+   ]
   }
- ]
+ ],
+ "courses": [
+  {
+   "id": "basics",
+   "title": "Grunderna",
+   "emoji": "🌱",
+   "tagline": "Your first 24 words: fika, animals, home and family.",
+   "level": "basic",
+   "unit_ids": [
+    "fika",
+    "djur",
+    "hemma",
+    "familj"
+   ]
+  },
+  {
+   "id": "intermediate",
+   "title": "Igår & idag",
+   "emoji": "⏪",
+   "tagline": "Talk about what you did, and what you think.",
+   "level": "intermediate",
+   "unit_ids": [
+    "verb1",
+    "verb2",
+    "asikter"
+   ]
+  },
+  {
+   "id": "hard",
+   "title": "Svenska på riktigt",
+   "emoji": "🔥",
+   "tagline": "Word order, idioms and how Swedes really talk. Text hidden, full speed.",
+   "level": "hard",
+   "unit_ids": [
+    "ordfoljd",
+    "idiom",
+    "vardag"
+   ]
+  },
+  {
+   "id": "mini_svarmor",
+   "title": "Svärmor",
+   "emoji": "👵",
+   "tagline": "Charm your mother-in-law at Sunday dinner.",
+   "level": "mini",
+   "price": 80,
+   "unit_ids": [
+    "svarmor"
+   ]
+  },
+  {
+   "id": "mini_sanger",
+   "title": "Barnsånger",
+   "emoji": "🎵",
+   "tagline": "Two classic children's songs, line by line.",
+   "level": "mini",
+   "price": 60,
+   "unit_ids": [
+    "imse",
+    "baba"
+   ]
+  },
+  {
+   "id": "mini_karlek",
+   "title": "Kärleksord",
+   "emoji": "❤️",
+   "tagline": "Sweet words for your sweetheart.",
+   "level": "mini",
+   "price": 60,
+   "unit_ids": [
+    "karlek"
+   ]
+  },
+  {
+   "id": "mini_roliga",
+   "title": "Roliga ord",
+   "emoji": "🤡",
+   "tagline": "False friends that will make you laugh.",
+   "level": "mini",
+   "price": 60,
+   "unit_ids": [
+    "roliga"
+   ]
+  },
+  {
+   "id": "mini_midsommar",
+   "title": "Midsommar",
+   "emoji": "🍓",
+   "tagline": "Herring, strawberries and dancing like a frog.",
+   "level": "mini",
+   "price": 100,
+   "unit_ids": [
+    "midsommar"
+   ]
+  }
+ ],
+ "characters": {
+  "🧑‍🍳": "Bosse",
+  "👵": "Birgitta",
+  "🧒": "Leo",
+  "👧": "Saga",
+  "🧑": "Kim",
+  "👩": "Anna",
+  "👨‍🌾": "Lars",
+  "🧑‍💼": "Maja",
+  "💑": "Älsklingen"
+ }
 }

@@ -33,7 +33,8 @@ describe('buildSession', () => {
   it('builds a valid session for the Punjabi demo pack', () => {
     const pa = PACKS[1];
     const steps = buildSession(pa, pa.units[0].id, emptyProgress(), { rng: seeded() });
-    expect(steps.some((s) => s.kind === 'minimal_pair')).toBe(true);
+    // no recorded audio yet → no tone drill (TTS can't produce the contrast)
+    expect(steps.some((s) => s.kind === 'minimal_pair')).toBe(false);
     expect(steps.at(-1)!.kind).toBe('dialogue');
   });
 });
@@ -85,8 +86,8 @@ describe('difficulty targeting (~85% success)', () => {
 
 describe('v2: shorter sessions and more conversations', () => {
   it('a first session is about half the old length (≤ 15 steps)', () => {
-    for (const u of sv.units) {
-      const steps = buildSession(sv, u.id, emptyProgress(), { rng: seeded(3) });
+    for (const id of sv.courses.find((c) => c.id === 'basics')!.unit_ids) {
+      const steps = buildSession(sv, id, emptyProgress(), { rng: seeded(3) });
       expect(steps.length).toBeLessThanOrEqual(15);
       expect(steps.filter((s) => s.kind === 'prime')[0]).toMatchObject({ lexIds: expect.any(Array) });
     }
@@ -120,5 +121,62 @@ describe('v2: shorter sessions and more conversations', () => {
   it('a missed speaking drill comes back as an easier format', () => {
     const r = mutateForRetry(sv, { kind: 'speak', lexId: 'sv_hund', tag: 'indef_sg' });
     expect(r.kind).toBe('tiles');
+  });
+});
+
+describe('v3: courses, mini-courses, songs', () => {
+  it('every course and unit builds a first session of at most 15 steps', () => {
+    for (const c of sv.courses)
+      for (const uid of c.unit_ids) {
+        const steps = buildSession(sv, uid, emptyProgress(), { rng: seeded(5) });
+        expect(steps.length, uid).toBeGreaterThan(2);
+        expect(steps.length, uid).toBeLessThanOrEqual(15);
+      }
+  });
+
+  it('has basic, intermediate, hard and at least 4 buyable mini-courses', () => {
+    const levels = sv.courses.map((c) => c.level);
+    expect(levels).toEqual(expect.arrayContaining(['basic', 'intermediate', 'hard']));
+    const minis = sv.courses.filter((c) => c.level === 'mini');
+    expect(minis.length).toBeGreaterThanOrEqual(4);
+    for (const m of minis) expect(m.price).toBeGreaterThan(0);
+  });
+
+  it('a song session is: each line with a gap to fill, then the whole song', () => {
+    const steps = buildSession(sv, 'imse', emptyProgress(), { rng: seeded(5) });
+    const unit = sv.units.find((u) => u.id === 'imse')!;
+    expect(steps.filter((s) => s.kind === 'song_line').length).toBe(unit.song!.lines.length);
+    expect(steps.at(-1)!.kind).toBe('song_full');
+    for (const s of steps)
+      if (s.kind === 'song_line') expect(s.options).toContain(unit.song!.lines[s.line].gap);
+  });
+
+  it('shows a word-order tip once for units without a two-form contrast', () => {
+    const first = buildSession(sv, 'ordfoljd', emptyProgress(), { rng: seeded(5) });
+    expect(first.some((s) => s.kind === 'rule')).toBe(true);
+    const later = buildSession(sv, 'ordfoljd', { ...emptyProgress(), rulesSeen: ['ordfoljd'] }, { rng: seeded(5) });
+    expect(later.some((s) => s.kind === 'rule')).toBe(false);
+  });
+
+  it('never runs a pitch-accent drill from text-to-speech alone', () => {
+    const steps = buildSession(sv, 'djur', emptyProgress(), { rng: seeded(5), accentAudio: true });
+    expect(steps.some((s) => s.kind === 'minimal_pair')).toBe(false);
+  });
+
+  it('verbs: structured input contrasts present and past', () => {
+    const steps = buildSession(sv, 'verb1', emptyProgress(), { rng: seeded(5) });
+    const si = steps.filter((s) => s.kind === 'structured') as { tags: string[] }[];
+    expect(si.length).toBeGreaterThan(0);
+    expect(si[0].tags).toEqual(['present', 'past']);
+  });
+});
+
+describe('every lesson ends in a conversation', () => {
+  it('the first session of every non-song unit ends with a dialogue', () => {
+    for (const u of sv.units) {
+      if (u.song) continue;
+      const steps = buildSession(sv, u.id, emptyProgress(), { rng: seeded(9) });
+      expect(steps.at(-1)!.kind, u.id).toBe('dialogue');
+    }
   });
 });

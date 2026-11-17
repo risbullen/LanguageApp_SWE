@@ -146,7 +146,17 @@ export function Rule({ step, onDone }: P<'rule'>) {
   const lex = useLex();
   const t = useText();
   const unit = pack.units.find((u) => u.id === step.unitId)!;
-  const gf = unit.grammar_focus!;
+  const gf = unit.grammar_focus;
+  if (!gf)
+    return (
+      <div className="exercise">
+        <p className="instruction">A quick tip.</p>
+        <div className="card rule">
+          <p>{unit.tip}</p>
+        </div>
+        <Continue onClick={() => onDone(null)} label="Got it" />
+      </div>
+    );
   const examples = unit.lexicon_ids
     .map((id) => lex.get(id)!)
     .filter((l) => gf.contrast.every((tag) => l.forms.some((f) => f.tag === tag)))
@@ -237,12 +247,18 @@ export function Tiles({ step, onDone }: P<'tiles'>) {
   const t = useText();
   const l = lex.get(step.lexId)!;
   const f = formOf(l, step.tag);
-  const target = useMemo(() => graphemes(t(f)), [f, t]);
+  // phrases are built from word tiles (sentence builder), single words from letters
+  const wordMode = t(f).trim().includes(' ');
+  const split = (s: string) => (wordMode ? s.trim().split(/\s+/) : graphemes(s));
+  const target = useMemo(() => split(t(f)), [f, t]); // eslint-disable-line react-hooks/exhaustive-deps
   const tiles = useMemo(() => {
-    // distractors: letters from other words in the pack that aren't in this word
+    // distractors: pieces of other words/phrases in the pack that aren't in this one
     const pool = new Set<string>();
-    for (const o of pack.lexicon) if (o.id !== l.id) for (const g of graphemes(t(o.forms[0]))) if (!target.includes(g)) pool.add(g);
-    const extra = [...pool].sort(() => Math.random() - 0.5).slice(0, 2);
+    const lower = new Set(target.map((x) => x.toLowerCase()));
+    for (const o of pack.lexicon)
+      if (o.id !== l.id && (o.pos === 'phrase') === (l.pos === 'phrase'))
+        for (const g of split(t(o.forms[0]))) if (!lower.has(g.toLowerCase())) pool.add(g);
+    const extra = [...pool].sort(() => Math.random() - 0.5).slice(0, wordMode ? 1 : 2);
     return [...target, ...extra].map((g, i) => ({ g, i })).sort(() => Math.random() - 0.5);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [step.key]);
@@ -254,20 +270,21 @@ export function Tiles({ step, onDone }: P<'tiles'>) {
     const next = [...placed, i];
     setPlaced(next);
     if (next.length === target.length) {
-      const word = next.map((k) => tiles.find((x) => x.i === k)!.g).join('');
-      setResult(word === target.join(''));
+      const sep = wordMode ? ' ' : '';
+      const word = next.map((k) => tiles.find((x) => x.i === k)!.g).join(sep);
+      setResult(word === target.join(sep));
     }
   };
   const unplace = (k: number) => result === null && setPlaced(placed.filter((_, idx) => idx !== k));
 
   return (
     <div className="exercise">
-      <p className="instruction">Build the word.</p>
+      <p className="instruction">{wordMode ? 'Put the words in order.' : 'Build the word.'}</p>
       <div className="center">
         <Visual size="lg">{formVisual(pack, l, step.tag)}</Visual>
         <SpeakerButton audioId={audioId(l.id, step.tag)} text={f.text} />
       </div>
-      <div className="slots" data-script={script} dir={script === 'Shahmukhi' ? 'rtl' : 'ltr'}>
+      <div className={`slots ${wordMode ? "words" : ""}`} data-script={script} dir={script === 'Shahmukhi' ? 'rtl' : 'ltr'}>
         {target.map((_, k) => {
           const tile = placed[k] !== undefined ? tiles.find((x) => x.i === placed[k]) : undefined;
           return (

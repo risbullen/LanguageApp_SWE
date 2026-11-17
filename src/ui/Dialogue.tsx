@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import type { Step } from '../engine/session';
 import { useApp } from '../ctx';
-import { Continue, PushToTalk, ScriptText, SpeakerButton, usePlayer, useText } from './common';
+import { Continue, PushToTalk, ScriptText, SpeakerButton, TapWords, usePlayer, useText } from './common';
 import type { Done } from './exercises';
 import { speak } from '../audio/tts';
 import { recognitionSupported, type ListenResult } from '../audio/listen';
@@ -16,6 +16,7 @@ interface Line {
   speaker?: string;
   note?: string;
   heard?: string;
+  register?: string;
   fit?: 'ok' | 'meh' | 'no';
 }
 
@@ -50,7 +51,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
   const choose = async (i: number, heard?: string) => {
     const c = node!.choices[i];
     setMiss(null);
-    const me: Line = { who: 'me', text: c.text, shown: t(c), audio: `${nodeAudio(node!.id)}.${i}`, note: c.feedback, fit: c.fit, heard };
+    const me: Line = { who: 'me', text: c.text, shown: t(c), audio: `${nodeAudio(node!.id)}.${i}`, note: c.feedback, fit: c.fit, heard, register: c.register };
     setLog((l) => [...l, me]);
     if (c.recast) {
       // the interlocutor reformulates correctly, as a real person would (corrective recast)
@@ -93,10 +94,16 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
                     Show text
                   </button>
                 ) : (
-                  <ScriptText script={script}>{line.shown}</ScriptText>
+                  <>
+                    {line.who === 'them' && pack.characters[line.speaker ?? dlg.nodes[0].speaker] && (
+                      <span className="speaker-name">{pack.characters[line.speaker ?? dlg.nodes[0].speaker]}</span>
+                    )}
+                    {line.who === 'them' ? <TapWords text={line.shown} /> : <ScriptText script={script}>{line.shown}</ScriptText>}
+                  </>
                 )}
                 {line.who === 'them' && <SpeakerButton audioId={line.audio} text={line.text} />}
                 {line.heard && <p className="bubble-note">🎤 “{line.heard}”</p>}
+                {line.register && <span className="register-tag">{line.register}</span>}
                 {line.note && <p className="bubble-note">{line.note}</p>}
               </div>
             </div>

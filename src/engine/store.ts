@@ -10,6 +10,9 @@ export interface Progress {
   sessions: Record<string, number>; // unit id → completed sessions
   dialogues: Record<string, number>; // dialogue id → times completed
   xp: number;
+  coins: number; // earned by learning, spent on mini-courses
+  owned: string[]; // bought mini-course ids
+  daily: { day: string; xp: number }; // today's XP for the daily goal (no streak to lose)
 }
 
 export interface Settings {
@@ -45,10 +48,24 @@ export const emptyProgress = (): Progress => ({
   sessions: {},
   dialogues: {},
   xp: 0,
+  coins: 150,
+  owned: [],
+  daily: { day: '', xp: 0 },
 });
 
 /** Light progress points (no coins, no streaks). 200 XP per level. */
 export const XP = { firstTry: 10, retry: 5, dialogue: 15, session: 20 };
+export const COINS = { session: 10, dialogue: 5 };
+export const DAILY_GOAL = 50;
+
+/** Today's XP so far (resets each day). */
+export const todayXp = (p: Progress, now = new Date()) => (p.daily.day === dayKey(now) ? p.daily.xp : 0);
+
+/** Buy a mini-course. Returns the new progress, or null if not enough coins / already owned. */
+export function buyCourse(p: Progress, courseId: string, price: number): Progress | null {
+  if (p.owned.includes(courseId) || p.coins < price) return null;
+  return { ...p, coins: p.coins - price, owned: [...p.owned, courseId] };
+}
 export const levelOf = (xp: number) => ({ level: Math.floor(xp / 200) + 1, into: xp % 200, per: 200 });
 
 function reviveCard(c: Card): Card {
