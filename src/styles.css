@@ -1352,10 +1352,10 @@ mark {
   letter-spacing: 0.08em;
   color: var(--accent-text);
 }
-.level-intermediate .course-level {
+.level-A2 .course-level {
   color: var(--purple);
 }
-.level-hard .course-level {
+.level-C1 .course-level {
   color: var(--learner);
 }
 .level-mini .course-level {
@@ -1744,4 +1744,69 @@ mark {
   letter-spacing: 0;
   display: block;
   margin-top: 4px;
+}
+.journey-seg.soon {
+  background: repeating-linear-gradient(135deg, var(--surface-2) 0 6px, transparent 6px 12px);
+}
+.journey-labels > span > span {
+  white-space: nowrap;
+}
+.spoken-form {
+  margin: 2px 0 0;
+  font-size: 0.85rem;
+  opacity: 0.75;
+  width: 100%;
+}
+/* speaking sprint */
+.sprint-pictures {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 10px;
+}
+.sprint-pic {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 2.2rem;
+  background: var(--surface);
+  border: 2px solid var(--line);
+  border-radius: 16px;
+  padding: 8px 10px 4px;
+  min-width: 84px;
+}
+.sprint-pic .faint {
+  font-size: 0.8rem;
+}
+.sprint-timer {
+  font-size: 3.2rem;
+  font-weight: 800;
+  text-align: center;
+  color: var(--good);
+  font-variant-numeric: tabular-nums;
+}
+.sprint-timer.low {
+  color: var(--fix);
+}
+.sprint-live {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 10px 14px;
+  min-height: 3em;
+  font-size: 1.05rem;
+}
+.sprint-stat {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: var(--good);
+}
+.sprint-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.sprint-table th,
+.sprint-table td {
+  text-align: left;
+  padding: 6px 4px;
+  border-bottom: 1px solid var(--line);
 }

@@ -183,6 +183,72 @@
        "Latin": "koṛā"
       }
      }
+    ],
+    [
+     {
+      "id": "mp_ghar",
+      "text": "ਘਰ",
+      "alt": {
+       "Shahmukhi": "گھر",
+       "Latin": "ghar"
+      },
+      "visual": "🏠",
+      "label": "low tone (ਘ)"
+     },
+     {
+      "id": "mp_kar",
+      "text": "ਕਰ",
+      "alt": {
+       "Shahmukhi": "کر",
+       "Latin": "kar"
+      },
+      "visual": "🛠️",
+      "label": "level tone (ਕ)"
+     }
+    ],
+    [
+     {
+      "id": "mp_taal",
+      "text": "ਤਾਲ",
+      "alt": {
+       "Shahmukhi": "تال",
+       "Latin": "tāl"
+      },
+      "visual": "🥁",
+      "label": "dental ਤ (tongue on teeth)"
+     },
+     {
+      "id": "mp_ttaal",
+      "text": "ਟਾਲ",
+      "alt": {
+       "Shahmukhi": "ٹال",
+       "Latin": "ṭāl"
+      },
+      "visual": "⏳",
+      "label": "retroflex ਟ (tongue curled back)"
+     }
+    ],
+    [
+     {
+      "id": "mp_paka",
+      "text": "ਪਕਾ",
+      "alt": {
+       "Shahmukhi": "پکا",
+       "Latin": "pakā"
+      },
+      "visual": "🍳",
+      "label": "single k"
+     },
+     {
+      "id": "mp_pakka",
+      "text": "ਪੱਕਾ",
+      "alt": {
+       "Shahmukhi": "پکّا",
+       "Latin": "pakkā"
+      },
+      "visual": "✅",
+      "label": "double k (ੱ)"
+     }
     ]
    ],
    "dialogue": {
@@ -196,10 +262,10 @@
        "Shahmukhi": "ست سری اکال پتر!",
        "Latin": "sat srī akāl putt!"
       },
-      "line": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ ਪੁੱਤ!",
+      "line": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਪੁੱਤ!",
       "choices": [
        {
-        "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ ਜੀ! ਤੁਸੀਂ ਕਿਵੇਂ ਹੋ?",
+        "text": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ ਜੀ! ਤੁਸੀਂ ਕਿਵੇਂ ਹੋ?",
         "alt": {
          "Shahmukhi": "ست سری اکال جی! تسیں کیویں ہو؟",
          "Latin": "sat srī akāl jī! tusīṅ kiveṅ ho?"
@@ -210,7 +276,7 @@
         "en": "Hello (respectful)! How are you?"
        },
        {
-        "text": "ਸਤ ਸ੍ਰੀ ਅਕਾਲ! ਤੂੰ ਕਿਵੇਂ ਹੈਂ?",
+        "text": "ਸਤਿ ਸ੍ਰੀ ਅਕਾਲ! ਤੂੰ ਕਿਵੇਂ ਹੈਂ?",
         "alt": {
          "Shahmukhi": "ست سری اکال! توں کیویں ہیں؟",
          "Latin": "sat srī akāl! tūṅ kiveṅ haiṅ?"
@@ -308,11 +374,11 @@
  ],
  "courses": [
   {
-   "id": "basics",
+   "id": "a1",
    "title": "ਪਹਿਲੇ ਕਦਮ",
    "emoji": "🌱",
    "tagline": "Demo: five first words and greeting an elder.",
-   "level": "basic",
+   "level": "A1",
    "unit_ids": [
     "pehle"
    ]

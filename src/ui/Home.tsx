@@ -4,7 +4,14 @@ import { courseProgress, unitProgress } from '../engine/progress';
 import { useApp } from '../ctx';
 import { versionLabel } from '../version';
 
-const LEVEL_LABEL: Record<Course['level'], string> = { basic: 'Basics', intermediate: 'Intermediate', hard: 'Hard', mini: 'Mini-course' };
+const LEVEL_LABEL: Record<Course['level'], string> = {
+  A1: 'A1 · Spoken core',
+  A2: 'A2 · Grammar in action',
+  B1: 'B1 · Stories',
+  B2: 'B2 · News',
+  C1: 'C1 · Nuance',
+  mini: 'Mini-course',
+};
 
 function Ring({ value, size = 76, children }: { value: number; size?: number; children: React.ReactNode }) {
   const r = size / 2 - 5;
@@ -32,7 +39,7 @@ export function Home({
   onShop: () => void;
 }) {
   const { pack, progress } = useApp();
-  const available = pack.courses.filter((c) => c.level !== 'mini' || progress.owned.includes(c.id));
+  const available = pack.courses.filter((c) => !c.coming_soon && (c.level !== 'mini' || progress.owned.includes(c.id)));
   const course = available.find((c) => c.id === courseId) ?? available[0];
   const units = course.unit_ids.map((id) => pack.units.find((u) => u.id === id)!);
   const lvl = levelOf(progress.xp);
@@ -135,44 +142,49 @@ export function Home({
 }
 
 const STAGES = [
-  { id: 'basics', label: 'Beginner', emoji: '🌱' },
-  { id: 'intermediate', label: 'Intermediate', emoji: '⏪' },
-  { id: 'hard', label: 'Advanced', emoji: '🔥' },
-];
+  { level: 'A1', label: 'A1' },
+  { level: 'A2', label: 'A2' },
+  { level: 'B1', label: 'B1' },
+  { level: 'B2', label: 'B2' },
+  { level: 'C1', label: 'C1' },
+] as const;
 
-/** One bar, three stages: how far through Beginner → Intermediate → Advanced you are. */
+/** One bar, five stages (A1 → C1): how far through the whole curriculum you are. */
 function Journey() {
   const { pack, progress } = useApp();
-  const stages = STAGES.filter((s) => pack.courses.some((c) => c.id === s.id)).map((s) => ({ ...s, p: courseProgress(pack, progress, s.id) }));
+  const stages = STAGES.map((s) => {
+    const course = pack.courses.find((c) => c.level === s.level);
+    return { ...s, course, p: course ? courseProgress(pack, progress, course.id) : null };
+  }).filter((s) => s.course);
   if (!stages.length) return null;
   return (
     <section className="journey" aria-label="Your journey">
       <div className="journey-head">
         <span>Your journey</span>
       </div>
-      <div className="journey-bar">
+      <div className="journey-bar" style={{ gridTemplateColumns: `repeat(${stages.length}, 1fr)` }}>
         {stages.map((s) => (
           <div
-            key={s.id}
-            className="journey-seg"
+            key={s.level}
+            className={`journey-seg ${s.course!.coming_soon ? 'soon' : ''}`}
             role="progressbar"
-            aria-label={`${s.label}: ${s.p.wordsSeen} of ${s.p.words} words`}
-            aria-valuenow={Math.round(s.p.seen * 100)}
+            aria-label={s.course!.coming_soon ? `${s.label}: coming soon` : `${s.label}: ${s.p!.wordsSeen} of ${s.p!.words} words`}
+            aria-valuenow={Math.round((s.p?.seen ?? 0) * 100)}
             aria-valuemin={0}
             aria-valuemax={100}
           >
-            <span className="seen" style={{ width: `${s.p.seen * 100}%` }} />
-            <span className="stable" style={{ width: `${s.p.stable * 100}%` }} />
+            <span className="seen" style={{ width: `${(s.p?.seen ?? 0) * 100}%` }} />
+            <span className="stable" style={{ width: `${(s.p?.stable ?? 0) * 100}%` }} />
           </div>
         ))}
       </div>
-      <div className="journey-labels">
+      <div className="journey-labels" style={{ gridTemplateColumns: `repeat(${stages.length}, 1fr)` }}>
         {stages.map((s) => (
-          <span key={s.id}>
-            <span aria-hidden="true">{s.emoji}</span> {s.label}
-            <small>
-              {s.p.wordsSeen}/{s.p.words}
-            </small>
+          <span key={s.level}>
+            <span>
+              <span aria-hidden="true">{s.course!.emoji}</span> {s.label}
+            </span>
+            <small>{s.course!.coming_soon ? 'soon' : `${s.p!.wordsSeen}/${s.p!.words}`}</small>
           </span>
         ))}
       </div>

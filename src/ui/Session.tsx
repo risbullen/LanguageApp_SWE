@@ -11,6 +11,7 @@ import { Article, Cloze, ListenPick, MinimalPair, Prime, Rule, Structured, Tiles
 import { Speak } from './Speak';
 import { Dialogue } from './Dialogue';
 import { SongFull, SongLine } from './Song';
+import { Fluency } from './Fluency';
 import { lexMap } from '../content/index';
 
 const buzz = (ms: number) => {
@@ -31,7 +32,7 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
   const app = useApp();
   const { pack, progress, setProgress, settings } = app;
   const course = pack.courses.find((c) => c.unit_ids.includes(unitId));
-  const hard = course?.level === 'hard';
+  const hard = course?.level === 'C1' || course?.level === 'B2';
   // Hard courses: text hidden until asked for, natural speed
   const ctx = useMemo(
     () => (hard ? { ...app, settings: { ...settings, mode: 'associative' as const, rate: Math.max(settings.rate, 1) } } : app),
@@ -132,10 +133,17 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
       if (correct && !step.retry) o.ratings.push(ratingFromLatency(step.kind, Date.now() - shownAt.current));
       if (!correct) {
         o.lapsed = true;
-        // sticky buffer: comes back a few items later, in a different format
-        q = insertRetry(queue, i, mutateForRetry(pack, step));
-        setQueue(q);
+        // sticky buffer: comes back a few items later, in a different format, at most once
+        // per session (a second miss is left to the long-term scheduler, no endless loops)
+        if (!step.retry) {
+          q = insertRetry(queue, i, mutateForRetry(pack, step));
+          setQueue(q);
+        }
       }
+    }
+    if (step.kind === 'fluency') {
+      xp.current += XP.dialogue;
+      coins.current += COINS.dialogue;
     }
     if (step.kind === 'dialogue') {
       dialoguesDone.current.push(step.dialogueId ?? `${step.unitId}:capstone`);
@@ -218,6 +226,7 @@ export function Session({ unitId, onExit }: { unitId: string; onExit: () => void
           {step.kind === 'dialogue' && <Dialogue {...props} />}
           {step.kind === 'song_line' && <SongLine {...props} />}
           {step.kind === 'song_full' && <SongFull {...props} />}
+          {step.kind === 'fluency' && <Fluency {...props} />}
         </main>
       </div>
     </Ctx.Provider>

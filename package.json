@@ -1,6 +1,6 @@
 {
   "name": "language-app",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "Evidence-based language learning prototype: English → Swedish, Punjabi-ready",
   "scripts": {
     "dev": "vite",

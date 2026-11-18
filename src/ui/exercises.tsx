@@ -42,6 +42,7 @@ function Reveal({ lex, tag, correct, onDone, extra }: { lex: Lexeme; tag: string
             <SpeakerButton audioId={audioId(lex.id, tag)} text={f.text} auto />
           </div>
         )}
+        {f.spoken && <p className="spoken-form">🗣️ Casual: {f.spoken}</p>}
         <English text={f.en} />
         <Details lex={lex} form={f} />
         {extra}
@@ -218,7 +219,7 @@ export function MinimalPair({ step, onDone }: P<'minimal_pair'>) {
   const { play } = usePlayer();
   return (
     <div className="exercise">
-      <p className="instruction">Same letters, different melody. Which one is it?</p>
+      <p className="instruction">Two words that sound almost the same. Which one do you hear?</p>
       <div className="center">
         <SpeakerButton audioId={target.id} text={target.text} auto />
       </div>
@@ -233,7 +234,7 @@ export function MinimalPair({ step, onDone }: P<'minimal_pair'>) {
           );
         })}
       </div>
-      <p className="hint">Browser voices often get word melody wrong. For this drill, record a native speaker under Recordings.</p>
+      <p className="hint">Listen closely: only the sound differs (vowel length, tone or tongue position).</p>
       {picked !== null && (
         <>
           <div className={`reveal ${picked === step.answer ? 'good' : 'fix'}`} role="status">

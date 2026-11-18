@@ -53,13 +53,18 @@ function matchOne(target: string, transcript: string): MatchResult {
   return { score: words.length ? words.filter((w) => w.ok).length / words.length : 0, words, heard: transcript };
 }
 
-/** Best match over all recognition alternatives. */
-export function matchSpeech(target: string, transcripts: string[]): MatchResult {
-  let best: MatchResult = { score: 0, words: normalize(target).map((word) => ({ word, ok: false })), heard: transcripts[0] ?? '' };
-  for (const tr of transcripts) {
-    const m = matchOne(target, tr);
-    if (m.score > best.score) best = m;
-  }
+/**
+ * Best match over all recognition alternatives. `target` may list several acceptable
+ * forms (written + casual spoken, e.g. "Jag är trött" / "Ja e trött"): the best one counts.
+ */
+export function matchSpeech(target: string | string[], transcripts: string[]): MatchResult {
+  const targets = (Array.isArray(target) ? target : [target]).filter(Boolean);
+  let best: MatchResult = { score: 0, words: normalize(targets[0] ?? '').map((word) => ({ word, ok: false })), heard: transcripts[0] ?? '' };
+  for (const t of targets)
+    for (const tr of transcripts) {
+      const m = matchOne(t, tr);
+      if (m.score > best.score) best = m;
+    }
   return best;
 }
 
@@ -69,7 +74,7 @@ export function passes(m: MatchResult): boolean {
 }
 
 /** Which of several possible answers did the learner say? null if none clearly. */
-export function pickChoice(choices: string[], transcripts: string[]): { index: number; match: MatchResult } | null {
+export function pickChoice(choices: (string | string[])[], transcripts: string[]): { index: number; match: MatchResult } | null {
   const scored = choices.map((c, index) => ({ index, match: matchSpeech(c, transcripts) }));
   scored.sort((a, b) => b.match.score - a.match.score);
   const [first, second] = scored;
@@ -77,9 +82,10 @@ export function pickChoice(choices: string[], transcripts: string[]): { index: n
   // if two answers are equally good (e.g. "En kaka" vs "Ett kaka"), prefer the exact-ish one
   if (second && second.match.score === first.match.score) {
     const exact = scored.filter((s) => s.match.score === first.match.score);
+    const primary = (c: string | string[]) => (Array.isArray(c) ? c[0] : c);
     const best = exact.reduce((a, b) =>
-      levenshtein(normalize(choices[a.index]).join(' '), normalize(a.match.heard).join(' ')) <=
-      levenshtein(normalize(choices[b.index]).join(' '), normalize(b.match.heard).join(' '))
+      levenshtein(normalize(primary(choices[a.index])).join(' '), normalize(a.match.heard).join(' ')) <=
+      levenshtein(normalize(primary(choices[b.index])).join(' '), normalize(b.match.heard).join(' '))
         ? a
         : b,
     );

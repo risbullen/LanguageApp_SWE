@@ -138,7 +138,8 @@ export function listen(lang: string, onPartial?: (t: string) => void, onStart?: 
       ended = true;
       const recorder = await recorderP;
       const recording = recorder ? await recorder.stop() : null;
-      const transcripts = finals.length ? finals : partial ? [partial] : [];
+      // an empty "final" result means nothing was heard: treat it as no speech, not as a wrong answer
+      const transcripts = (finals.length ? finals : partial ? [partial] : []).map((x) => x.trim()).filter(Boolean);
       resolve({
         transcripts,
         recording,
@@ -173,4 +174,70 @@ export function playBlob(blob: Blob): Promise<void> {
     a.onerror = done;
     a.play().catch(done);
   });
+}
+
+/**
+ * Continuous listening for a timed speaking round. Android ends recognition after a
+ * short silence, so it restarts automatically until stop() is called. No recorder.
+ */
+export function listenContinuous(lang: string, onText: (text: string) => void): { stop: () => Promise<string> } {
+  const C = Ctor();
+  const finals: string[] = [];
+  let partial = '';
+  let active = true;
+  let rec: Rec | null = null;
+  let endedResolve: (() => void) | null = null;
+  const emit = () => onText([...finals, partial].filter(Boolean).join(' '));
+
+  const startOne = () => {
+    if (!C || !active) return;
+    const r = new C();
+    rec = r;
+    r.lang = lang;
+    r.interimResults = true;
+    r.maxAlternatives = 1;
+    r.continuous = true;
+    r.onresult = (e) => {
+      partial = '';
+      for (let i = 0; i < e.results.length; i++) {
+        const res = e.results[i];
+        if (res.isFinal) {
+          // continuous mode re-reports earlier finals on some browsers: keep each once
+          const t = res[0].transcript.trim();
+          if (t && finals[finals.length - 1] !== t) finals.push(t);
+        } else partial += res[0].transcript;
+      }
+      emit();
+    };
+    r.onerror = () => {
+      /* no-speech etc.: just restart on end */
+    };
+    r.onend = () => {
+      if (partial) finals.push(partial.trim());
+      partial = '';
+      if (active) setTimeout(startOne, 120);
+      else endedResolve?.();
+    };
+    try {
+      r.start();
+    } catch {
+      /* ignore */
+    }
+  };
+  startOne();
+
+  return {
+    stop: () =>
+      new Promise((resolve) => {
+        active = false;
+        const done = () => resolve([...finals, partial].filter(Boolean).join(' '));
+        endedResolve = done;
+        try {
+          rec?.stop();
+        } catch {
+          done();
+        }
+        setTimeout(done, 1500); // safety net
+      }),
+  };
 }

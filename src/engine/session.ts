@@ -21,7 +21,11 @@ export type Exercise =
   | { kind: 'speak'; lexId: string; tag: string }
   | { kind: 'dialogue'; unitId: string; dialogueId?: string } // no id = the unit's capstone
   | { kind: 'song_line'; line: number; options: string[] } // hear a line, fill the missing word
-  | { kind: 'song_full' }; // whole song, karaoke-style
+  | { kind: 'song_full' } // whole song, karaoke-style
+  | { kind: 'fluency' }; // speaking sprint: same talk 3×, 60 → 45 → 30 s (Nation's 4-3-2)
+
+/** Speaking-sprint round lengths for A1/A2 learners (the 4:3:2 ratio, scaled down). */
+export const FLUENCY_ROUNDS = [60, 45, 30] as const;
 
 export type Step = Exercise & { key: string; retry?: boolean; unitId: string };
 
@@ -173,7 +177,9 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
       const l = lex.get(id)!;
       return (introduced.has(id) || fresh.includes(id)) && gf.contrast.every((t) => l.forms.some((f) => f.tag === t));
     });
-    for (const id of sample(cands, 2, rng))
+    // a sound-pair drill also counts as language focus, so keep grammar focus to one item then
+    const hasPair = (unit.minimal_pairs ?? []).some((p) => p[0].text !== p[1].text);
+    for (const id of sample(cands, hasPair ? 1 : 2, rng))
       ex.push({ kind: 'structured', lexId: id, tags: gf.contrast, answer: rng() < 0.5 ? 0 : 1 });
     if (cands.length && !progress.rulesSeen.includes(unit.id)) ex.push({ kind: 'rule', unitId: unit.id });
   } else if (unit.tip && !progress.rulesSeen.includes(unit.id)) {
@@ -182,10 +188,12 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
 
   // pitch accent / tone minimal pairs (perception before production)
   // (one pair per session, and only with a voice that can actually produce the accent)
-  // Text-to-speech says both sides of a pair identically, so only pairs with real recordings.
-  const recorded = (unit.minimal_pairs ?? []).map((p, i) => [p, i] as const).filter(([p]) => p.every((side) => side.audio));
-  if (accentAudio && recorded.length)
-    ex.push({ kind: 'minimal_pair', pair: recorded[Math.floor(rng() * recorded.length)][1], answer: rng() < 0.5 ? 0 : 1 });
+  // Sound pairs. Pairs spelled differently (väg/vägg, ਘਰ/ਕਰ) can be voiced by text-to-speech;
+  // pairs spelled the same (anden/anden: pitch accent) need real recordings.
+  const usable = (unit.minimal_pairs ?? [])
+    .map((p, i) => [p, i] as const)
+    .filter(([p]) => (p[0].text !== p[1].text ? true : accentAudio && p.every((side) => side.audio)));
+  if (usable.length) ex.push({ kind: 'minimal_pair', pair: usable[Math.floor(rng() * usable.length)][1], answer: rng() < 0.5 ? 0 : 1 });
 
   // reviews, format chosen by memory stability + recent success
   for (const id of due) {
@@ -221,6 +229,9 @@ export function buildSession(pack: Pack, unitId: string, progress: Progress, opt
   // 4 · speaking: every new word is said out loud (or two review words)
   const speakPool = fresh.length ? shuffle(fresh, rng) : sample(due, 2, rng);
   for (const id of speakPool) ex.push({ kind: 'speak', lexId: id, tag: firstForm(lex.get(id)!).tag });
+
+  // fluency: once every word of the unit is known, a timed speaking sprint (no corrections)
+  if (capstoneReady && unit.lexicon_ids.length >= 4) ex.push({ kind: 'fluency' });
 
   // 6 · end with a conversation
   if (endDialogue) ex.push(endDialogue);

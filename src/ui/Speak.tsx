@@ -49,7 +49,7 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
     if (r.error === 'network') return setProblem(`Speech recognition needs an internet connection${code}.`);
     if (r.error) return setProblem(`That didn’t work${code}. Try again.`);
     setProblem(null);
-    const m = matchSpeech(f.text, r.transcripts);
+    const m = matchSpeech(f.spoken ? [f.text, f.spoken] : f.text, r.transcripts);
     const ok = passes(m);
     setMatch(m);
     setMine(r.recording);
@@ -92,6 +92,7 @@ export function Speak({ step, onDone }: { step: Extract<Step, { kind: 'speak' }>
             <div className={`reveal ${ok ? 'good' : 'fix'}`} role="status">
               <div className="reveal-head">{ok ? 'Yes, understood!' : 'Not quite. Listen and try again.'}</div>
               <HeardLine m={match} />
+              {f.spoken && <p className="spoken-form">🗣️ Casual: {f.spoken}</p>}
               <English text={f.en} />
               <div className="compare">
                 <button type="button" className="secondary" onClick={() => play(id, f.text)}>

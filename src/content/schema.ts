@@ -25,6 +25,8 @@ const Form = z.object({
   stem: z.number().int().nonnegative().optional(),
   /** English meaning: shown only AFTER answering, to confirm the guess (never as the prompt). */
   en: z.string().optional(),
+  /** How it's actually said in casual speech, e.g. "Ja e trött å hungri". Also accepted when speaking. */
+  spoken: z.string().optional(),
   /** Picture-sentence: each word (or chunk) with its emoji, e.g. [["Jag","🙋"],["gillar","👍"],["fisk","🐟"]] */
   parts: z.array(z.tuple([z.string(), z.string()])).optional(),
 });
@@ -66,6 +68,7 @@ const DialogueChoice = z.object({
   feedback: z.string().optional(), // English UI explanation, shown after choice
   recast: z.string().optional(), // interlocutor's corrective recast in target language
   en: z.string().optional(),
+  spoken: z.string().optional(),
   recast_en: z.string().optional(),
   /** social register of this reply, e.g. du vs ni, ਤੂੰ vs ਤੁਸੀਂ */
   register: z.enum(['intimate', 'informal', 'polite', 'formal']).optional(),
@@ -78,6 +81,7 @@ const DialogueNode = z.object({
   line: z.string(),
   alt: Form.shape.alt,
   en: z.string().optional(),
+  spoken: z.string().optional(),
   choices: z.array(DialogueChoice).min(1),
 });
 
@@ -122,9 +126,11 @@ const Course = z.object({
   title: z.string(),
   emoji: z.string(),
   tagline: z.string(),
-  level: z.enum(['basic', 'intermediate', 'hard', 'mini']),
+  /** CEFR-based track (A1 spoken core → C1 nuance), or a buyable mini-course */
+  level: z.enum(['A1', 'A2', 'B1', 'B2', 'C1', 'mini']),
   price: z.number().int().positive().optional(), // in coins; only mini-courses are bought
-  unit_ids: z.array(z.string()).min(1),
+  unit_ids: z.array(z.string()).default([]),
+  coming_soon: z.boolean().optional(), // shown on the journey bar, no lessons yet
 });
 export type Course = z.infer<typeof Course>;
 
@@ -177,6 +183,7 @@ export const Pack = z
     for (const c of pack.courses) {
       for (const id of c.unit_ids) if (!unitIds.has(id)) ctx.addIssue({ code: 'custom', message: `course ${c.id}: unknown unit ${id}` });
       if (c.level === 'mini' && !c.price) ctx.addIssue({ code: 'custom', message: `course ${c.id}: mini-courses need a price` });
+      if (!c.coming_soon && !c.unit_ids.length) ctx.addIssue({ code: 'custom', message: `course ${c.id}: needs units or coming_soon` });
     }
     for (const u of pack.units) {
       if (!u.lexicon_ids.length && !u.song && !u.dialogue)

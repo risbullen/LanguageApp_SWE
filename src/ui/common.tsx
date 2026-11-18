@@ -136,7 +136,7 @@ const BADGES: Record<string, [string, string]> = {
   listen_pick: ['Listen & choose', 'yellow'],
   structured: ['Listen to the ending', 'yellow'],
   rule: ['Pattern', 'purple'],
-  minimal_pair: ['Word melody', 'purple'],
+  minimal_pair: ['Sound pairs', 'purple'],
   tiles: ['Build the word', 'blue'],
   cloze: ['Finish the word', 'purple'],
   article: ['En or ett?', 'purple'],
@@ -145,6 +145,7 @@ const BADGES: Record<string, [string, string]> = {
   sentence: ['Build the sentence', 'blue'],
   song_line: ['Song', 'yellow'],
   song_full: ['Sing along', 'yellow'],
+  fluency: ['Speaking sprint', 'green'],
 };
 export function Badge({ kind, retry, hard }: { kind: string; retry?: boolean; hard?: boolean }) {
   const [label, tone] = BADGES[kind] ?? [kind, 'blue'];

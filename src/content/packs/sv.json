@@ -1032,7 +1032,8 @@
        "kaffe.",
        "☕"
       ]
-     ]
+     ],
+     "spoken": "Ja tycker om kaffe."
     }
    ]
   },
@@ -1062,7 +1063,8 @@
        "regn.",
        "🌧️"
       ]
-     ]
+     ],
+     "spoken": "Ja gillar inte regn."
     }
    ]
   },
@@ -1088,7 +1090,8 @@
        "trött.",
        "🥱"
       ]
-     ]
+     ],
+     "spoken": "Ja e trött."
     }
    ]
   },
@@ -1114,7 +1117,8 @@
        "hungrig.",
        "🤤"
       ]
-     ]
+     ],
+     "spoken": "Ja e hungri."
     }
    ]
   },
@@ -1140,7 +1144,8 @@
        "kul!",
        "🎉"
       ]
-     ]
+     ],
+     "spoken": "De va kul!"
     }
    ]
   },
@@ -1166,7 +1171,8 @@
        "du?",
        "🫵"
       ]
-     ]
+     ],
+     "spoken": "Va tycker du?"
     }
    ]
   },
@@ -1196,7 +1202,8 @@
        "fisk.",
        "🐟"
       ]
-     ]
+     ],
+     "spoken": "Igår åt ja fisk."
     }
    ],
    "note": "Verb second: after “Igår”, the verb comes before “jag”."
@@ -1374,7 +1381,8 @@
        "på isen.",
        "🧊"
       ]
-     ]
+     ],
+     "spoken": "De e ingen ko på isen."
     }
    ],
    "note": "“There's no cow on the ice”: no rush, it's fine."
@@ -1463,7 +1471,8 @@
        "på den!",
        "👉"
       ]
-     ]
+     ],
+     "spoken": "Ja lägger rabarber på den!"
     }
    ],
    "note": "“Put rhubarb on it”: I call dibs."
@@ -1524,7 +1533,8 @@
        "löser sig.",
        "🧩✅"
       ]
-     ]
+     ],
+     "spoken": "De löser sej."
     }
    ],
    "note": "It'll work out."
@@ -1620,7 +1630,8 @@
        "jättegott!",
        "😋"
       ]
-     ]
+     ],
+     "spoken": "De va jättegott!"
     }
    ]
   },
@@ -1646,7 +1657,8 @@
        "med disken?",
        "🧽🍽️"
       ]
-     ]
+     ],
+     "spoken": "Kan ja hjälpa till me disken?"
     }
    ]
   },
@@ -1672,7 +1684,8 @@
        "skorna?",
        "👟"
       ]
-     ]
+     ],
+     "spoken": "Ska ja ta av mej skorna?"
     }
    ],
    "note": "Shoes come off indoors in Sweden."
@@ -1733,7 +1746,8 @@
        "till?",
        "➕"
       ]
-     ]
+     ],
+     "spoken": "Får ja ta en bit till?"
     }
    ]
   },
@@ -1759,7 +1773,8 @@
        "dig.",
        "🫵"
       ]
-     ]
+     ],
+     "spoken": "Ja älskar dej."
     }
    ]
   },
@@ -1815,7 +1830,8 @@
        "dig.",
        "🫵"
       ]
-     ]
+     ],
+     "spoken": "Ja saknar dej."
     }
    ]
   },
@@ -1950,7 +1966,8 @@
        "roligt!",
        "😂"
       ]
-     ]
+     ],
+     "spoken": "Va roligt!"
     }
    ],
    "note": "“Rolig” means fun, not rolling."
@@ -2157,7 +2174,8 @@
         "en": "Bye!"
        }
       ],
-      "en": "Hi! What can I get you?"
+      "en": "Hi! What can I get you?",
+      "spoken": "Hej! Va får de lov å va?"
      },
      {
       "id": "n2",
@@ -2205,7 +2223,8 @@
         "en": "Here you go."
        }
       ],
-      "en": "That'll be forty-five kronor."
+      "en": "That'll be forty-five kronor.",
+      "spoken": "De blir förtifem kronor."
      },
      {
       "id": "n4",
@@ -2267,7 +2286,8 @@
          "recast_en": "A bun? Sure."
         }
        ],
-       "en": "Hi! What would you like?"
+       "en": "Hi! What would you like?",
+       "spoken": "Hej! Va vill du ha?"
       },
       {
        "id": "n2",
@@ -2404,7 +2424,8 @@
          "en": "Can I pay by card?"
         }
        ],
-       "en": "That'll be sixty kronor."
+       "en": "That'll be sixty kronor.",
+       "spoken": "De blir sexti kronor."
       }
      ]
     },
@@ -2459,6 +2480,22 @@
       }
      ]
     }
+   ],
+   "minimal_pairs": [
+    [
+     {
+      "id": "mp_glas",
+      "text": "glas",
+      "visual": "🥛",
+      "label": "long vowel"
+     },
+     {
+      "id": "mp_glass",
+      "text": "glass",
+      "visual": "🍦",
+      "label": "short vowel + double consonant"
+     }
+    ]
    ]
   },
   {
@@ -2524,7 +2561,8 @@
         "text": "Det är en häst.",
         "next": "n2",
         "fit": "ok",
-        "en": "It's a horse."
+        "en": "It's a horse.",
+        "spoken": "De e en häst."
        },
        {
         "text": "Det är ett häst.",
@@ -2540,10 +2578,12 @@
         "next": "n1",
         "fit": "no",
         "feedback": "Look again: it's a 🐎.",
-        "en": "It's a cat."
+        "en": "It's a cat.",
+        "spoken": "De e en katt."
        }
       ],
-      "en": "Look! What's that?"
+      "en": "Look! What's that?",
+      "spoken": "Titta! Va e de där?"
      },
      {
       "id": "n2",
@@ -2555,7 +2595,8 @@
         "text": "Jag ser tre hundar.",
         "next": "n3",
         "fit": "ok",
-        "en": "I see three dogs."
+        "en": "I see three dogs.",
+        "spoken": "Ja ser tre hundar."
        },
        {
         "text": "Jag ser tre hund.",
@@ -2567,7 +2608,8 @@
         "recast_en": "Three dogs, yes!"
        }
       ],
-      "en": "How many dogs do you see?"
+      "en": "How many dogs do you see?",
+      "spoken": "Hur många hundar ser ru?"
      },
      {
       "id": "n3",
@@ -2591,7 +2633,8 @@
         "recast_en": "No, the dog says woof. The cow says moo!"
        }
       ],
-      "en": "What does the cow say?"
+      "en": "What does the cow say?",
+      "spoken": "Va säger kon?"
      }
     ]
    },
@@ -2614,7 +2657,8 @@
          "text": "Nej, det är en hund.",
          "next": "n2",
          "fit": "ok",
-         "en": "No, it's a dog."
+         "en": "No, it's a dog.",
+         "spoken": "Nej, de e en hund."
         },
         {
          "text": "Ja, det är en katt.",
@@ -2636,7 +2680,8 @@
          "text": "Det är en katt.",
          "next": null,
          "fit": "ok",
-         "en": "It's a cat."
+         "en": "It's a cat.",
+         "spoken": "De e en katt."
         },
         {
          "text": "Det är ett katt.",
@@ -2918,7 +2963,8 @@
         }
        ],
        "visual": "🏠",
-       "en": "This is my house."
+       "en": "This is my house.",
+       "spoken": "De här e mitt hus."
       },
       {
        "id": "n2",
@@ -3027,6 +3073,36 @@
       }
      ]
     }
+   ],
+   "minimal_pairs": [
+    [
+     {
+      "id": "mp_vag",
+      "text": "väg",
+      "visual": "🛣️",
+      "label": "long vowel"
+     },
+     {
+      "id": "mp_vagg",
+      "text": "vägg",
+      "visual": "🧱",
+      "label": "short vowel + double consonant"
+     }
+    ],
+    [
+     {
+      "id": "mp_tak",
+      "text": "tak",
+      "visual": "🏠",
+      "label": "long vowel"
+     },
+     {
+      "id": "mp_tack",
+      "text": "tack",
+      "visual": "🙏",
+      "label": "short vowel + double consonant"
+     }
+    ]
    ]
   },
   {
@@ -3104,7 +3180,8 @@
         "next": null,
         "fit": "ok",
         "register": "informal",
-        "en": "Fine, thanks! And you?"
+        "en": "Fine, thanks! And you?",
+        "spoken": "Bra, tack! Å du?"
        },
        {
         "text": "Bra, tack! Och ni?",
@@ -3115,7 +3192,8 @@
         "en": "Fine, thanks! And you? (formal)"
        }
       ],
-      "en": "And how are you?"
+      "en": "And how are you?",
+      "spoken": "Å humårru?"
      }
     ]
    },
@@ -3170,7 +3248,8 @@
          "text": "Ja, jag har två barn.",
          "next": null,
          "fit": "ok",
-         "en": "Yes, I have two children."
+         "en": "Yes, I have two children.",
+         "spoken": "Ja, ja har två barn."
         },
         {
          "text": "Nej, jag har inga barn.",
@@ -3247,6 +3326,22 @@
       }
      ]
     }
+   ],
+   "minimal_pairs": [
+    [
+     {
+      "id": "mp_ful",
+      "text": "ful",
+      "visual": "👹",
+      "label": "long vowel"
+     },
+     {
+      "id": "mp_full",
+      "text": "full",
+      "visual": "🫙",
+      "label": "short vowel + double consonant"
+     }
+    ]
    ]
   },
   {
@@ -3293,7 +3388,8 @@
         }
        ],
        "visual": "⏪💃",
-       "en": "What did you do yesterday?"
+       "en": "What did you do yesterday?",
+       "spoken": "Va gjorde ru igår?"
       },
       {
        "id": "n2",
@@ -3370,7 +3466,8 @@
         "text": "Jag sov länge och åt pannkakor.",
         "next": "n2",
         "fit": "ok",
-        "en": "I slept in and ate pancakes."
+        "en": "I slept in and ate pancakes.",
+        "spoken": "Ja sov länge å åt pannkakor."
        },
        {
         "text": "Jag sover länge och äter pannkakor.",
@@ -3383,7 +3480,8 @@
        }
       ],
       "visual": "📅",
-      "en": "Hi! What did you do at the weekend?"
+      "en": "Hi! What did you do at the weekend?",
+      "spoken": "Hej! Va gjorde ru i helgen?"
      },
      {
       "id": "n2",
@@ -3467,7 +3565,8 @@
          "text": "Ja, jag läste den igår.",
          "next": null,
          "fit": "ok",
-         "en": "Yes, I read it yesterday."
+         "en": "Yes, I read it yesterday.",
+         "spoken": "Ja, ja läste den igår."
         },
         {
          "text": "Ja, jag läser den igår.",
@@ -3601,7 +3700,8 @@
          "text": "Nej tack, jag är trött.",
          "next": null,
          "fit": "ok",
-         "en": "No thanks, I'm tired."
+         "en": "No thanks, I'm tired.",
+         "spoken": "Nej tack, ja e trött."
         },
         {
          "text": "Ja! Jag är hungrig.",
@@ -3614,7 +3714,8 @@
          "next": null,
          "fit": "meh",
          "feedback": "That's past: “it was fun”. Nothing has happened yet!",
-         "en": "That was fun!"
+         "en": "That was fun!",
+         "spoken": "De va kul!"
         }
        ],
        "visual": "🌃",
@@ -3640,7 +3741,8 @@
          "text": "Ja tack, jag tycker om kaffe.",
          "next": null,
          "fit": "ok",
-         "en": "Yes please, I like coffee."
+         "en": "Yes please, I like coffee.",
+         "spoken": "Ja tack, ja tycker om kaffe."
         },
         {
          "text": "Nej tack, jag gillar inte regn.",
@@ -3674,18 +3776,21 @@
         "text": "Jag tycker om Sverige, men jag gillar inte regn!",
         "next": "n2",
         "fit": "ok",
-        "en": "I like Sweden, but I don't like rain!"
+        "en": "I like Sweden, but I don't like rain!",
+        "spoken": "Ja tycker om Sverige, men ja gillar inte regn!"
        },
        {
         "text": "Jag är hungrig.",
         "next": "n2",
         "fit": "meh",
         "feedback": "Honest, but not an answer!",
-        "en": "I'm hungry."
+        "en": "I'm hungry.",
+        "spoken": "Ja e hungri."
        }
       ],
       "visual": "🇸🇪",
-      "en": "What do you think of Sweden?"
+      "en": "What do you think of Sweden?",
+      "spoken": "Va tycker ru om Sverige?"
      },
      {
       "id": "n2",
@@ -3702,7 +3807,8 @@
         "text": "Vad tycker du?",
         "next": null,
         "fit": "ok",
-        "en": "What do you think?"
+        "en": "What do you think?",
+        "spoken": "Va tycker du?"
        }
       ],
       "visual": "🌼",
@@ -3772,7 +3878,8 @@
         "text": "Igår åt jag fisk.",
         "next": "n2",
         "fit": "ok",
-        "en": "Yesterday I ate fish."
+        "en": "Yesterday I ate fish.",
+        "spoken": "Igår åt ja fisk."
        },
        {
         "text": "Igår jag åt fisk.",
@@ -3839,14 +3946,16 @@
          "text": "Det är ingen ko på isen.",
          "next": null,
          "fit": "ok",
-         "en": "No rush, it's fine. (lit. there's no cow on the ice)"
+         "en": "No rush, it's fine. (lit. there's no cow on the ice)",
+         "spoken": "De e ingen ko på isen."
         },
         {
          "text": "Jag lägger rabarber på den!",
          "next": null,
          "fit": "no",
          "feedback": "That means “I call dibs”. Not very helpful here!",
-         "en": "Dibs! (lit. I put rhubarb on it)"
+         "en": "Dibs! (lit. I put rhubarb on it)",
+         "spoken": "Ja lägger rabarber på den!"
         }
        ],
        "visual": "😱📅",
@@ -4027,7 +4136,8 @@
         "text": "Det löser sig.",
         "next": "n3",
         "fit": "ok",
-        "en": "It'll work out."
+        "en": "It'll work out.",
+        "spoken": "De löser sej."
        },
        {
         "text": "Lagom är bäst.",
@@ -4174,7 +4284,8 @@
         "text": "Får jag ta en bit till?",
         "next": "n3",
         "fit": "ok",
-        "en": "May I have another piece?"
+        "en": "May I have another piece?",
+        "spoken": "Får ja ta en bit till?"
        },
        {
         "text": "Nej.",
@@ -4187,7 +4298,8 @@
        }
       ],
       "visual": "🍽️",
-      "en": "Have you had enough to eat?"
+      "en": "Have you had enough to eat?",
+      "spoken": "Har du ätit dej mätt?"
      },
      {
       "id": "n3",
@@ -4379,7 +4491,8 @@
         "next": null,
         "fit": "ok",
         "register": "intimate",
-        "en": "I love you."
+        "en": "I love you.",
+        "spoken": "Ja älskar dej."
        }
       ],
       "visual": "🌙",
@@ -4415,7 +4528,8 @@
          "next": "n2",
          "fit": "meh",
          "feedback": "Romantic it is not…",
-         "en": "I'm hungry."
+         "en": "I'm hungry.",
+         "spoken": "Ja e hungri."
         }
        ],
        "en": "Hi! I'm in Gothenburg until Friday."
@@ -4431,7 +4545,8 @@
          "next": null,
          "fit": "ok",
          "register": "intimate",
-         "en": "I love you."
+         "en": "I love you.",
+         "spoken": "Ja älskar dej."
         },
         {
          "text": "Hej då!",
@@ -4495,7 +4610,8 @@
         "text": "Vad roligt!",
         "next": null,
         "fit": "ok",
-        "en": "How fun!"
+        "en": "How fun!",
+        "spoken": "Va roligt!"
        },
        {
         "text": "Fartkontroll!",
@@ -4542,7 +4658,8 @@
          "recast_en": "A glass? We only have ice cream here!"
         }
        ],
-       "en": "Hi! What would you like?"
+       "en": "Hi! What would you like?",
+       "spoken": "Hej! Va får de va?"
       },
       {
        "id": "n2",
@@ -4553,7 +4670,8 @@
          "text": "Vad roligt!",
          "next": null,
          "fit": "ok",
-         "en": "How fun!"
+         "en": "How fun!",
+         "spoken": "Va roligt!"
         },
         {
          "text": "Tack så mycket!",
@@ -4688,24 +4806,25 @@
  ],
  "courses": [
   {
-   "id": "basics",
+   "id": "a1",
    "title": "Grunderna",
    "emoji": "🌱",
-   "tagline": "Your first 24 words: fika, animals, home and family.",
-   "level": "basic",
+   "tagline": "Spoken core: fika, animals, home, family and Swedish word order.",
+   "level": "A1",
    "unit_ids": [
     "fika",
     "djur",
     "hemma",
-    "familj"
+    "familj",
+    "ordfoljd"
    ]
   },
   {
-   "id": "intermediate",
+   "id": "a2",
    "title": "Igår & idag",
    "emoji": "⏪",
-   "tagline": "Talk about what you did, and what you think.",
-   "level": "intermediate",
+   "tagline": "Grammar in action: talk about what you did and what you think.",
+   "level": "A2",
    "unit_ids": [
     "verb1",
     "verb2",
@@ -4713,13 +4832,28 @@
    ]
   },
   {
-   "id": "hard",
+   "id": "b1",
+   "title": "Berättelser",
+   "emoji": "📖",
+   "tagline": "Short stories to listen to and retell.",
+   "level": "B1",
+   "coming_soon": true
+  },
+  {
+   "id": "b2",
+   "title": "Nyheter",
+   "emoji": "📰",
+   "tagline": "Easy news and everyday public Swedish.",
+   "level": "B2",
+   "coming_soon": true
+  },
+  {
+   "id": "c1",
    "title": "Svenska på riktigt",
    "emoji": "🔥",
-   "tagline": "Word order, idioms and how Swedes really talk. Text hidden, full speed.",
-   "level": "hard",
+   "tagline": "Idioms and how Swedes really talk. Text hidden, full speed.",
+   "level": "C1",
    "unit_ids": [
-    "ordfoljd",
     "idiom",
     "vardag"
    ]

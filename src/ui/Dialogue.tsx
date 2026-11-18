@@ -19,6 +19,7 @@ interface Line {
   register?: string;
   fit?: 'ok' | 'meh' | 'no';
   en?: string;
+  spoken?: string;
 }
 
 /* ───────────── 6 · Communicative capstone: a short branching conversation ───────────── */
@@ -36,6 +37,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
   const [turn, setTurn] = useState(0); // re-run the speaker's line even when a choice loops back
   const [miss, setMiss] = useState<string | null>(null);
   const [busy, setBusy] = useState(false); // while your reply and their answer are playing
+  const [hinted, setHinted] = useState<Set<string>>(new Set()); // nodes where a grammar hint was already given
   const canTalk = recognitionSupported();
   const node = nodeId ? nodes.get(nodeId) : undefined;
   const nodeAudio = (id: string) => `dlg.${dlgKey}.${id}`;
@@ -43,7 +45,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
   // interlocutor speaks when a node becomes active
   useEffect(() => {
     if (!node) return;
-    setLog((l) => [...l, { who: 'them', text: node.line, shown: t({ text: node.line, alt: node.alt }), audio: nodeAudio(node.id), visual: node.visual, speaker: node.speaker, en: node.en }]);
+    setLog((l) => [...l, { who: 'them', text: node.line, shown: t({ text: node.line, alt: node.alt }), audio: nodeAudio(node.id), visual: node.visual, speaker: node.speaker, en: node.en, spoken: node.spoken }]);
     setRevealed(settings.mode === 'analytical');
     const tm = setTimeout(() => play(nodeAudio(node.id), node.line), 300);
     return () => clearTimeout(tm);
@@ -55,18 +57,27 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
     setBusy(true);
     const c = node!.choices[i];
     setMiss(null);
+    // A grammar slip ("understood, but…") gets a hint and one more try first; the partner
+    // only recasts it if it happens again. Prompts lead to more self-repair than recasts.
+    const giveHint = c.fit === 'meh' && !!c.recast && !hinted.has(node!.id);
     const me: Line = {
       who: 'me',
       text: c.text,
       shown: t(c),
+      spoken: c.spoken,
       audio: `${nodeAudio(node!.id)}.${i}`,
-      note: c.feedback,
+      note: giveHint ? `💡 ${c.feedback ?? 'Almost!'} Try once more.` : c.feedback,
       fit: c.fit,
       heard,
       register: c.register,
-      en: c.en,
+      en: giveHint ? undefined : c.en,
     };
     setLog((l) => [...l, me]);
+    if (giveHint) {
+      setHinted((h) => new Set(h).add(node!.id));
+      setBusy(false);
+      return; // same question, answer again
+    }
     // your reply is spoken aloud too, so every turn of the conversation is heard
     await play(me.audio, c.text);
     if (c.recast) {
@@ -87,7 +98,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
     if (r.error === 'not-allowed') return setMiss('The microphone is blocked. Tap an answer instead.');
     if (r.error && r.error !== 'no-speech') return setMiss('Speech recognition isn’t working right now. Tap an answer instead.');
     const picked = pickChoice(
-      node!.choices.map((c) => c.text),
+      node!.choices.map((c) => (c.spoken ? [c.text, c.spoken] : c.text)),
       r.transcripts,
     );
     if (!picked) return setMiss(r.transcripts[0] ? `Heard “${r.transcripts[0]}”, which doesn’t match an answer. Try again or tap one.` : 'Didn’t catch that. Try again or tap an answer.');
@@ -122,6 +133,7 @@ export function Dialogue({ step, onDone }: { step: Extract<Step, { kind: 'dialog
                   </>
                 )}
                 {line.who === 'them' && <SpeakerButton audioId={line.audio} text={line.text} />}
+                {line.spoken && !hide && <p className="spoken-form">🗣️ {line.spoken}</p>}
                 {/* English once that turn is over, to confirm what was said */}
                 {!isCurrent && <English text={line.en} />}
                 {line.heard && <p className="bubble-note">🎤 “{line.heard}”</p>}
